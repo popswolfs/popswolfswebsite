@@ -1,30 +1,378 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>POPSWOLF Connect</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>POPSWOLFS CONNECT</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+color:#222;
+}
+
+header{
+background:#111;
+color:white;
+padding:20px;
+text-align:center;
+}
+
+.logo{
+width:90px;
+height:90px;
+border-radius:50%;
+background:#ddd;
+margin:auto;
+margin-bottom:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+margin-bottom:20px;
+}
+
+.review-btn{
+background:#ff9800;
+color:white;
+border:none;
+padding:15px;
+width:100%;
+border-radius:10px;
+font-size:18px;
+cursor:pointer;
+}
+
+.review-btn:hover{
+background:#e68900;
+}
+
+.rating{
+text-align:center;
+font-size:30px;
+margin-top:20px;
+color:gold;
+}
+
+h2{
+margin-bottom:15px;
+}
+
+.menu-item{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:12px 0;
+border-bottom:1px solid #eee;
+}
+
+.menu-item img{
+width:70px;
+height:70px;
+border-radius:10px;
+object-fit:cover;
+margin-right:15px;
+}
+
+.menu-left{
+display:flex;
+align-items:center;
+}
+
+.price{
+font-weight:bold;
+color:green;
+}
+
+.social{
+display:flex;
+gap:10px;
+margin-top:15px;
+}
+
+.social a{
+flex:1;
+text-decoration:none;
+padding:12px;
+border-radius:10px;
+text-align:center;
+color:white;
+font-weight:bold;
+}
+
+.insta{
+background:#E1306C;
+}
+
+.whatsapp{
+background:#25D366;
+}
+
+.offer{
+background:#ffe082;
+padding:20px;
+text-align:center;
+border-radius:15px;
+font-size:20px;
+font-weight:bold;
+margin-top:20px;
+}
+
+footer{
+text-align:center;
+padding:25px;
+color:#777;
+}
+
+</style>
+
 </head>
 
 <body>
 
-<h1>🐺 POPSWOLF CONNECT</h1>
+<header>
 
-<h2>Welcome!</h2>
+<div class="logo">
 
-<p>Tap your phone to review us.</p>
+LOGO
 
-<button>⭐ Leave a Review</button>
+</div>
 
-<hr>
+<h1>Restaurant Name</h1>
 
-<h3>🎁 Today's Special</h3>
-<p>Buy 1 Pizza Get 1 Free</p>
+<p>Welcome to POPSWOLFS CONNECT</p>
 
-<hr>
+</header>
 
-<h3>📸 Follow Us</h3>
-<p>Instagram: @popswolf</p>
+<div class="container">
 
-<p>Thank you for visiting ❤️</p>
+<div class="card">
+
+<button class="review-btn">
+
+⭐ Leave a Review
+
+</button>
+
+<div class="rating">
+
+★★★★★
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🍽 Our Menu</h2>
+
+<div class="menu-item">
+
+<div class="menu-left">
+
+<img src="https://via.placeholder.com/70">
+
+<div>
+
+<h3>Chicken Burger</h3>
+
+<p>Cheese Loaded</p>
+
+</div>
+
+</div>
+
+<div class="price">
+
+₹299
+
+</div>
+
+</div>
+
+<div class="menu-item">
+
+<div class="menu-left">
+
+<img src="https://via.placeholder.com/70">
+
+<div>
+
+<h3>Cold Coffee</h3>
+
+<p>Special Drink</p>
+
+</div>
+
+</div>
+
+<div class="price">
+
+₹99
+
+</div>
+
+</div><div class="menu-item">
+
+<div class="menu-left">
+
+<img src="https://via.placeholder.com/70">
+
+<div>
+
+<h3>Pizza</h3>
+
+<p>Extra Cheese</p>
+
+</div>
+
+</div>
+
+<div class="price">
+
+₹399
+
+</div>
+
+</div>
+
+<div class="menu-item">
+
+<div class="menu-left">
+
+<img src="https://via.placeholder.com/70">
+
+<div>
+
+<h3>French Fries</h3>
+
+<p>Crispy & Fresh</p>
+
+</div>
+
+</div>
+
+<div class="price">
+
+₹149
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🔥 Today's Special</h2>
+
+<div class="menu-item">
+
+<div class="menu-left">
+
+<img src="https://via.placeholder.com/70">
+
+<div>
+
+<h3>Special Combo Meal</h3>
+
+<p>Burger + Fries + Drink</p>
+
+</div>
+
+</div>
+
+<div class="price">
+
+₹499
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>📲 Connect With Us</h2>
+
+<div class="social">
+
+<a href="https://instagram.com" class="insta" target="_blank">
+
+Instagram
+
+</a>
+
+<a href="https://wa.me/911234567890" class="whatsapp" target="_blank">
+
+WhatsApp
+
+</a>
+
+</div>
+
+</div>
+
+<div class="offer">
+
+🎉 Visit Again & Get<br><br>
+
+10%–20% OFF
+
+<br><br>
+
+On Your Next Visit ❤️
+
+</div>
+<footer>
+
+<p><strong>Thank You For Visiting ❤️</strong></p>
+
+<p style="margin-top:8px;">
+Please visit us again.
+</p>
+
+<p style="margin-top:10px;color:#ff9800;font-weight:bold;">
+Powered by POPSWOLFS CONNECT
+</p>
+
+</footer>
+
+</div>
+
+<script>
+
+// CHANGE THIS LINK TO YOUR GOOGLE REVIEW LINK
+document.querySelector(".review-btn").onclick = function () {
+window.open("https://google.com", "_blank");
+};
+
+</script>
 
 </body>
 </html>
+
+<!-- END OF FILE -->
