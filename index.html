@@ -168,6 +168,20 @@ margin-bottom:10px;
 .info-box p{
 margin-bottom:8px;
 }
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.gallery img{
+    width:100%;
+    height:140px;
+    object-fit:cover;
+    border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,.15);
+}
 </style>
 
 </head>
@@ -187,7 +201,17 @@ LOGO
 <p>Welcome to POPSWOLFS CONNECT</p>
 
 </header>
+<div class="gallery">
 
+    <img src="https://picsum.photos/400/300?random=1" alt="Photo 1">
+
+    <img src="https://picsum.photos/400/300?random=2" alt="Photo 2">
+
+    <img src="https://picsum.photos/400/300?random=3" alt="Photo 3">
+
+    <img src="https://picsum.photos/400/300?random=4" alt="Photo 4">
+
+</div>
 <div class="container">
 
 <div class="card">
