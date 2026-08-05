@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Edit Menu</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#111;
+color:white;
+padding:20px;
+}
+
+.box{
+max-width:500px;
+margin:auto;
+background:#222;
+padding:20px;
+border-radius:15px;
+}
+
+h2{
+text-align:center;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:none;
+border-radius:8px;
+font-size:16px;
+}
+
+textarea{
+width:100%;
+height:120px;
+padding:12px;
+margin:10px 0;
+border:none;
+border-radius:8px;
+font-size:16px;
+resize:none;
+}
+
+button{
+width:100%;
+padding:15px;
+background:#00c853;
+color:white;
+border:none;
+border-radius:8px;
+font-size:18px;
+cursor:pointer;
+}
+
+button:hover{
+background:#00a844;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>🍔 Edit Menu</h2>
+
+<input type="text" placeholder="Restaurant Name">
+
+<textarea placeholder="Write your menu here...&#10;&#10;Burger - ₹99&#10;Pizza - ₹199&#10;Cold Coffee - ₹89"></textarea>
+
+<button onclick="saveMenu()">Save Menu</button>
+
+</div>
+
+<script>
+
+function saveMenu(){
+alert("Menu Saved Successfully!");
+}
+
+</script>
+
+</body>
+</html>
