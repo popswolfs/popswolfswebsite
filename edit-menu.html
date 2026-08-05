@@ -77,9 +77,21 @@ background:#00a844;
 
 <script>
 
+<script>
 function saveMenu(){
+
+let restaurant = document.querySelector('input').value;
+let menu = document.querySelector('textarea').value;
+
+localStorage.setItem("restaurantName", restaurant);
+localStorage.setItem("restaurantMenu", menu);
+
 alert("Menu Saved Successfully!");
+
+window.location.href="index.html";
+
 }
+</script>
 
 </script>
 
