@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Gallery</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#111;
+color:white;
+padding:20px;
+}
+
+.box{
+max-width:500px;
+margin:auto;
+background:#222;
+padding:20px;
+border-radius:15px;
+text-align:center;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:15px 0;
+background:#fff;
+border-radius:8px;
+}
+
+button{
+width:100%;
+padding:15px;
+background:#00c853;
+color:white;
+border:none;
+border-radius:8px;
+font-size:18px;
+cursor:pointer;
+}
+
+button:hover{
+background:#00a844;
+}
+
+img{
+width:100%;
+margin-top:20px;
+border-radius:10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>📷 Gallery Manager</h2>
+
+<input type="file" id="photo">
+
+<button onclick="uploadPhoto()">Upload Photo</button>
+
+<img id="preview" style="display:none;">
+
+</div>
+
+<script>
+
+function uploadPhoto(){
+
+let file=document.getElementById("photo").files[0];
+
+if(file){
+
+let reader=new FileReader();
+
+reader.onload=function(e){
+
+document.getElementById("preview").src=e.target.result;
+
+document.getElementById("preview").style.display="block";
+
+alert("Photo Uploaded Successfully!");
+
+}
+
+reader.readAsDataURL(file);
+
+}else{
+
+alert("Please Select Photo");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
