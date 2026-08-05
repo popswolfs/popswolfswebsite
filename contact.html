@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Contact Details</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#111;
+color:white;
+padding:20px;
+}
+
+.box{
+max-width:500px;
+margin:auto;
+background:#222;
+padding:20px;
+border-radius:15px;
+}
+
+h2{
+text-align:center;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:none;
+border-radius:8px;
+font-size:16px;
+}
+
+textarea{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:none;
+border-radius:8px;
+font-size:16px;
+resize:none;
+}
+
+button{
+width:100%;
+padding:15px;
+background:#00c853;
+color:white;
+border:none;
+border-radius:8px;
+font-size:18px;
+cursor:pointer;
+}
+
+button:hover{
+background:#00a844;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>📞 Contact Details</h2>
+
+<input type="text" placeholder="Restaurant Name">
+
+<input type="text" placeholder="Phone Number">
+
+<input type="text" placeholder="WhatsApp Number">
+
+<textarea placeholder="Restaurant Address"></textarea>
+
+<input type="text" placeholder="Google Maps Link">
+
+<button onclick="saveContact()">Save Contact</button>
+
+</div>
+
+<script>
+
+function saveContact(){
+alert("Contact Details Saved Successfully!");
+}
+
+</script>
+
+</body>
+</html>
