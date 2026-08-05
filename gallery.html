@@ -97,6 +97,17 @@ alert("Please Select Photo");
 }
 
 </script>
+<script>
+window.onload = function () {
 
+  const savedPhoto = localStorage.getItem("galleryPhoto");
+
+  if (savedPhoto) {
+    document.getElementById("preview").src = savedPhoto;
+    document.getElementById("preview").style.display = "block";
+  }
+
+}
+</script>
 </body>
 </html>
