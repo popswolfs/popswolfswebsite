@@ -7,459 +7,437 @@
 <title>POPSWOLFS CONNECT</title>
 
 <style>
-
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
 }
 
 body{
-background:#f5f5f5;
-color:#222;
+  background:#f5f5f5;
+  color:#222;
 }
 
 header{
-background:#111;
-color:white;
-padding:20px;
-text-align:center;
+  background:#111;
+  color:white;
+  text-align:center;
+  padding:25px 15px;
 }
 
 .logo{
-width:90px;
-height:90px;
-border-radius:50%;
-background:#ddd;
-margin:auto;
-margin-bottom:10px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-weight:bold;
+  width:80px;
+  height:80px;
+  object-fit:cover;
+  border-radius:50%;
+  margin-bottom:10px;
+}
+
+header h1{
+  font-size:30px;
+  margin-bottom:5px;
+}
+
+header p{
+  color:#ccc;
 }
 
 .container{
-max-width:900px;
-margin:auto;
-padding:20px;
+  max-width:600px;
+  margin:auto;
+  padding:15px;
 }
 
 .card{
-background:white;
-padding:20px;
-border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,.1);
-margin-bottom:20px;
+  background:white;
+  margin:15px 0;
+  padding:20px;
+  border-radius:18px;
+  box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.card h2{
+  margin-bottom:15px;
+}
+
+.review-box{
+  text-align:center;
 }
 
 .review-btn{
-background:#ff9800;
-color:white;
-border:none;
-padding:15px;
-width:100%;
-border-radius:10px;
-font-size:18px;
-cursor:pointer;
+  display:block;
+  background:#ffb000;
+  color:white;
+  text-decoration:none;
+  padding:16px;
+  border-radius:12px;
+  font-size:20px;
+  font-weight:bold;
 }
 
-.review-btn:hover{
-background:#e68900;
-}
-
-.rating{
-text-align:center;
-font-size:30px;
-margin-top:20px;
-color:gold;
-}
-
-h2{
-margin-bottom:15px;
+.stars{
+  color:#ffc400;
+  font-size:30px;
+  margin-top:12px;
 }
 
 .menu-item{
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:12px 0;
-border-bottom:1px solid #eee;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:13px 0;
+  border-bottom:1px solid #eee;
 }
 
-.menu-item img{
-width:70px;
-height:70px;
-border-radius:10px;
-object-fit:cover;
-margin-right:15px;
-}
-
-.menu-left{
-display:flex;
-align-items:center;
+.menu-item:last-child{
+  border-bottom:none;
 }
 
 .price{
-font-weight:bold;
-color:green;
+  color:#079447;
+  font-weight:bold;
 }
 
-.social{
-display:flex;
-gap:10px;
-margin-top:15px;
+.contact-btn{
+  display:block;
+  text-align:center;
+  text-decoration:none;
+  color:white;
+  padding:13px;
+  border-radius:10px;
+  margin-top:10px;
 }
 
-.social a{
-flex:1;
-text-decoration:none;
-padding:12px;
-border-radius:10px;
-text-align:center;
-color:white;
-font-weight:bold;
-}
-
-.insta{
-background:#E1306C;
+.call{
+  background:#087f3d;
 }
 
 .whatsapp{
-background:#25D366;
+  background:#20b858;
 }
 
-.offer{
-background:#ffe082;
-padding:20px;
-text-align:center;
-border-radius:15px;
-font-size:20px;
-font-weight:bold;
-margin-top:20px;
+.instagram{
+  background:#111;
 }
 
-footer{
-text-align:center;
-padding:25px;
-color:#777;
-}
-.call{
-background:#2196F3;
-}
-
-.maps{
-background:#F44336;
-}
-
-.info-box{
-background:white;
-padding:20px;
-border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,.1);
-margin-bottom:20px;
-}
-
-.info-box h2{
-margin-bottom:10px;
-}
-
-.info-box p{
-margin-bottom:8px;
-}
 .gallery{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-    margin-bottom:20px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
 }
 
 .gallery img{
-    width:100%;
-    height:140px;
-    object-fit:cover;
-    border-radius:12px;
-    box-shadow:0 4px 10px rgba(0,0,0,.15);
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  border-radius:14px;
+}
+
+.special{
+  background:#fff3cd;
+  border-left:5px solid #ffb000;
+}
+
+footer{
+  text-align:center;
+  padding:30px 15px;
+  color:#777;
+  font-size:13px;
 }
 </style>
-
 </head>
 
 <body>
 
 <header>
 
-<div class="logo">
-    <img src="https://raw.githubusercontent.com/popswolfs/popswolfswebsite/main/logo.jpeg" alt="POPS Logo">
-</div>
+<img id="logo" class="logo" src="popswolfs.jpeg"
+     onerror="this.style.display='none'">
 
+<h1 id="restaurantName">Restaurant Name</h1>
 
-
-
-
-<h1 id="shop-name">Restaurant Name</h1>
-
-<p id="shop-tagline">Welcome to POPSWOLFS CONNECT</p>
+<p>Welcome to POPSWOLFS CONNECT</p>
 
 </header>
-<div class="gallery">
 
-    <img src="https://picsum.photos/400/300?random=1" alt="Photo 1">
 
-    <img src="https://picsum.photos/400/300?random=2" alt="Photo 2">
-
-    <img src="https://picsum.photos/400/300?random=3" alt="Photo 3">
-
-    <img src="https://picsum.photos/400/300?random=4" alt="Photo 4">
-
-</div>
 <div class="container">
 
-<div class="card">
+<!-- REVIEW -->
+<div class="card review-box">
 
-<a href="https://goo.gl/maps/wzYhC39rmubyMRfT8"
+<h2>⭐ Leave a Review</h2>
+
+<a id="reviewButton"
    class="review-btn"
+   href="#"
    target="_blank">
 ⭐ Leave a Review
 </a>
 
-<div class="rating">
-
+<div class="stars">
 ★★★★★
-
 </div>
 
 </div>
 
-<div class="card">
 
-<h2>🍽 Our Menu</h2>
-
-<div class="menu-item" id="menu-item-1">
-
-<div class="menu-left">
-
-<img src="https://via.placeholder.com/70">
-
-<div>
-
-<h3 id="menu-name-1">Chicken Burger</h3>
-
-<p id="menu-desc-1">Cheese Loaded</p>
-
-</div>
-
-</div>
-
-<div class="price" id="menu-price-1">
-
-₹299
-
-</div>
-
-</div>
-
-<div class="menu-item">
-
-<div class="menu-left">
-
-<img src="https://via.placeholder.com/70">
-
-<div>
-
-<h3>Cold Coffee</h3>
-
-<p>Special Drink</p>
-
-</div>
-
-</div>
-
-<div class="price">
-
-₹99
-
-</div>
-
-</div><div class="menu-item">
-
-<div class="menu-left">
-
-<img src="https://via.placeholder.com/70">
-
-<div>
-
-<h3>Pizza</h3>
-
-<p>Extra Cheese</p>
-
-</div>
-
-</div>
-
-<div class="price">
-
-₹399
-
-</div>
-
-</div>
-
-<div class="menu-item">
-
-<div class="menu-left">
-
-<img src="https://via.placeholder.com/70">
-
-<div>
-
-<h3>French Fries</h3>
-
-<p>Crispy & Fresh</p>
-
-</div>
-
-</div>
-
-<div class="price">
-
-₹149
-
-</div>
-
-</div>
-
-</div>
-
-<div class="card">
+<!-- TODAY SPECIAL -->
+<div id="specialCard" class="card special" style="display:none;">
 
 <h2>🔥 Today's Special</h2>
 
-<div class="menu-item">
-
-<div class="menu-left">
-
-<img src="https://via.placeholder.com/70">
-
-<div>
-
-<h3>Special Combo Meal</h3>
-
-<p>Burger + Fries + Drink</p>
+<p id="specialText"></p>
 
 </div>
 
-</div>
 
-<div class="price">
-
-₹499
-
-</div>
-
-</div>
-
-</div>
-
+<!-- MENU -->
 <div class="card">
 
-<h2>📲 Connect With Us</h2>
+<h2>🍽️ Our Menu</h2>
 
-<div class="social">
+<div id="menuList">
+<p>Menu will appear here.</p>
+</div>
 
-<a href="https://instagram.com" id="instagram-btn" class="insta" target="_blank">
+</div>
 
-Instagram
 
-</a>
+<!-- GALLERY -->
+<div class="card">
 
-<a href="https://wa.me/911234567890" id="whatsapp-btn" class="whatsapp" target="_blank">
+<h2>📸 Gallery</h2>
 
-WhatsApp
+<div id="gallery" class="gallery">
 
-</a>
+<img src="popswolfs.jpeg" alt="Restaurant">
 
 </div>
 
 </div>
-<div class="info-box">
 
-<h2>📍 Location</h2>
 
-<p>Restaurant Address Here</p>
+<!-- CONTACT -->
+<div class="card">
 
-<br>
+<h2>📞 Contact Us</h2>
 
-<h2>🕒 Opening Hours</h2>
+<div id="contactArea">
 
-<p>Monday - Sunday</p>
-
-<p>10:00 AM - 11:00 PM</p>
-
-<br>
-
-<a href="tel:+919876543210" class="review-btn" id="call-btn" style="display:block;text-align:center;text-decoration:none;margin-bottom:10px;">
-📞 Call Now
-</a>
-
-<a href="https://maps.app.goo.gl/uinsfCpqgreE8fAu8" id="maps-btn" class="review-btn">
-📍 Open Google Maps
-</a>
+<p>Contact details will appear here.</p>
 
 </div>
-<div class="offer">
-
-🎉 Visit Again & Get<br><br>
-
-10%–20% OFF
-
-<br><br>
-
-On Your Next Visit ❤️
 
 </div>
+
+</div>
+
+
 <footer>
 
-<p><strong>Thank You For Visiting ❤️</strong></p>
-
-<p style="margin-top:8px;">
-Please visit us again.
-</p>
-
-<p style="margin-top:10px;color:#ff9800;font-weight:bold;">
-Powered by POPSWOLFS CONNECT
-</p>
+POPSWOLFS CONNECT<br>
+Digital Menu & Review System
 
 </footer>
 
-</div>
 
 <script>
 
-// CHANGE THIS LINK TO YOUR GOOGLE REVIEW LINK
-document.querySelector(".review-btn").onclick = function () {
-window.open("https://google.com", "_blank");
-};
+/* =========================
+   RESTAURANT NAME
+========================= */
 
-</script>
-<script>
-const restaurant = localStorage.getItem("restaurantName");
-const menu = localStorage.getItem("restaurantMenu");
+const restaurantName =
+localStorage.getItem("restaurantName");
 
-if (restaurant) {
-    document.querySelector("h1").innerText = restaurant;
+if(restaurantName){
+  document.getElementById("restaurantName").innerText =
+  restaurantName;
 }
 
-if (menu) {
-    document.getElementById("menu-desc-1").innerText = menu;
+
+/* =========================
+   GOOGLE REVIEW LINK
+========================= */
+
+const reviewLink =
+localStorage.getItem("googleReviewLink");
+
+if(reviewLink){
+
+  document.getElementById("reviewButton").href =
+  reviewLink;
+
+}else{
+
+  document.getElementById("reviewButton").href =
+  "#";
+
 }
+
+
+/* =========================
+   MENU
+========================= */
+
+const menu =
+localStorage.getItem("restaurantMenu");
+
+const menuList =
+document.getElementById("menuList");
+
+if(menu){
+
+  const lines = menu.split("\n");
+
+  menuList.innerHTML = "";
+
+  lines.forEach(line => {
+
+    if(line.trim() === "") return;
+
+    let parts = line.split("-");
+
+    let itemName = parts[0].trim();
+
+    let itemPrice = "";
+
+    if(parts.length > 1){
+
+      itemPrice = parts.slice(1).join("-").trim();
+
+    }
+
+    const item =
+    document.createElement("div");
+
+    item.className = "menu-item";
+
+    item.innerHTML = `
+      <span>${itemName}</span>
+      <span class="price">${itemPrice}</span>
+    `;
+
+    menuList.appendChild(item);
+
+  });
+
+}
+
+
+/* =========================
+   TODAY SPECIAL
+========================= */
+
+const special =
+localStorage.getItem("todaySpecial");
+
+if(special){
+
+  document.getElementById("specialCard")
+  .style.display = "block";
+
+  document.getElementById("specialText")
+  .innerText = special;
+
+}
+
+
+/* =========================
+   CONTACT DETAILS
+========================= */
+
+const phone =
+localStorage.getItem("phone");
+
+const whatsapp =
+localStorage.getItem("whatsapp");
+
+const instagram =
+localStorage.getItem("instagram");
+
+const contactArea =
+document.getElementById("contactArea");
+
+let contactHTML = "";
+
+if(phone){
+
+  contactHTML += `
+  <a class="contact-btn call"
+     href="tel:${phone}">
+     📞 Call Restaurant
+  </a>
+  `;
+
+}
+
+if(whatsapp){
+
+  contactHTML += `
+  <a class="contact-btn whatsapp"
+     href="https://wa.me/${whatsapp}"
+     target="_blank">
+     💬 WhatsApp
+  </a>
+  `;
+
+}
+
+if(instagram){
+
+  contactHTML += `
+  <a class="contact-btn instagram"
+     href="${instagram}"
+     target="_blank">
+     📷 Instagram
+  </a>
+  `;
+
+}
+
+if(contactHTML){
+
+  contactArea.innerHTML = contactHTML;
+
+}
+
+
+/* =========================
+   GALLERY
+========================= */
+
+const gallery =
+localStorage.getItem("restaurantGallery");
+
+if(gallery){
+
+  const galleryBox =
+  document.getElementById("gallery");
+
+  galleryBox.innerHTML = "";
+
+  const images =
+  gallery.split(",");
+
+  images.forEach(image => {
+
+    if(image.trim() === "") return;
+
+    const img =
+    document.createElement("img");
+
+    img.src = image.trim();
+
+    galleryBox.appendChild(img);
+
+  });
+
+}
+
 </script>
-<a href="owner.html"
-style="position:fixed;bottom:20px;right:20px;background:#111;color:#fff;padding:10px 15px;border-radius:8px;text-decoration:none;font-weight:bold;z-index:9999;">
-🔐 Owner Login
-</a>
+
 </body>
 </html>
-
-<!-- END OF FILE -->
