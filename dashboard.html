@@ -1,67 +1,223 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>POPSWOLFS Dashboard</title>
-<style>
-body{
-font-family:Arial,sans-serif;
-background:#111;
-color:white;
-padding:30px;
-text-align:center;
-}
-.box{
-background:#222;
-padding:20px;
-border-radius:15px;
-max-width:500px;
-margin:auto;
-}
-button{
-width:100%;
-padding:15px;
-margin:10px 0;
-font-size:18px;
-border:none;
-border-radius:10px;
-background:#00c853;
-color:white;
-cursor:pointer;
-}
-button:hover{
-background:#00a844;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>POPSWOLFS Owner Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+            padding: 20px;
+        }
+
+        .dashboard {
+            max-width: 520px;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin-bottom: 8px;
+        }
+
+        .restaurant {
+            color: #00c853;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .card {
+            background: #222;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            margin: 7px 0;
+            border: none;
+            border-radius: 10px;
+            background: #00c853;
+            color: white;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #00a844;
+        }
+
+        .logout {
+            background: #d50000;
+        }
+
+        .logout:hover {
+            background: #b00000;
+        }
+
+        .status {
+            background: #151515;
+            border-left: 4px solid #00c853;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .status p {
+            margin: 8px 0;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="box">
-<h1>POPSWOLFS Dashboard</h1>
-<button onclick="window.location.href='add-product.html'">
-    ➕ Add Product
-</button>
-<button onclick="window.location.href='edit-menu.html'">
-🍔 Edit Menu
-</button>
+<div class="dashboard">
 
-<button onclick="window.location.href='gallery.html'">
-📷 Change Gallery
-</button>
+    <div class="header">
+        <h1>🐺 POPSWOLFS Dashboard</h1>
 
-<button onclick="window.location.href='contact.html'">
-📞 Contact Details
-</button>
+        <div class="restaurant" id="restaurantName">
+            Restaurant Name
+        </div>
+    </div>
 
-<button onclick="window.location.href='reviews.html'">
-⭐ Reviews
-</button>
+    <div class="card">
 
-<button onclick="window.location.href='owner.html'">
-🚪 Logout
-</button>
+        <button onclick="openPage('add-product.html')">
+            ➕ Add Product
+        </button>
+
+        <button onclick="openPage('edit-menu.html')">
+            🍔 Edit Menu
+        </button>
+
+        <button onclick="openPage('gallery.html')">
+            📷 Change Gallery
+        </button>
+
+        <button onclick="openPage('contact.html')">
+            📞 Contact Details
+        </button>
+
+        <button onclick="openPage('reviews.html')">
+            ⭐ Reviews
+        </button>
+
+    </div>
+
+    <div class="status">
+
+        <h3>📊 Restaurant Status</h3>
+
+        <p>
+            Restaurant:
+            <strong id="statusRestaurant">Not Set</strong>
+        </p>
+
+        <p>
+            Menu:
+            <strong id="menuStatus">Not Updated</strong>
+        </p>
+
+        <p>
+            Gallery:
+            <strong id="galleryStatus">Available</strong>
+        </p>
+
+    </div>
+
+    <div class="card">
+
+        <button onclick="openWebsite()">
+            🌐 View My Website
+        </button>
+
+        <button class="logout" onclick="logout()">
+            🚪 Logout
+        </button>
+
+    </div>
 
 </div>
+
+
+<script>
+
+function openPage(page) {
+    window.location.href = page;
+}
+
+
+function loadDashboard() {
+
+    let restaurant =
+        localStorage.getItem("restaurantName");
+
+    let menu =
+        localStorage.getItem("restaurantMenu");
+
+
+    if (restaurant && restaurant.trim() !== "") {
+
+        document.getElementById("restaurantName")
+            .textContent = restaurant;
+
+        document.getElementById("statusRestaurant")
+            .textContent = restaurant;
+
+    } else {
+
+        document.getElementById("restaurantName")
+            .textContent = "Restaurant Name";
+
+    }
+
+
+    if (menu && menu.trim() !== "") {
+
+        document.getElementById("menuStatus")
+            .textContent = "Updated ✅";
+
+    } else {
+
+        document.getElementById("menuStatus")
+            .textContent = "Not Updated";
+
+    }
+
+}
+
+
+function openWebsite() {
+
+    window.location.href = "index.html";
+
+}
+
+
+function logout() {
+
+    localStorage.removeItem("ownerLoggedIn");
+
+    window.location.href = "login.html";
+
+}
+
+
+loadDashboard();
+
+</script>
 
 </body>
 </html>
