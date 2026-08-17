@@ -36,7 +36,7 @@ body{
 
 .hero h1{
     font-size:30px;
-    letter-spacing:2px;
+    letter-spacing:1px;
 }
 
 .hero p{
@@ -45,7 +45,7 @@ body{
 }
 
 .container{
-    max-width:600px;
+    max-width:650px;
     margin:auto;
     padding:20px;
 }
@@ -55,7 +55,7 @@ body{
     border-radius:18px;
     padding:20px;
     margin-bottom:18px;
-    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
 }
 
 .card h2{
@@ -71,13 +71,23 @@ body{
     border-radius:12px;
     text-decoration:none;
     font-weight:bold;
-    margin-top:10px;
+}
+
+.menu-category{
+    margin-top:20px;
+    margin-bottom:8px;
+    font-size:14px;
+    color:#777;
+    text-transform:uppercase;
+    letter-spacing:1px;
 }
 
 .menu-item{
     display:flex;
+    align-items:center;
     justify-content:space-between;
-    padding:13px 0;
+    gap:15px;
+    padding:14px 0;
     border-bottom:1px solid #eee;
 }
 
@@ -85,8 +95,23 @@ body{
     border-bottom:none;
 }
 
-.price{
+.menu-info{
+    flex:1;
+}
+
+.menu-info h3{
+    font-size:17px;
+}
+
+.menu-info p{
+    color:#777;
+    font-size:13px;
+    margin-top:5px;
+}
+
+.menu-price{
     font-weight:bold;
+    white-space:nowrap;
 }
 
 .special{
@@ -112,6 +137,16 @@ body{
     text-decoration:none;
     border-radius:10px;
     text-align:center;
+    font-weight:bold;
+}
+
+.offer{
+    background:#fff1bd;
+    text-align:center;
+}
+
+.offer h2{
+    margin-bottom:8px;
 }
 
 footer{
@@ -120,105 +155,527 @@ footer{
     color:#777;
     font-size:13px;
 }
+
+.shop-id{
+    text-align:center;
+    color:#aaa;
+    font-size:11px;
+    margin-top:8px;
+}
 </style>
 </head>
 
 <body>
 
-<div class="hero">
+<header class="hero">
 
-    <img src="popswolfs.jpeg" class="logo">
+    <img id="shop-logo"
+         src="popswolfs.jpeg"
+         class="logo"
+         alt="Shop Logo">
 
-    <h1>POPSWOLFS CONNECT</h1>
+    <h1 id="shop-name">Restaurant Name</h1>
 
-    <p>Welcome to our restaurant</p>
+    <p id="shop-tagline">
+        Welcome to POPSWOLFS CONNECT
+    </p>
 
-</div>
+    <div class="shop-id" id="shop-id-display"></div>
+
+</header>
 
 
-<div class="container">
+<main class="container">
 
-    <div class="card">
+    <!-- GOOGLE REVIEW -->
+
+    <section class="card">
 
         <h2>⭐ Rate Us</h2>
 
         <p>
-        Enjoyed your experience?
-        Leave us a Google review.
+            Enjoyed your experience?
+            Leave us a Google review.
         </p>
 
-        <a href="#" class="review-btn">
+        <a id="review-link"
+           href="#"
+           target="_blank"
+           class="review-btn">
             ⭐ Give us a Google Review
         </a>
 
-    </div>
+    </section>
 
 
-    <div class="card">
+    <!-- MENU -->
+
+    <section class="card">
 
         <h2>🍽️ Our Menu</h2>
 
-        <div class="menu-item">
-            <span>Pizza</span>
-            <span class="price">₹399</span>
-        </div>
+        <div id="menu-container"></div>
 
-        <div class="menu-item">
-            <span>French Fries</span>
-            <span class="price">₹149</span>
-        </div>
-
-        <div class="menu-item">
-            <span>Special Combo</span>
-            <span class="price">₹499</span>
-        </div>
-
-    </div>
+    </section>
 
 
-    <div class="card special">
+    <!-- TODAY SPECIAL -->
+
+    <section class="card special">
 
         <h2>🔥 Today's Special</h2>
 
-        <p>
-        Special Combo Meal — ₹499
+        <h3 id="special-name">
+            Special Combo Meal
+        </h3>
+
+        <p id="special-description">
+            Burger + Fries + Drink
         </p>
 
-    </div>
+        <p id="special-price">
+            ₹499
+        </p>
+
+    </section>
 
 
-    <div class="card">
+    <!-- CONTACT -->
 
-        <h2>📍 Contact Us</h2>
+    <section class="card">
+
+        <h2>📲 Connect With Us</h2>
 
         <div class="links">
 
-            <a href="#" class="link">
+            <a id="call-link"
+               href="#"
+               class="link">
                 📞 Call Restaurant
             </a>
 
-            <a href="#" class="link">
-                📍 View Location
+            <a id="whatsapp-link"
+               href="#"
+               target="_blank"
+               class="link">
+                💬 WhatsApp
             </a>
 
-            <a href="#" class="link">
+            <a id="instagram-link"
+               href="#"
+               target="_blank"
+               class="link">
                 📸 Instagram
             </a>
 
-            <a href="#" class="link">
-                💬 WhatsApp
+            <a id="maps-link"
+               href="#"
+               target="_blank"
+               class="link">
+                📍 Open Google Maps
             </a>
 
         </div>
 
-    </div>
+    </section>
 
-</div>
+
+    <!-- LOCATION -->
+
+    <section class="card">
+
+        <h2>📍 Location</h2>
+
+        <p id="shop-address">
+            Restaurant Address
+        </p>
+
+        <br>
+
+        <h2>🕒 Opening Hours</h2>
+
+        <p id="shop-hours">
+            Monday - Sunday<br>
+            10:00 AM - 11:00 PM
+        </p>
+
+    </section>
+
+
+    <!-- OFFER -->
+
+    <section class="card offer">
+
+        <h2>🎉 Visit Again!</h2>
+
+        <p id="shop-offer">
+            Get 10%–20% OFF on your next visit ❤️
+        </p>
+
+    </section>
+
+</main>
 
 
 <footer>
-POPSWOLFS CONNECT © 2026
+
+    <p>
+        Thank You For Visiting ❤️
+    </p>
+
+    <p style="margin-top:8px;">
+        Powered by <strong>POPSWOLFS CONNECT</strong>
+    </p>
+
 </footer>
+
+
+<script>
+
+/*
+==================================================
+POPSWOLFS CONNECT
+MULTI-SHOP CUSTOMER PAGE - STEP 1
+==================================================
+*/
+
+
+/* -----------------------------------------------
+   1. READ SHOP ID FROM URL
+   -----------------------------------------------
+
+   Example:
+
+   index.html?shop=SHOP001
+
+   or
+
+   index.html?shop=SHOP002
+*/
+
+const urlParams = new URLSearchParams(window.location.search);
+
+const shopId = urlParams.get("shop") || "SHOP001";
+
+
+/* -----------------------------------------------
+   2. TEMPORARY SHOP DATA
+
+   Abhi database connect nahi hua hai.
+
+   Baad mein ye data database se automatically
+   aayega.
+
+   Har shop ka data alag hoga.
+*/
+
+const shops = {
+
+    SHOP001: {
+
+        name: "Restaurant One",
+
+        tagline: "Welcome to Restaurant One",
+
+        logo: "popswolfs.jpeg",
+
+        review:
+        "https://www.google.com",
+
+        phone:
+        "+919876543210",
+
+        whatsapp:
+        "919876543210",
+
+        instagram:
+        "https://instagram.com",
+
+        maps:
+        "https://maps.google.com",
+
+        address:
+        "Restaurant One Address",
+
+        hours:
+        "Monday - Sunday<br>10:00 AM - 11:00 PM",
+
+        offer:
+        "Get 10% OFF on your next visit ❤️",
+
+        special: {
+
+            name:
+            "Special Combo Meal",
+
+            description:
+            "Burger + Fries + Drink",
+
+            price:
+            "₹499"
+
+        },
+
+        /*
+        MENU CAN HAVE AS MANY ITEMS AS NEEDED
+        */
+
+        menu: [
+
+            {
+                category: "Burgers",
+                name: "Chicken Burger",
+                description: "Cheese Loaded",
+                price: "₹299"
+            },
+
+            {
+                category: "Burgers",
+                name: "Cheese Burger",
+                description: "Fresh & Tasty",
+                price: "₹249"
+            },
+
+            {
+                category: "Pizza",
+                name: "Chicken Pizza",
+                description: "Extra Cheese",
+                price: "₹399"
+            },
+
+            {
+                category: "Pizza",
+                name: "Special Pizza",
+                description: "Loaded Pizza",
+                price: "₹499"
+            },
+
+            {
+                category: "Drinks",
+                name: "Cold Coffee",
+                description: "Special Drink",
+                price: "₹99"
+            }
+
+        ]
+
+    },
+
+
+    /* -------------------------------------------
+       SHOP 002
+       ------------------------------------------- */
+
+    SHOP002: {
+
+        name: "Restaurant Two",
+
+        tagline: "Welcome to Restaurant Two",
+
+        logo: "popswolfs.jpeg",
+
+        review:
+        "https://www.google.com",
+
+        phone:
+        "+919999999999",
+
+        whatsapp:
+        "919999999999",
+
+        instagram:
+        "https://instagram.com",
+
+        maps:
+        "https://maps.google.com",
+
+        address:
+        "Restaurant Two Address",
+
+        hours:
+        "Monday - Sunday<br>11:00 AM - 10:00 PM",
+
+        offer:
+        "Get 20% OFF on your next visit ❤️",
+
+        special: {
+
+            name:
+            "Family Special",
+
+            description:
+            "Pizza + Fries + Drinks",
+
+            price:
+            "₹799"
+
+        },
+
+        menu: [
+
+            {
+                category: "Pizza",
+                name: "Margherita Pizza",
+                description: "Fresh Cheese",
+                price: "₹299"
+            },
+
+            {
+                category: "Pizza",
+                name: "Chicken Pizza",
+                description: "Loaded Chicken",
+                price: "₹449"
+            },
+
+            {
+                category: "Drinks",
+                name: "Mojito",
+                description: "Fresh Mint",
+                price: "₹129"
+            }
+
+        ]
+
+    }
+
+};
+
+
+/* -----------------------------------------------
+   3. FIND THE SHOP
+   ----------------------------------------------- */
+
+const shop = shops[shopId] || shops["SHOP001"];
+
+
+/* -----------------------------------------------
+   4. LOAD SHOP INFORMATION
+   ----------------------------------------------- */
+
+document.getElementById("shop-name").innerText =
+    shop.name;
+
+document.getElementById("shop-tagline").innerText =
+    shop.tagline;
+
+document.getElementById("shop-logo").src =
+    shop.logo;
+
+document.getElementById("shop-id-display").innerText =
+    "Shop ID: " + shopId;
+
+document.getElementById("review-link").href =
+    shop.review;
+
+document.getElementById("call-link").href =
+    "tel:" + shop.phone;
+
+document.getElementById("whatsapp-link").href =
+    "https://wa.me/" + shop.whatsapp;
+
+document.getElementById("instagram-link").href =
+    shop.instagram;
+
+document.getElementById("maps-link").href =
+    shop.maps;
+
+document.getElementById("shop-address").innerText =
+    shop.address;
+
+document.getElementById("shop-hours").innerHTML =
+    shop.hours;
+
+document.getElementById("shop-offer").innerText =
+    shop.offer;
+
+
+/* -----------------------------------------------
+   5. TODAY'S SPECIAL
+   ----------------------------------------------- */
+
+document.getElementById("special-name").innerText =
+    shop.special.name;
+
+document.getElementById("special-description").innerText =
+    shop.special.description;
+
+document.getElementById("special-price").innerText =
+    shop.special.price;
+
+
+/* -----------------------------------------------
+   6. GENERATE UNLIMITED MENU ITEMS
+   ----------------------------------------------- */
+
+const menuContainer =
+    document.getElementById("menu-container");
+
+let currentCategory = "";
+
+
+shop.menu.forEach(function(item){
+
+    /*
+    Create category heading
+    */
+
+    if(item.category !== currentCategory){
+
+        currentCategory = item.category;
+
+        const category =
+            document.createElement("div");
+
+        category.className =
+            "menu-category";
+
+        category.innerText =
+            currentCategory;
+
+        menuContainer.appendChild(category);
+    }
+
+
+    /*
+    Create menu item
+    */
+
+    const menuItem =
+        document.createElement("div");
+
+    menuItem.className =
+        "menu-item";
+
+
+    menuItem.innerHTML = `
+
+        <div class="menu-info">
+
+            <h3>${item.name}</h3>
+
+            <p>${item.description}</p>
+
+        </div>
+
+        <div class="menu-price">
+
+            ${item.price}
+
+        </div>
+
+    `;
+
+
+    menuContainer.appendChild(menuItem);
+
+});
+
+
+/* -----------------------------------------------
+   END
+   ----------------------------------------------- */
+
+</script>
 
 </body>
 </html>
