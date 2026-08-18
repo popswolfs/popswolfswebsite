@@ -3,85 +3,935 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Owner Login</title>
+
+<title>POPSWOLFS CONNECT - Owner Dashboard</title>
 
 <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
 body{
-font-family:Arial,sans-serif;
-background:#111;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-margin:0;
+    background:#f5f5f5;
+    color:#111;
 }
 
-.login-box{
-background:#fff;
-padding:30px;
-border-radius:15px;
-width:320px;
-text-align:center;
-box-shadow:0 0 20px rgba(0,0,0,.3);
+header{
+    background:#111;
+    color:white;
+    padding:25px 20px;
+    text-align:center;
 }
 
-h2{
-margin-bottom:20px;
+header h1{
+    font-size:26px;
 }
 
-input{
-width:100%;
-padding:12px;
-margin:10px 0;
-border:1px solid #ccc;
-border-radius:8px;
-box-sizing:border-box;
+header p{
+    color:#aaa;
+    margin-top:8px;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:16px;
+    margin-bottom:18px;
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+}
+
+.card h2{
+    margin-bottom:18px;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin-top:14px;
+    margin-bottom:6px;
+}
+
+input,
+textarea,
+select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:15px;
+}
+
+textarea{
+    min-height:80px;
+    resize:vertical;
 }
 
 button{
-width:100%;
-padding:12px;
-background:#000;
-color:#fff;
-border:none;
-border-radius:8px;
-font-size:16px;
-cursor:pointer;
+    border:none;
+    border-radius:10px;
+    padding:13px 18px;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
 }
 
-button:hover{
-background:#333;
+.save-btn{
+    width:100%;
+    background:#111;
+    color:white;
+    margin-top:20px;
 }
+
+.add-btn{
+    background:#198754;
+    color:white;
+    margin-top:15px;
+}
+
+.delete-btn{
+    background:#dc3545;
+    color:white;
+    margin-top:10px;
+}
+
+.menu-box{
+    border:1px solid #ddd;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:12px;
+}
+
+.menu-box input{
+    margin-bottom:8px;
+}
+
+.status{
+    text-align:center;
+    margin-top:15px;
+    font-weight:bold;
+}
+
+.preview-btn{
+    display:block;
+    text-align:center;
+    background:#eee;
+    color:#111;
+    text-decoration:none;
+    padding:13px;
+    border-radius:10px;
+    margin-top:10px;
+    font-weight:bold;
+}
+
+.shop-id{
+    color:#777;
+    font-size:13px;
+    margin-top:8px;
+}
+
 </style>
-
 </head>
 
 <body>
 
-<div class="login-box">
+<header>
 
-<h2>🔐 Owner Login</h2>
+<h1>POPSWOLFS CONNECT</h1>
 
-<input type="text" placeholder="Username">
+<p>Owner Dashboard - V1</p>
 
-<input type="password" placeholder="Password">
-
-<button onclick="login()">Login</button>
-
+<div class="shop-id">
+Shop ID: <strong id="shop-id-display">SHOP001</strong>
 </div>
+
+</header>
+
+
+<main class="container">
+
+
+<!-- SHOP SELECT -->
+
+<section class="card">
+
+<h2>🏪 Select Shop</h2>
+
+<label>Shop ID</label>
+
+<select id="shop-id">
+
+<option value="SHOP001">SHOP001</option>
+<option value="SHOP002">SHOP002</option>
+
+</select>
+
+</section>
+
+
+<!-- BASIC INFORMATION -->
+
+<section class="card">
+
+<h2>📝 Shop Information</h2>
+
+<label>Restaurant Name</label>
+
+<input
+type="text"
+id="shop-name"
+placeholder="Restaurant Name">
+
+
+<label>Tagline</label>
+
+<input
+type="text"
+id="shop-tagline"
+placeholder="Welcome to our restaurant">
+
+
+<label>Logo</label>
+
+<input
+type="text"
+id="shop-logo"
+placeholder="popswolfs.jpeg">
+
+
+<label>Address</label>
+
+<textarea
+id="shop-address"
+placeholder="Restaurant address"></textarea>
+
+
+<label>Opening Hours</label>
+
+<textarea
+id="shop-hours"
+placeholder="Monday - Sunday&#10;10:00 AM - 11:00 PM"></textarea>
+
+</section>
+
+
+<!-- CONTACT -->
+
+<section class="card">
+
+<h2>📲 Contact & Links</h2>
+
+<label>Phone Number</label>
+
+<input
+type="text"
+id="shop-phone"
+placeholder="+919876543210">
+
+
+<label>WhatsApp Number</label>
+
+<input
+type="text"
+id="shop-whatsapp"
+placeholder="919876543210">
+
+
+<label>Instagram Link</label>
+
+<input
+type="text"
+id="shop-instagram"
+placeholder="https://instagram.com">
+
+
+<label>Google Maps Link</label>
+
+<input
+type="text"
+id="shop-maps"
+placeholder="https://maps.google.com">
+
+
+<label>Google Review Link</label>
+
+<input
+type="text"
+id="shop-review"
+placeholder="https://www.google.com">
+
+</section>
+
+
+<!-- MENU -->
+
+<section class="card">
+
+<h2>🍽️ Menu</h2>
+
+<div id="menu-container"></div>
+
+<button
+class="add-btn"
+onclick="addMenuItem()">
+➕ Add Menu Item
+</button>
+
+</section>
+
+
+<!-- SPECIAL -->
+
+<section class="card">
+
+<h2>🔥 Today's Special</h2>
+
+<label>Special Name</label>
+
+<input
+type="text"
+id="special-name"
+placeholder="Special Combo Meal">
+
+
+<label>Description</label>
+
+<input
+type="text"
+id="special-description"
+placeholder="Burger + Fries + Drink">
+
+
+<label>Price</label>
+
+<input
+type="text"
+id="special-price"
+placeholder="₹499">
+
+</section>
+
+
+<!-- OFFER -->
+
+<section class="card">
+
+<h2>🎉 Offer</h2>
+
+<label>Customer Offer</label>
+
+<textarea
+id="shop-offer"
+placeholder="Get 10% OFF on your next visit ❤️"></textarea>
+
+</section>
+
+
+<!-- SAVE -->
+
+<section class="card">
+
+<button
+class="save-btn"
+onclick="saveShop()">
+
+💾 Save Shop Changes
+
+</button>
+
+<div
+class="status"
+id="status">
+</div>
+
+<a
+id="preview-link"
+class="preview-btn"
+href="index.html?shop=SHOP001"
+target="_blank">
+
+👀 Preview Customer Page
+
+</a>
+
+</section>
+
+
+</main>
+
+
 <script>
-function login(){
 
-let username = document.querySelector('input[type="text"]').value;
-let password = document.querySelector('input[type="password"]').value;
+/*
+==================================================
+POPSWOLFS CONNECT
+OWNER DASHBOARD - V1
+==================================================
+*/
 
-if(username==="admin" && password==="1234"){
-window.location.href = "dashboard.html";
+
+/* -----------------------------------------------
+   DEFAULT SHOP DATA
+------------------------------------------------ */
+
+const defaultShops = {
+
+SHOP001: {
+
+name:"Restaurant One",
+
+tagline:"Welcome to Restaurant One",
+
+logo:"popswolfs.jpeg",
+
+review:"https://www.google.com",
+
+phone:"+919876543210",
+
+whatsapp:"919876543210",
+
+instagram:"https://instagram.com",
+
+maps:"https://maps.google.com",
+
+address:"Restaurant One Address",
+
+hours:"Monday - Sunday\n10:00 AM - 11:00 PM",
+
+offer:"Get 10% OFF on your next visit ❤️",
+
+special:{
+name:"Special Combo Meal",
+description:"Burger + Fries + Drink",
+price:"₹499"
+},
+
+menu:[
+
+{
+category:"Burgers",
+name:"Chicken Burger",
+description:"Cheese Loaded",
+price:"₹299"
+},
+
+{
+category:"Burgers",
+name:"Cheese Burger",
+description:"Fresh & Tasty",
+price:"₹249"
+},
+
+{
+category:"Pizza",
+name:"Chicken Pizza",
+description:"Extra Cheese",
+price:"₹399"
+},
+
+{
+category:"Pizza",
+name:"Special Pizza",
+description:"Loaded Pizza",
+price:"₹499"
+},
+
+{
+category:"Drinks",
+name:"Cold Coffee",
+description:"Special Drink",
+price:"₹99"
+}
+
+]
+
+},
+
+
+SHOP002: {
+
+name:"Restaurant Two",
+
+tagline:"Welcome to Restaurant Two",
+
+logo:"popswolfs.jpeg",
+
+review:"https://www.google.com",
+
+phone:"+919999999999",
+
+whatsapp:"919999999999",
+
+instagram:"https://instagram.com",
+
+maps:"https://maps.google.com",
+
+address:"Restaurant Two Address",
+
+hours:"Monday - Sunday\n11:00 AM - 10:00 PM",
+
+offer:"Get 20% OFF on your next visit ❤️",
+
+special:{
+name:"Family Special",
+description:"Pizza + Fries + Drinks",
+price:"₹799"
+},
+
+menu:[
+
+{
+category:"Pizza",
+name:"Margherita Pizza",
+description:"Fresh Cheese",
+price:"₹299"
+},
+
+{
+category:"Pizza",
+name:"Chicken Pizza",
+description:"Loaded Chicken",
+price:"₹449"
+},
+
+{
+category:"Drinks",
+name:"Mojito",
+description:"Fresh Mint",
+price:"₹129"
+}
+
+]
+
+}
+
+};
+
+
+/* -----------------------------------------------
+   LOAD SAVED DATA
+------------------------------------------------ */
+
+let savedData =
+localStorage.getItem("POPSWOLFS_SHOPS");
+
+let shops;
+
+if(savedData){
+
+    shops = JSON.parse(savedData);
+
 }else{
-alert("Wrong Username or Password");
-}
+
+    shops = defaultShops;
+
+    localStorage.setItem(
+        "POPSWOLFS_SHOPS",
+        JSON.stringify(shops)
+    );
 
 }
+
+
+/* -----------------------------------------------
+   SHOP SELECT
+------------------------------------------------ */
+
+const shopSelector =
+document.getElementById("shop-id");
+
+
+shopSelector.addEventListener(
+"change",
+function(){
+
+    loadShop(this.value);
+
+});
+
+
+/* -----------------------------------------------
+   LOAD SHOP
+------------------------------------------------ */
+
+function loadShop(shopId){
+
+    const shop = shops[shopId];
+
+    if(!shop){
+        return;
+    }
+
+
+    document.getElementById(
+        "shop-id-display"
+    ).innerText = shopId;
+
+
+    document.getElementById(
+        "shop-name"
+    ).value = shop.name || "";
+
+
+    document.getElementById(
+        "shop-tagline"
+    ).value = shop.tagline || "";
+
+
+    document.getElementById(
+        "shop-logo"
+    ).value = shop.logo || "";
+
+
+    document.getElementById(
+        "shop-address"
+    ).value = shop.address || "";
+
+
+    document.getElementById(
+        "shop-hours"
+    ).value = shop.hours || "";
+
+
+    document.getElementById(
+        "shop-phone"
+    ).value = shop.phone || "";
+
+
+    document.getElementById(
+        "shop-whatsapp"
+    ).value = shop.whatsapp || "";
+
+
+    document.getElementById(
+        "shop-instagram"
+    ).value = shop.instagram || "";
+
+
+    document.getElementById(
+        "shop-maps"
+    ).value = shop.maps || "";
+
+
+    document.getElementById(
+        "shop-review"
+    ).value = shop.review || "";
+
+
+    document.getElementById(
+        "special-name"
+    ).value =
+    shop.special?.name || "";
+
+
+    document.getElementById(
+        "special-description"
+    ).value =
+    shop.special?.description || "";
+
+
+    document.getElementById(
+        "special-price"
+    ).value =
+    shop.special?.price || "";
+
+
+    document.getElementById(
+        "shop-offer"
+    ).value =
+    shop.offer || "";
+
+
+    renderMenu(shop.menu || []);
+
+
+    document.getElementById(
+        "preview-link"
+    ).href =
+    "index.html?shop=" + shopId;
+
+}
+
+
+/* -----------------------------------------------
+   RENDER MENU
+------------------------------------------------ */
+
+function renderMenu(menu){
+
+    const container =
+    document.getElementById("menu-container");
+
+    container.innerHTML = "";
+
+
+    menu.forEach(function(item,index){
+
+        createMenuBox(item,index);
+
+    });
+
+}
+
+
+/* -----------------------------------------------
+   CREATE MENU ITEM
+------------------------------------------------ */
+
+function createMenuBox(item,index){
+
+    const container =
+    document.getElementById("menu-container");
+
+
+    const box =
+    document.createElement("div");
+
+    box.className =
+    "menu-box";
+
+
+    box.innerHTML = `
+
+        <label>Category</label>
+
+        <input
+        type="text"
+        class="menu-category"
+        value="${item.category || ""}"
+        placeholder="Burgers">
+
+
+        <label>Item Name</label>
+
+        <input
+        type="text"
+        class="menu-name"
+        value="${item.name || ""}"
+        placeholder="Chicken Burger">
+
+
+        <label>Description</label>
+
+        <input
+        type="text"
+        class="menu-description"
+        value="${item.description || ""}"
+        placeholder="Cheese Loaded">
+
+
+        <label>Price</label>
+
+        <input
+        type="text"
+        class="menu-price"
+        value="${item.price || ""}"
+        placeholder="₹299">
+
+
+        <button
+        class="delete-btn"
+        onclick="this.parentElement.remove()">
+
+        🗑️ Delete Item
+
+        </button>
+
+    `;
+
+
+    container.appendChild(box);
+
+}
+
+
+/* -----------------------------------------------
+   ADD MENU ITEM
+------------------------------------------------ */
+
+function addMenuItem(){
+
+    createMenuBox({
+
+        category:"New Category",
+
+        name:"New Item",
+
+        description:"Description",
+
+        price:"₹0"
+
+    },0);
+
+}
+
+
+/* -----------------------------------------------
+   SAVE SHOP
+------------------------------------------------ */
+
+function saveShop(){
+
+    const shopId =
+    document.getElementById("shop-id").value;
+
+
+    const menuBoxes =
+    document.querySelectorAll(".menu-box");
+
+
+    const menu = [];
+
+
+    menuBoxes.forEach(function(box){
+
+        menu.push({
+
+            category:
+            box.querySelector(
+                ".menu-category"
+            ).value,
+
+            name:
+            box.querySelector(
+                ".menu-name"
+            ).value,
+
+            description:
+            box.querySelector(
+                ".menu-description"
+            ).value,
+
+            price:
+            box.querySelector(
+                ".menu-price"
+            ).value
+
+        });
+
+    });
+
+
+    shops[shopId] = {
+
+        name:
+        document.getElementById(
+            "shop-name"
+        ).value,
+
+        tagline:
+        document.getElementById(
+            "shop-tagline"
+        ).value,
+
+        logo:
+        document.getElementById(
+            "shop-logo"
+        ).value,
+
+        review:
+        document.getElementById(
+            "shop-review"
+        ).value,
+
+        phone:
+        document.getElementById(
+            "shop-phone"
+        ).value,
+
+        whatsapp:
+        document.getElementById(
+            "shop-whatsapp"
+        ).value,
+
+        instagram:
+        document.getElementById(
+            "shop-instagram"
+        ).value,
+
+        maps:
+        document.getElementById(
+            "shop-maps"
+        ).value,
+
+        address:
+        document.getElementById(
+            "shop-address"
+        ).value,
+
+        hours:
+        document.getElementById(
+            "shop-hours"
+        ).value,
+
+        offer:
+        document.getElementById(
+            "shop-offer"
+        ).value,
+
+        special:{
+
+            name:
+            document.getElementById(
+                "special-name"
+            ).value,
+
+            description:
+            document.getElementById(
+                "special-description"
+            ).value,
+
+            price:
+            document.getElementById(
+                "special-price"
+            ).value
+
+        },
+
+        menu:menu
+
+    };
+
+
+    localStorage.setItem(
+        "POPSWOLFS_SHOPS",
+        JSON.stringify(shops)
+    );
+
+
+    document.getElementById(
+        "status"
+    ).innerText =
+    "✅ Shop changes saved successfully!";
+
+
+    setTimeout(function(){
+
+        document.getElementById(
+            "status"
+        ).innerText = "";
+
+    },3000);
+
+}
+
+
+/* -----------------------------------------------
+   START
+------------------------------------------------ */
+
+loadShop("SHOP001");
+
 </script>
+
 </body>
 </html>
