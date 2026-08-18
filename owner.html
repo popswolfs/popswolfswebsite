@@ -914,10 +914,20 @@ function saveShop(){
     };
 
 
-    localStorage.setItem(
-        "POPSWOLFS_SHOPS",
-        JSON.stringify(shops)
-    );
+   localStorage.setItem(
+    "POPSWOLFS_SHOPS",
+    JSON.stringify(shops)
+);
+
+db.collection("shops").doc(shopId).set(
+    shops[shopId]
+)
+.then(function() {
+    console.log("Shop saved to Firebase");
+})
+.catch(function(error) {
+    console.error("Firebase save error:", error);
+});
 
 
     document.getElementById(
