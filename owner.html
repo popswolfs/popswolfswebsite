@@ -368,9 +368,21 @@ target="_blank">
 
 </main>
 
-
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
+const firebaseConfig = {
+  apiKey: "AIzaSyA5GBPb4gmsiEI0n06bLA-3r2qJTdcJm-A",
+  authDomain: "popswolfs-connect.firebaseapp.com",
+  projectId: "popswolfs-connect",
+  storageBucket: "popswolfs-connect.firebasestorage.app",
+  messagingSenderId: "761803503052",
+  appId: "1:761803503052:web:731ea5982a21d885075969",
+  measurementId: "G-R3H3C9TL7Q"
+};
 
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 /*
 ==================================================
 POPSWOLFS CONNECT
