@@ -335,293 +335,261 @@ footer{
 /*
 ==================================================
 POPSWOLFS CONNECT
-MULTI-SHOP CUSTOMER PAGE - STEP 1
+V1 CUSTOMER PAGE
+OWNER DASHBOARD CONNECTION
 ==================================================
 */
 
 
 /* -----------------------------------------------
-   1. READ SHOP ID FROM URL
-   -----------------------------------------------
+   1. GET SHOP ID FROM URL
+------------------------------------------------ */
 
-   Example:
+const urlParams =
+    new URLSearchParams(window.location.search);
 
-   index.html?shop=SHOP001
-
-   or
-
-   index.html?shop=SHOP002
-*/
-
-const urlParams = new URLSearchParams(window.location.search);
-
-const shopId = urlParams.get("shop") || "SHOP001";
+const shopId =
+    urlParams.get("shop") || "SHOP001";
 
 
 /* -----------------------------------------------
-   2. TEMPORARY SHOP DATA
+   2. DEFAULT DATA
+   Agar owner ne abhi kuch save nahi kiya,
+   to ye data show hoga.
+------------------------------------------------ */
 
-   Abhi database connect nahi hua hai.
+const defaultShops = {
 
-   Baad mein ye data database se automatically
-   aayega.
+SHOP001: {
 
-   Har shop ka data alag hoga.
-*/
+name: "Restaurant One",
 
-const shops = {
+tagline: "Welcome to Restaurant One",
 
-    SHOP001: {
+logo: "popswolfs.jpeg",
 
-        name: "Restaurant One",
+review: "https://www.google.com",
 
-        tagline: "Welcome to Restaurant One",
+phone: "+919876543210",
 
-        logo: "popswolfs.jpeg",
+whatsapp: "919876543210",
 
-        review:
-        "https://www.google.com",
+instagram: "https://instagram.com",
 
-        phone:
-        "+919876543210",
+maps: "https://maps.google.com",
 
-        whatsapp:
-        "919876543210",
+address: "Restaurant One Address",
 
-        instagram:
-        "https://instagram.com",
+hours: "Monday - Sunday<br>10:00 AM - 11:00 PM",
 
-        maps:
-        "https://maps.google.com",
+offer: "Get 10% OFF on your next visit ❤️",
 
-        address:
-        "Restaurant One Address",
+special: {
 
-        hours:
-        "Monday - Sunday<br>10:00 AM - 11:00 PM",
+name: "Special Combo Meal",
 
-        offer:
-        "Get 10% OFF on your next visit ❤️",
+description: "Burger + Fries + Drink",
 
-        special: {
+price: "₹499"
 
-            name:
-            "Special Combo Meal",
+},
 
-            description:
-            "Burger + Fries + Drink",
+menu: [
 
-            price:
-            "₹499"
+{
+category: "Burgers",
+name: "Chicken Burger",
+description: "Cheese Loaded",
+price: "₹299"
+},
 
-        },
+{
+category: "Burgers",
+name: "Cheese Burger",
+description: "Fresh & Tasty",
+price: "₹249"
+},
 
-        /*
-        MENU CAN HAVE AS MANY ITEMS AS NEEDED
-        */
+{
+category: "Pizza",
+name: "Chicken Pizza",
+description: "Extra Cheese",
+price: "₹399"
+},
 
-        menu: [
+{
+category: "Drinks",
+name: "Cold Coffee",
+description: "Special Drink",
+price: "₹99"
+}
 
-            {
-                category: "Burgers",
-                name: "Chicken Burger",
-                description: "Cheese Loaded",
-                price: "₹299"
-            },
+]
 
-            {
-                category: "Burgers",
-                name: "Cheese Burger",
-                description: "Fresh & Tasty",
-                price: "₹249"
-            },
-
-            {
-                category: "Pizza",
-                name: "Chicken Pizza",
-                description: "Extra Cheese",
-                price: "₹399"
-            },
-
-            {
-                category: "Pizza",
-                name: "Special Pizza",
-                description: "Loaded Pizza",
-                price: "₹499"
-            },
-
-            {
-                category: "Drinks",
-                name: "Cold Coffee",
-                description: "Special Drink",
-                price: "₹99"
-            }
-
-        ]
-
-    },
-
-
-    /* -------------------------------------------
-       SHOP 002
-       ------------------------------------------- */
-
-    SHOP002: {
-
-        name: "Restaurant Two",
-
-        tagline: "Welcome to Restaurant Two",
-
-        logo: "popswolfs.jpeg",
-
-        review:
-        "https://www.google.com",
-
-        phone:
-        "+919999999999",
-
-        whatsapp:
-        "919999999999",
-
-        instagram:
-        "https://instagram.com",
-
-        maps:
-        "https://maps.google.com",
-
-        address:
-        "Restaurant Two Address",
-
-        hours:
-        "Monday - Sunday<br>11:00 AM - 10:00 PM",
-
-        offer:
-        "Get 20% OFF on your next visit ❤️",
-
-        special: {
-
-            name:
-            "Family Special",
-
-            description:
-            "Pizza + Fries + Drinks",
-
-            price:
-            "₹799"
-
-        },
-
-        menu: [
-
-            {
-                category: "Pizza",
-                name: "Margherita Pizza",
-                description: "Fresh Cheese",
-                price: "₹299"
-            },
-
-            {
-                category: "Pizza",
-                name: "Chicken Pizza",
-                description: "Loaded Chicken",
-                price: "₹449"
-            },
-
-            {
-                category: "Drinks",
-                name: "Mojito",
-                description: "Fresh Mint",
-                price: "₹129"
-            }
-
-        ]
-
-    }
+}
 
 };
 
 
 /* -----------------------------------------------
-   3. FIND THE SHOP
-   ----------------------------------------------- */
+   3. GET OWNER SAVED DATA
+------------------------------------------------ */
 
-const shop = shops[shopId] || shops["SHOP001"];
+let savedData =
+    localStorage.getItem("POPSWOLFS_SHOPS");
+
+let shops;
+
+if(savedData){
+
+    try{
+
+        shops = JSON.parse(savedData);
+
+    }catch(error){
+
+        shops = defaultShops;
+
+    }
+
+}else{
+
+    shops = defaultShops;
+
+}
 
 
 /* -----------------------------------------------
-   4. LOAD SHOP INFORMATION
-   ----------------------------------------------- */
+   4. SELECT SHOP
+------------------------------------------------ */
+
+const shop =
+    shops[shopId] || shops["SHOP001"];
+
+
+/* -----------------------------------------------
+   5. SHOP BASIC INFORMATION
+------------------------------------------------ */
 
 document.getElementById("shop-name").innerText =
-    shop.name;
+    shop.name || "Restaurant Name";
+
 
 document.getElementById("shop-tagline").innerText =
-    shop.tagline;
+    shop.tagline || "Welcome to POPSWOLFS CONNECT";
+
 
 document.getElementById("shop-logo").src =
-    shop.logo;
+    shop.logo || "popswolfs.jpeg";
+
 
 document.getElementById("shop-id-display").innerText =
     "Shop ID: " + shopId;
 
+
+/* -----------------------------------------------
+   6. REVIEW
+------------------------------------------------ */
+
 document.getElementById("review-link").href =
-    shop.review;
+    shop.review || "#";
+
+
+/* -----------------------------------------------
+   7. CONTACT LINKS
+------------------------------------------------ */
 
 document.getElementById("call-link").href =
-    "tel:" + shop.phone;
+    shop.phone
+    ? "tel:" + shop.phone
+    : "#";
+
 
 document.getElementById("whatsapp-link").href =
-    "https://wa.me/" + shop.whatsapp;
+    shop.whatsapp
+    ? "https://wa.me/" + shop.whatsapp
+    : "#";
+
 
 document.getElementById("instagram-link").href =
-    shop.instagram;
+    shop.instagram || "#";
+
 
 document.getElementById("maps-link").href =
-    shop.maps;
+    shop.maps || "#";
+
+
+/* -----------------------------------------------
+   8. LOCATION
+------------------------------------------------ */
 
 document.getElementById("shop-address").innerText =
-    shop.address;
+    shop.address || "Restaurant Address";
+
 
 document.getElementById("shop-hours").innerHTML =
-    shop.hours;
+    shop.hours ||
+    "Monday - Sunday<br>10:00 AM - 11:00 PM";
+
+
+/* -----------------------------------------------
+   9. OFFER
+------------------------------------------------ */
 
 document.getElementById("shop-offer").innerText =
-    shop.offer;
+    shop.offer ||
+    "Get 10%–20% OFF on your next visit ❤️";
 
 
 /* -----------------------------------------------
-   5. TODAY'S SPECIAL
-   ----------------------------------------------- */
+   10. TODAY'S SPECIAL
+------------------------------------------------ */
 
-document.getElementById("special-name").innerText =
-    shop.special.name;
+if(shop.special){
 
-document.getElementById("special-description").innerText =
-    shop.special.description;
+    document.getElementById("special-name").innerText =
+        shop.special.name || "Special Combo Meal";
 
-document.getElementById("special-price").innerText =
-    shop.special.price;
+
+    document.getElementById("special-description").innerText =
+        shop.special.description || "";
+
+
+    document.getElementById("special-price").innerText =
+        shop.special.price || "";
+
+}
 
 
 /* -----------------------------------------------
-   6. GENERATE UNLIMITED MENU ITEMS
-   ----------------------------------------------- */
+   11. MENU
+------------------------------------------------ */
 
 const menuContainer =
     document.getElementById("menu-container");
 
+
+menuContainer.innerHTML = "";
+
+
 let currentCategory = "";
 
 
-shop.menu.forEach(function(item){
+const menu =
+    Array.isArray(shop.menu)
+    ? shop.menu
+    : [];
 
-    /*
-    Create category heading
-    */
+
+menu.forEach(function(item){
+
+    /* CATEGORY */
 
     if(item.category !== currentCategory){
 
-        currentCategory = item.category;
+        currentCategory =
+            item.category || "Menu";
+
 
         const category =
             document.createElement("div");
@@ -632,13 +600,13 @@ shop.menu.forEach(function(item){
         category.innerText =
             currentCategory;
 
+
         menuContainer.appendChild(category);
+
     }
 
 
-    /*
-    Create menu item
-    */
+    /* MENU ITEM */
 
     const menuItem =
         document.createElement("div");
@@ -647,24 +615,44 @@ shop.menu.forEach(function(item){
         "menu-item";
 
 
-    menuItem.innerHTML = `
+    const menuInfo =
+        document.createElement("div");
 
-        <div class="menu-info">
+    menuInfo.className =
+        "menu-info";
 
-            <h3>${item.name}</h3>
 
-            <p>${item.description}</p>
+    const itemName =
+        document.createElement("h3");
 
-        </div>
+    itemName.innerText =
+        item.name || "Menu Item";
 
-        <div class="menu-price">
 
-            ${item.price}
+    const itemDescription =
+        document.createElement("p");
 
-        </div>
+    itemDescription.innerText =
+        item.description || "";
 
-    `;
 
+    const itemPrice =
+        document.createElement("div");
+
+    itemPrice.className =
+        "menu-price";
+
+    itemPrice.innerText =
+        item.price || "";
+
+
+    menuInfo.appendChild(itemName);
+
+    menuInfo.appendChild(itemDescription);
+
+    menuItem.appendChild(menuInfo);
+
+    menuItem.appendChild(itemPrice);
 
     menuContainer.appendChild(menuItem);
 
@@ -672,8 +660,8 @@ shop.menu.forEach(function(item){
 
 
 /* -----------------------------------------------
-   END
-   ----------------------------------------------- */
+   DONE
+------------------------------------------------ */
 
 </script>
 
