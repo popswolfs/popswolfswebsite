@@ -329,9 +329,21 @@ footer{
 
 </footer>
 
-
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
+const firebaseConfig = {
+  apiKey: "AIzaSyA5GBPb4gmsiEIe0n6bLA-3r2qJTdcJm-A",
+  authDomain: "popswolfs-connect.firebaseapp.com",
+  projectId: "popswolfs-connect",
+  storageBucket: "popswolfs-connect.firebasestorage.app",
+  messagingSenderId: "76180350352",
+  appId: "1:76180350352:web:731ea5982a21d885075969",
+  measurementId: "G-R3H3C9TL7Q"
+};
 
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 /*
 ==================================================
 POPSWOLFS CONNECT
@@ -435,24 +447,28 @@ price: "₹99"
    3. GET OWNER SAVED DATA
 ------------------------------------------------ */
 
-let savedData =
-    localStorage.getItem("POPSWOLFS_SHOPS");
+let shops = {};
 
-let shops;
+try {
 
-if(savedData){
+    const doc = await db
+        .collection("shops")
+        .doc(shopId)
+        .get();
 
-    try{
+    if (doc.exists) {
 
-        shops = JSON.parse(savedData);
+        shops[shopId] = doc.data();
 
-    }catch(error){
+    } else {
 
         shops = defaultShops;
 
     }
 
-}else{
+} catch (error) {
+
+    console.error("Firebase shop data error:", error);
 
     shops = defaultShops;
 
