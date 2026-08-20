@@ -217,7 +217,417 @@ footer{
         <div id="menu-container"></div>
 
     </section>
+    <!-- CART / ORDER SYSTEM -->
 
+<section class="card" id="order-card">
+
+    <h2>🛒 Your Order</h2>
+
+    <p id="table-display"
+       style="margin:8px 0 15px;color:#777;font-size:14px;">
+        🪑 Table: Not Selected
+    </p>
+
+    <div id="cart-items">
+
+        <p id="empty-cart"
+           style="color:#777;text-align:center;padding:15px 0;">
+            Your cart is empty
+        </p>
+
+    </div>
+
+    <div style="
+        border-top:1px solid #eee;
+        margin-top:15px;
+        padding-top:15px;
+        display:flex;
+        justify-content:space-between;
+        font-size:18px;
+        font-weight:bold;
+    ">
+
+        <span>Total</span>
+
+        <span id="cart-total">₹0</span>
+
+    </div>
+
+    <button id="place-order-btn"
+            type="button"
+            style="
+                width:100%;
+                margin-top:15px;
+                padding:15px;
+                border:none;
+                border-radius:12px;
+                background:#111;
+                color:white;
+                font-size:16px;
+                font-weight:bold;
+                cursor:pointer;
+            ">
+
+        🛍️ Place Order
+
+    </button>
+
+</section>
+
+<script>
+
+/* ==========================================
+   POPSWOLFS CONNECT
+   CART SYSTEM V1
+========================================== */
+
+let cart = [];
+
+
+/* GET TABLE NUMBER FROM URL */
+
+const orderParams =
+    new URLSearchParams(window.location.search);
+
+const tableNumber =
+    orderParams.get("table");
+
+
+if(tableNumber){
+
+    document.getElementById("table-display").innerText =
+        "🪑 Table " + tableNumber;
+
+}
+
+
+/* ==========================================
+   ADD TO CART BUTTONS
+========================================== */
+
+function addToCart(name, price){
+
+    const existing =
+        cart.find(function(item){
+
+            return item.name === name;
+
+        });
+
+
+    if(existing){
+
+        existing.quantity++;
+
+    }else{
+
+        cart.push({
+
+            name:name,
+            price:price,
+            quantity:1
+
+        });
+
+    }
+
+
+    updateCart();
+
+}
+
+
+/* ==========================================
+   REMOVE ITEM
+========================================== */
+
+function removeFromCart(index){
+
+    if(cart[index].quantity > 1){
+
+        cart[index].quantity--;
+
+    }else{
+
+        cart.splice(index,1);
+
+    }
+
+
+    updateCart();
+
+}
+
+
+/* ==========================================
+   UPDATE CART
+========================================== */
+
+function updateCart(){
+
+    const cartItems =
+        document.getElementById("cart-items");
+
+    const emptyCart =
+        document.getElementById("empty-cart");
+
+    const cartTotal =
+        document.getElementById("cart-total");
+
+
+    cartItems.innerHTML = "";
+
+
+    if(cart.length === 0){
+
+        cartItems.innerHTML = `
+            <p style="
+                color:#777;
+                text-align:center;
+                padding:15px 0;
+            ">
+                Your cart is empty
+            </p>
+        `;
+
+        cartTotal.innerText = "₹0";
+
+        return;
+
+    }
+
+
+    let total = 0;
+
+
+    cart.forEach(function(item,index){
+
+        const itemTotal =
+            item.price * item.quantity;
+
+        total += itemTotal;
+
+
+        const row =
+            document.createElement("div");
+
+        row.style.cssText = `
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:10px;
+            padding:12px 0;
+            border-bottom:1px solid #eee;
+        `;
+
+
+        row.innerHTML = `
+
+            <div style="flex:1;">
+
+                <strong>${item.name}</strong>
+
+                <div style="
+                    color:#777;
+                    font-size:13px;
+                    margin-top:4px;
+                ">
+                    ₹${item.price} × ${item.quantity}
+                </div>
+
+            </div>
+
+
+            <div style="
+                font-weight:bold;
+                white-space:nowrap;
+            ">
+                ₹${itemTotal}
+            </div>
+
+
+            <button
+                type="button"
+                onclick="removeFromCart(${index})"
+                style="
+                    border:none;
+                    background:#eee;
+                    border-radius:8px;
+                    padding:7px 10px;
+                    cursor:pointer;
+                "
+            >
+                −
+            </button>
+
+        `;
+
+
+        cartItems.appendChild(row);
+
+    });
+
+
+    cartTotal.innerText =
+        "₹" + total;
+
+}
+
+
+/* ==========================================
+   ADD BUTTONS TO MENU
+========================================== */
+
+function addMenuButtons(){
+
+    const menuItems =
+        document.querySelectorAll(".menu-item");
+
+
+    menuItems.forEach(function(menuItem){
+
+        if(menuItem.querySelector(".add-cart-btn")){
+
+            return;
+
+        }
+
+
+        const nameElement =
+            menuItem.querySelector(".menu-info h3");
+
+
+        const priceElement =
+            menuItem.querySelector(".menu-price");
+
+
+        if(!nameElement || !priceElement){
+
+            return;
+
+        }
+
+
+        const name =
+            nameElement.innerText.trim();
+
+
+        const priceText =
+            priceElement.innerText
+            .replace(/[₹,\s]/g,"");
+
+
+        const price =
+            parseInt(priceText) || 0;
+
+
+        const button =
+            document.createElement("button");
+
+
+        button.className =
+            "add-cart-btn";
+
+
+        button.type =
+            "button";
+
+
+        button.innerText =
+            "＋ Add";
+
+
+        button.style.cssText = `
+            border:none;
+            background:#111;
+            color:white;
+            border-radius:8px;
+            padding:8px 12px;
+            font-weight:bold;
+            cursor:pointer;
+            white-space:nowrap;
+        `;
+
+
+        button.onclick =
+            function(){
+
+                addToCart(name,price);
+
+            };
+
+
+        menuItem.appendChild(button);
+
+    });
+
+}
+
+
+/* ==========================================
+   WATCH MENU
+========================================== */
+
+const menuWatcher =
+    new MutationObserver(function(){
+
+        addMenuButtons();
+
+    });
+
+
+menuWatcher.observe(
+
+    document.getElementById("menu-container"),
+
+    {
+        childList:true,
+        subtree:true
+    }
+
+);
+
+
+/* ==========================================
+   PLACE ORDER
+========================================== */
+
+document
+.getElementById("place-order-btn")
+.addEventListener("click",function(){
+
+    if(cart.length === 0){
+
+        alert("Please add items to your cart.");
+
+        return;
+
+    }
+
+
+    if(!tableNumber){
+
+        alert(
+            "Table number is missing. Please scan the table QR code."
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Order system ready!\n\n" +
+        "Table: " + tableNumber + "\n" +
+        "Items: " + cart.length + "\n\n" +
+        "Next step: Send this order to the owner."
+    );
+
+});
+
+</script>
+
+<!-- END CART / ORDER SYSTEM -->
 
     <!-- TODAY SPECIAL -->
 
