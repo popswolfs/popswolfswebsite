@@ -303,7 +303,10 @@ footer{
 let cart = [];
 
 
-/* GET TABLE NUMBER FROM URL */
+/* ==========================================
+   QR TABLE SYSTEM
+   Table number comes automatically from QR
+========================================== */
 
 const orderParams =
     new URLSearchParams(window.location.search);
@@ -311,11 +314,40 @@ const orderParams =
 const tableNumber =
     orderParams.get("table");
 
+const tableSelect =
+    document.getElementById("table-select");
+
+const tableDisplay =
+    document.getElementById("table-display");
+
 
 if(tableNumber){
 
-    document.getElementById("table-display").innerText =
+    /* Show detected table */
+    tableDisplay.innerText =
         "🪑 Table " + tableNumber;
+
+    /* Automatically select the same table */
+    if(tableSelect){
+
+        tableSelect.value =
+            "Table " + tableNumber;
+
+        tableSelect.style.display =
+            "none";
+    }
+
+}else{
+
+    /* No QR table number */
+    tableDisplay.innerText =
+        "⚠️ Please scan your table QR code";
+
+    if(tableSelect){
+
+        tableSelect.style.display =
+            "none";
+    }
 
 }
 
