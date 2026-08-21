@@ -645,7 +645,7 @@ menuWatcher.observe(
 
 document
 .getElementById("place-order-btn")
-.addEventListener("click",function(){
+.addEventListener("click", async function(){
 
     if(cart.length === 0){
 
@@ -667,15 +667,78 @@ document
     }
 
 
-    alert(
-        "Order system ready!\n\n" +
-        "Table: " + tableNumber + "\n" +
-        "Items: " + cart.length + "\n\n" +
-        "Next step: Send this order to the owner."
-    );
+    const total =
+        cart.reduce(function(sum, item){
+
+            return sum + (item.price * item.quantity);
+
+        }, 0);
+
+
+    const order = {
+
+        shopId: shopId,
+
+        tableNumber: tableNumber,
+
+        items: cart.map(function(item){
+
+            return {
+
+                name: item.name,
+
+                price: item.price,
+
+                quantity: item.quantity
+
+            };
+
+        }),
+
+        total: total,
+
+        status: "new",
+
+        createdAt:
+            firebase.firestore.FieldValue.serverTimestamp()
+
+    };
+
+
+    try {
+
+        const orderRef =
+            await db.collection("orders").add(order);
+
+
+        alert(
+            "✅ Order placed successfully!\n\n" +
+            "Table: " + tableNumber + "\n" +
+            "Items: " + cart.length + "\n" +
+            "Total: ₹" + total
+        );
+
+
+        cart = [];
+
+        updateCart();
+
+
+    } catch(error) {
+
+        console.error(
+            "Firebase order error:",
+            error
+        );
+
+        alert(
+            "❌ Order place nahi hua.\n\n" +
+            "Please try again."
+        );
+
+    }
 
 });
-
 </script>
 
 <!-- END CART / ORDER SYSTEM -->
