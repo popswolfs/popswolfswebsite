@@ -138,7 +138,11 @@
     </div>
 
     <div class="card">
+<h2>🔔 New Orders</h2>
 
+<div id="ordersList">
+    <p>Orders loading...</p>
+</div>
         <button onclick="openWebsite()">
             🌐 View My Website
         </button>
@@ -151,7 +155,8 @@
 
 </div>
 
-
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
 
 function openPage(page) {
@@ -216,7 +221,112 @@ function logout() {
 
 
 loadDashboard();
+/* ==============================
+   FIREBASE ORDERS - DASHBOARD
+   ============================== */
 
+const firebaseConfig = {
+    apiKey: "APNI_INDEX.HTML_WALI_API_KEY_YAHAN_DALO",
+    authDomain: "popswolfs-connect.firebaseapp.com",
+    projectId: "popswolfs-connect",
+    storageBucket: "popswolfs-connect.firebasestorage.app",
+    messagingSenderId: "76180350352",
+    appId: "1:76180350352:web:731ea5982a1d885075969"
+};
+
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+
+const orderDB = firebase.firestore();
+
+function loadOrders() {
+
+    const ordersList = document.getElementById("ordersList");
+
+    orderDB.collection("orders")
+        .where("shopId", "==", "SHOP001")
+        .onSnapshot(function(snapshot) {
+
+            if (snapshot.empty) {
+                ordersList.innerHTML = "<p>No new orders.</p>";
+                return;
+            }
+
+            ordersList.innerHTML = "";
+
+            snapshot.forEach(function(doc) {
+
+                const order = doc.data();
+
+                const orderBox = document.createElement("div");
+
+                orderBox.style.border = "1px solid #ddd";
+                orderBox.style.padding = "15px";
+                orderBox.style.marginBottom = "12px";
+                orderBox.style.borderRadius = "10px";
+
+                orderBox.innerHTML = `
+                    <h3>🛎️ New Order</h3>
+
+                    <p><strong>Table:</strong> ${order.tableNumber || "-"}</p>
+
+                    <p><strong>Items:</strong> ${
+                        (order.items || [])
+                        .map(item =>
+                            `${item.name} × ${item.quantity}`
+                        )
+                        .join("<br>")
+                    }</p>
+
+                    <p><strong>Total:</strong> ₹${order.total || 0}</p>
+
+                    <p><strong>Status:</strong> ${
+                        order.status || "new"
+                    }</p>
+
+                    <button onclick="markOrderDone('${doc.id}')">
+                        ✅ Order Done
+                    </button>
+                `;
+
+                ordersList.appendChild(orderBox);
+            });
+
+        }, function(error) {
+
+            console.error("Orders error:", error);
+
+            ordersList.innerHTML =
+                "<p>❌ Orders load nahi ho rahe.</p>";
+        });
+}
+
+
+function markOrderDone(orderId) {
+
+    orderDB.collection("orders")
+        .doc(orderId)
+        .update({
+            status: "completed"
+        })
+        .then(function() {
+
+            alert("✅ Order completed!");
+
+        })
+        .catch(function(error) {
+
+            console.error(error);
+
+            alert("❌ Order update nahi hua.");
+        });
+}
+
+
+/* Start orders */
+
+loadOrders(); 
 </script>
 
 </body>
