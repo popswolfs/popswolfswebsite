@@ -345,38 +345,30 @@ orderBox.style.padding = "15px";
 orderBox.style.marginBottom = "12px";
 orderBox.style.borderRadius = "10px";
 
-orderBox.innerHTML = ` `
-    <h3>🔔 New Order</h3>
+orderBox.innerHTML =
+    "<h3>🔔 New Order</h3>" +
 
-    <p>
-        <strong>Table:</strong>
-        ${order.tableNumber || "-"}
-    </p>
+    "<p><strong>Table:</strong> " +
+    (order.tableNumber || "-") +
+    "</p>" +
 
-    <p>
-        <strong>Items:</strong><br>
-        ${(order.items || [])
-            .map(function(item) {
-                return `${item.name} × ${item.quantity}`;
-            })
-            .join("<br>")}
-    </p>
+    "<p><strong>Items:</strong><br>" +
+    (order.items || [])
+        .map(function(item) {
+            return item.name + " x " + item.quantity;
+        })
+        .join("<br>") +
+    "</p>" +
 
-    <p>
-        <strong>Total:</strong>
-        ₹${order.total || 0}
-    </p>
+    "<p><strong>Total:</strong> ₹" +
+    (order.total || 0) +
+    "</p>" +
 
-    <p>
-        <strong>Status:</strong>
-        New
-    </p>
+    "<p><strong>Status:</strong> New</p>" +
 
-    <button onclick="acceptOrder('${doc.id}')">
-        ✅ Accept Order
-    </button>
-`;
-
+    "<button onclick=\"acceptOrder('" + doc.id + "')\">" +
+    "✅ Accept Order" +
+    "</button>";
 ordersList.appendChild(orderBox);
 
             /* =========================
