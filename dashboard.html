@@ -174,7 +174,17 @@
         </button>
 
     </div>
+<!-- ORDER HISTORY -->
 
+<div class="card">
+
+    <h2>📋 Order History</h2>
+
+    <div id="orderHistory">
+        <p>Order history loading...</p>
+    </div>
+
+</div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -393,7 +403,72 @@ function loadOrders() {
 
         });
 }
+/* ==============================
+   ORDER HISTORY
+   ============================== */
 
+function loadOrderHistory() {
+
+    const historyList = document.getElementById("orderHistory");
+
+    orderDB.collection("orders")
+        .where("shopId", "==", "SHOP001")
+        .onSnapshot(function(snapshot) {
+
+            historyList.innerHTML = "";
+
+            if (snapshot.empty) {
+                historyList.innerHTML = "<p>No order history.</p>";
+                return;
+            }
+
+            snapshot.forEach(function(doc) {
+
+                const order = doc.data();
+
+                const historyBox = document.createElement("div");
+
+                historyBox.style.border = "1px solid #555";
+                historyBox.style.padding = "15px";
+                historyBox.style.marginBottom = "12px";
+                historyBox.style.borderRadius = "10px";
+
+                historyBox.innerHTML =
+                    "<h3>📦 Order</h3>" +
+
+                    "<p><strong>Table:</strong> " +
+                    (order.tableNumber || "-") +
+                    "</p>" +
+
+                    "<p><strong>Items:</strong><br>" +
+                    (order.items || [])
+                        .map(function(item) {
+                            return item.name + " x " + item.quantity;
+                        })
+                        .join("<br>") +
+                    "</p>" +
+
+                    "<p><strong>Total:</strong> ₹" +
+                    (order.total || 0) +
+                    "</p>" +
+
+                    "<p><strong>Status:</strong> " +
+                    (order.status || "unknown") +
+                    "</p>";
+
+                historyList.appendChild(historyBox);
+
+            });
+
+        }, function(error) {
+
+            console.error("Order history error:", error);
+
+            historyList.innerHTML =
+                "<p>❌ Order history load nahi ho rahi.</p>";
+
+        });
+}
 function markOrderDone(orderId) {
 
     orderDB.collection("orders")
@@ -439,7 +514,8 @@ function acceptOrder(orderId) {
 }
 /* Start orders */
 
-loadOrders(); 
+loadOrders();
+loadOrderHistory();
 </script>
 
 </body>
