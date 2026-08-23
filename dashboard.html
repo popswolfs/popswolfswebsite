@@ -295,10 +295,6 @@ function loadOrders() {
 
                 const order = doc.data();
 
-                /* =========================
-                   TODAY'S SUMMARY
-                   ========================= */
-
                 let orderDate = null;
 
                 if (order.createdAt) {
@@ -329,51 +325,45 @@ function loadOrders() {
 
                 }
 
+                if (order.status !== "new") {
+                    return;
+                }
 
- /* =========================
-   NEW ORDERS DISPLAY
-   ========================= */
+                const orderBox = document.createElement("div");
 
-if (order.status !== "new") {
-    return;
-}
+                orderBox.style.border = "1px solid #00c853";
+                orderBox.style.padding = "15px";
+                orderBox.style.marginBottom = "12px";
+                orderBox.style.borderRadius = "10px";
 
-const orderBox = document.createElement("div");
+                orderBox.innerHTML =
+                    "<h3>🔔 New Order</h3>" +
 
-orderBox.style.border = "1px solid #00c853";
-orderBox.style.padding = "15px";
-orderBox.style.marginBottom = "12px";
-orderBox.style.borderRadius = "10px";
+                    "<p><strong>Table:</strong> " +
+                    (order.tableNumber || "-") +
+                    "</p>" +
 
-orderBox.innerHTML =
-    "<h3>🔔 New Order</h3>" +
+                    "<p><strong>Items:</strong><br>" +
+                    (order.items || [])
+                        .map(function(item) {
+                            return item.name + " x " + item.quantity;
+                        })
+                        .join("<br>") +
+                    "</p>" +
 
-    "<p><strong>Table:</strong> " +
-    (order.tableNumber || "-") +
-    "</p>" +
+                    "<p><strong>Total:</strong> ₹" +
+                    (order.total || 0) +
+                    "</p>" +
 
-    "<p><strong>Items:</strong><br>" +
-    (order.items || [])
-        .map(function(item) {
-            return item.name + " x " + item.quantity;
-        })
-        .join("<br>") +
-    "</p>" +
+                    "<p><strong>Status:</strong> New</p>" +
 
-    "<p><strong>Total:</strong> ₹" +
-    (order.total || 0) +
-    "</p>" +
+                    "<button onclick=\"acceptOrder('" + doc.id + "')\">" +
+                    "✅ Accept Order" +
+                    "</button>";
 
-    "<p><strong>Status:</strong> New</p>" +
+                ordersList.appendChild(orderBox);
 
-    "<button onclick=\"acceptOrder('" + doc.id + "')\">" +
-    "✅ Accept Order" +
-    "</button>";
-ordersList.appendChild(orderBox);
-
-            /* =========================
-               UPDATE TODAY'S SUMMARY
-               ========================= */
+            });
 
             document.getElementById("todayOrders")
                 .textContent = todayOrdersCount;
@@ -386,11 +376,6 @@ ordersList.appendChild(orderBox);
 
             document.getElementById("todayPending")
                 .textContent = todayPendingCount;
-
-
-            /* =========================
-               NO NEW ORDERS
-               ========================= */
 
             if (ordersList.innerHTML === "") {
 
