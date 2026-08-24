@@ -93,62 +93,151 @@ Cold Coffee - ₹89"></textarea>
 </button>
 
 </div>
+  
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script>
+const firebaseConfig = {
+    apiKey: "AIzaSyA5GBPb4gmsiEIe0n6bLA-3r2qJTdcJm-A",
+    authDomain: "popswolfs-connect.firebaseapp.com",
+    projectId: "popswolfs-connect",
+    storageBucket: "popswolfs-connect.firebasestorage.app",
+    messagingSenderId: "76180350352",
+    appId: "1:76180350352:web:731ea5982a1d885075969"
+};
 
-function loadMenu(){
+firebase.initializeApp(firebaseConfig);
 
-  document.getElementById("restaurant").value =
-    localStorage.getItem("restaurantName") || "";
+const db = firebase.firestore();
 
-  document.getElementById("menu").value =
-    localStorage.getItem("restaurantMenu") || "";
 
-  document.getElementById("special").value =
-    localStorage.getItem("todaySpecial") || "";
+/* ==============================
+   SHOP ID
+   ============================== */
+
+const shopId = "SHOP001";
+
+
+/* ==============================
+   LOAD MENU
+   ============================== */
+
+async function loadMenu() {
+
+    try {
+
+        const doc = await db
+            .collection("shops")
+            .doc(shopId)
+            .get();
+
+        if (doc.exists) {
+
+            const shop = doc.data();
+
+            document.getElementById("restaurant").value =
+                shop.name || "";
+
+            document.getElementById("menu").value =
+                shop.menuText || "";
+
+            document.getElementById("special").value =
+                shop.specialText || "";
+
+        }
+
+    } catch (error) {
+
+        console.error("Load menu error:", error);
+
+        alert("❌ Menu load nahi hua.");
+
+    }
+
 }
 
 
-function saveMenu(){
+/* ==============================
+   SAVE MENU
+   ============================== */
 
-  const restaurant =
-    document.getElementById("restaurant").value.trim();
+async function saveMenu() {
 
-  const menu =
-    document.getElementById("menu").value.trim();
+    const restaurant =
+        document.getElementById("restaurant")
+        .value
+        .trim();
 
-  const special =
-    document.getElementById("special").value.trim();
+    const menu =
+        document.getElementById("menu")
+        .value
+        .trim();
 
-
-  localStorage.setItem(
-    "restaurantName",
-    restaurant
-  );
-
-  localStorage.setItem(
-    "restaurantMenu",
-    menu
-  );
-
-  localStorage.setItem(
-    "todaySpecial",
-    special
-  );
+    const special =
+        document.getElementById("special")
+        .value
+        .trim();
 
 
-  alert("✅ Menu Saved Successfully!");
+    try {
 
-  window.location.href = "dashboard.html";
+        await db
+            .collection("shops")
+            .doc(shopId)
+            .set({
+
+                name: restaurant,
+
+                menuText: menu,
+
+                specialText: special
+
+            }, {
+
+                merge: true
+
+            });
+
+
+        alert("✅ Menu Firebase mein save ho gaya!");
+
+        window.location.href =
+            "dashboard.html";
+
+
+    } catch (error) {
+
+        console.error(
+            "Save menu error:",
+            error
+        );
+
+        alert(
+            "❌ Menu save nahi hua.\n\n" +
+            error.message
+        );
+
+    }
+
 }
 
 
-function goBack(){
+/* ==============================
+   BACK
+   ============================== */
 
-  window.location.href = "dashboard.html";
+function goBack() {
+
+    window.location.href =
+        "dashboard.html";
 
 }
 
+
+/* ==============================
+   START
+   ============================== */
 
 loadMenu();
 
