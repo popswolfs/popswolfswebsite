@@ -1130,11 +1130,25 @@ async function loadShop(){
     menuContainer.innerHTML = "";
 
 
-    const menu =
-        Array.isArray(shop.menu)
-        ? shop.menu
-        : [];
+  const menu = Array.isArray(shop.menu)
+    ? shop.menu
+    : (shop.menuText
+        ? shop.menuText
+            .split("\n")
+            .map(function(line){
+                const parts = line.split(/\s*[-–—]+\s*/);
 
+                return {
+                    category: "Menu",
+                    name: (parts[0] || "").trim(),
+                    description: "",
+                    price: (parts[1] || "").trim()
+                };
+            })
+            .filter(function(item){
+                return item.name !== "";
+            })
+        : []);
 
     let currentCategory = "";
 
