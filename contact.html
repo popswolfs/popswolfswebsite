@@ -1,106 +1,375 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Contact Details</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>POPSWOLFS - Contact & Shop Details</title>
 
 <style>
 body{
-font-family:Arial,sans-serif;
-background:#111;
-color:white;
-padding:20px;
+    margin:0;
+    padding:20px;
+    background:#111;
+    color:white;
+    font-family:Arial,sans-serif;
 }
 
 .box{
-max-width:500px;
-margin:auto;
-background:#222;
-padding:20px;
-border-radius:15px;
+    max-width:550px;
+    margin:auto;
+    background:#222;
+    padding:25px;
+    border-radius:18px;
+}
+
+h1{
+    text-align:center;
 }
 
 h2{
-text-align:center;
+    margin-top:25px;
+    border-bottom:1px solid #444;
+    padding-bottom:10px;
 }
 
-input{
-width:100%;
-padding:12px;
-margin:10px 0;
-border:none;
-border-radius:8px;
-font-size:16px;
+input,textarea{
+    width:100%;
+    box-sizing:border-box;
+    padding:14px;
+    margin:8px 0;
+    border:0;
+    border-radius:10px;
+    font-size:16px;
 }
 
 textarea{
-width:100%;
-padding:12px;
-margin:10px 0;
-border:none;
-border-radius:8px;
-font-size:16px;
-resize:none;
+    min-height:100px;
+    resize:vertical;
 }
 
 button{
-width:100%;
-padding:15px;
-background:#00c853;
-color:white;
-border:none;
-border-radius:8px;
-font-size:18px;
-cursor:pointer;
+    width:100%;
+    padding:15px;
+    margin-top:12px;
+    border:0;
+    border-radius:10px;
+    background:#00c853;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
 }
 
-button:hover{
-background:#00a844;
+.back{
+    background:#555;
 }
 </style>
-
 </head>
 
 <body>
 
 <div class="box">
 
-<h2>📞 Contact Details</h2>
+<h1>📲 Shop Details</h1>
 
-<input type="text" placeholder="Restaurant Name">
+<h2>🏪 Basic Details</h2>
 
-<input type="text" placeholder="Phone Number">
+<input
+    id="restaurant"
+    type="text"
+    placeholder="Restaurant Name">
 
-<input type="text" placeholder="WhatsApp Number">
+<input
+    id="phone"
+    type="text"
+    placeholder="Phone Number">
 
-<textarea placeholder="Restaurant Address"></textarea>
+<input
+    id="whatsapp"
+    type="text"
+    placeholder="WhatsApp Number">
 
-<input type="text" placeholder="Google Maps Link">
+<input
+    id="instagram"
+    type="text"
+    placeholder="Instagram Link">
 
-<button onclick="saveContact()">Save Contact</button>
+<textarea
+    id="address"
+    placeholder="Restaurant Address"></textarea>
+
+<input
+    id="maps"
+    type="text"
+    placeholder="Google Maps Link">
+
+
+<h2>🕐 Opening Hours</h2>
+
+<textarea
+    id="hours"
+    placeholder="Example:
+Monday - Sunday
+10:00 AM - 11:00 PM"></textarea>
+
+
+<h2>🔥 Today's Special</h2>
+
+<input
+    id="specialName"
+    type="text"
+    placeholder="Special Name">
+
+<input
+    id="specialDescription"
+    type="text"
+    placeholder="Special Description">
+
+<input
+    id="specialPrice"
+    type="text"
+    placeholder="Special Price">
+
+
+<button onclick="saveDetails()">
+💾 Save All Details
+</button>
+
+<button class="back" onclick="goBack()">
+⬅️ Back to Dashboard
+</button>
 
 </div>
 
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
 <script>
 
-function saveContact(){
+const firebaseConfig = {
+    apiKey: "AIzaSyA5GBPb4gmsiEIe0n6bLA-3r2qJTdcJm-A",
+    authDomain: "popswolfs-connect.firebaseapp.com",
+    projectId: "popswolfs-connect",
+    storageBucket: "popswolfs-connect.firebasestorage.app",
+    messagingSenderId: "76180350352",
+    appId: "1:76180350352:web:731ea5982a1d885075969"
+};
 
-let restaurant = document.querySelectorAll("input")[0].value;
-let phone = document.querySelectorAll("input")[1].value;
-let whatsapp = document.querySelectorAll("input")[2].value;
-let address = document.querySelector("textarea").value;
-let map = document.querySelectorAll("input")[3].value;
+firebase.initializeApp(firebaseConfig);
 
-localStorage.setItem("restaurantName", restaurant);
-localStorage.setItem("restaurantPhone", phone);
-localStorage.setItem("restaurantWhatsapp", whatsapp);
-localStorage.setItem("restaurantAddress", address);
-localStorage.setItem("restaurantMap", map);
+const db = firebase.firestore();
 
-alert("Contact Details Saved Successfully!");
+const shopId = "SHOP001";
 
-window.location.href="index.html";
+
+async function loadDetails(){
+
+    try{
+
+        const doc = await db
+            .collection("shops")
+            .doc(shopId)
+            .get();
+
+        if(!doc.exists){
+            return;
+        }
+
+        const shop = doc.data();
+
+
+        document.getElementById("restaurant").value =
+            shop.name || "";
+
+
+        document.getElementById("phone").value =
+            shop.phone || "";
+
+
+        document.getElementById("whatsapp").value =
+            shop.whatsapp || "";
+
+
+        document.getElementById("instagram").value =
+            shop.instagram || "";
+
+
+        document.getElementById("address").value =
+            shop.address || "";
+
+
+        document.getElementById("maps").value =
+            shop.maps || "";
+
+
+        document.getElementById("hours").value =
+            shop.hours
+            ? shop.hours.replace(/<br>/g,"\n")
+            : "";
+
+
+        if(shop.special){
+
+            document.getElementById("specialName").value =
+                shop.special.name || "";
+
+            document.getElementById("specialDescription").value =
+                shop.special.description || "";
+
+            document.getElementById("specialPrice").value =
+                shop.special.price || "";
+
+        }
+
+    }catch(error){
+
+        console.error("Load details error:",error);
+
+        alert(
+            "❌ Details load nahi hue.\n\n" +
+            error.message
+        );
+
+    }
 
 }
+
+
+async function saveDetails(){
+
+    const restaurant =
+        document.getElementById("restaurant")
+        .value
+        .trim();
+
+
+    const phone =
+        document.getElementById("phone")
+        .value
+        .trim();
+
+
+    const whatsapp =
+        document.getElementById("whatsapp")
+        .value
+        .trim();
+
+
+    const instagram =
+        document.getElementById("instagram")
+        .value
+        .trim();
+
+
+    const address =
+        document.getElementById("address")
+        .value
+        .trim();
+
+
+    const maps =
+        document.getElementById("maps")
+        .value
+        .trim();
+
+
+    const hours =
+        document.getElementById("hours")
+        .value
+        .trim()
+        .replace(/\n/g,"<br>");
+
+
+    const specialName =
+        document.getElementById("specialName")
+        .value
+        .trim();
+
+
+    const specialDescription =
+        document.getElementById("specialDescription")
+        .value
+        .trim();
+
+
+    const specialPrice =
+        document.getElementById("specialPrice")
+        .value
+        .trim();
+
+
+    try{
+
+        await db
+            .collection("shops")
+            .doc(shopId)
+            .set({
+
+                name: restaurant,
+
+                phone: phone,
+
+                whatsapp: whatsapp,
+
+                instagram: instagram,
+
+                address: address,
+
+                maps: maps,
+
+                hours: hours,
+
+                special: {
+
+                    name: specialName,
+
+                    description: specialDescription,
+
+                    price: specialPrice
+
+                }
+
+            },{
+                merge:true
+            });
+
+
+        alert("✅ Contact, Timing & Today's Special Firebase mein save ho gaya!");
+
+
+        window.location.href =
+            "dashboard.html";
+
+
+    }catch(error){
+
+        console.error(
+            "Save details error:",
+            error
+        );
+
+
+        alert(
+            "❌ Details save nahi hue.\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
+function goBack(){
+
+    window.location.href =
+        "dashboard.html";
+
+}
+
+
+loadDetails();
 
 </script>
 
