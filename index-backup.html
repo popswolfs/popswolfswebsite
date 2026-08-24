@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>POPSWOLFS CONNECT</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f5f5;
+    color:#111;
+}
+
+.hero{
+    background:#0b0b0b;
+    color:white;
+    text-align:center;
+    padding:35px 20px;
+}
+
+.logo{
+    width:100px;
+    height:100px;
+    object-fit:cover;
+    border-radius:50%;
+    margin-bottom:15px;
+}
+
+.hero h1{
+    font-size:30px;
+    letter-spacing:1px;
+}
+
+.hero p{
+    margin-top:8px;
+    color:#aaa;
+}
+
+.container{
+    max-width:650px;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.card h2{
+    margin-bottom:15px;
+}
+
+.review-btn{
+    display:block;
+    background:#111;
+    color:white;
+    text-align:center;
+    padding:16px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.menu-category{
+    margin-top:20px;
+    margin-bottom:8px;
+    font-size:14px;
+    color:#777;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.menu-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    padding:14px 0;
+    border-bottom:1px solid #eee;
+}
+
+.menu-item:last-child{
+    border-bottom:none;
+}
+
+.menu-info{
+    flex:1;
+}
+
+.menu-info h3{
+    font-size:17px;
+}
+
+.menu-info p{
+    color:#777;
+    font-size:13px;
+    margin-top:5px;
+}
+
+.menu-price{
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+.special{
+    background:#111;
+    color:white;
+}
+
+.special p{
+    color:#ccc;
+    margin-top:8px;
+}
+
+.links{
+    display:grid;
+    gap:10px;
+}
+
+.link{
+    display:block;
+    padding:14px;
+    background:#f1f1f1;
+    color:#111;
+    text-decoration:none;
+    border-radius:10px;
+    text-align:center;
+    font-weight:bold;
+}
+
+.offer{
+    background:#fff1bd;
+    text-align:center;
+}
+
+.offer h2{
+    margin-bottom:8px;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    color:#777;
+    font-size:13px;
+}
+
+.shop-id{
+    text-align:center;
+    color:#aaa;
+    font-size:11px;
+    margin-top:8px;
+}
+</style>
+</head>
+
+<body>
+
+<header class="hero">
+
+    <img id="shop-logo"
+         src="popswolfs.jpeg"
+         class="logo"
+         alt="Shop Logo">
+
+    <h1 id="shop-name">Restaurant Name</h1>
+
+    <p id="shop-tagline">
+        Welcome to POPSWOLFS CONNECT
+    </p>
+
+    <div class="shop-id" id="shop-id-display"></div>
+
+</header>
+
+
+<main class="container">
+
+    <!-- GOOGLE REVIEW -->
+
+    <section class="card">
+
+        <h2>⭐ Rate Us</h2>
+
+        <p>
+            Enjoyed your experience?
+            Leave us a Google review.
+        </p>
+
+        <a id="review-link"
+           href="#"
+           target="_blank"
+           class="review-btn">
+            ⭐ Give us a Google Review
+        </a>
+
+    </section>
+
+
+    <!-- MENU -->
+
+    <section class="card">
+
+        <h2>🍽️ Our Menu</h2>
+
+        <div id="menu-container"></div>
+
+    </section>
+    <!-- CART / ORDER SYSTEM -->
+
+<section class="card" id="order-card">
+
+    <h2>🛒 Your Order</h2>
+    <div style="margin:12px 0;">
+    <label for="table-select" style="font-weight:bold;">
+        🪑 Select Table
+    </label>
+
+    <select id="table-select"
+            style="width:100%;padding:12px;margin-top:8px;border:1px solid #ddd;border-radius:10px;font-size:16px;">
+        <option value="">Select your table</option>
+        <option value="Table 1">Table 1</option>
+        <option value="Table 2">Table 2</option>
+        <option value="Table 3">Table 3</option>
+        <option value="Table 4">Table 4</option>
+        <option value="Table 5">Table 5</option>
+        <option value="Table 6">Table 6</option>
+        <option value="Table 7">Table 7</option>
+        <option value="Table 8">Table 8</option>
+        <option value="Table 9">Table 9</option>
+        <option value="Table 10">Table 10</option>
+    </select>
+</div>
+    <p id="table-display"
+       style="margin:8px 0 15px;color:#777;font-size:14px;">
+        🪑 Table: Not Selected
+    </p>
+
+    <div id="cart-items">
+
+        <p id="empty-cart"
+           style="color:#777;text-align:center;padding:15px 0;">
+            Your cart is empty
+        </p>
+
+    </div>
+
+    <div style="
+        border-top:1px solid #eee;
+        margin-top:15px;
+        padding-top:15px;
+        display:flex;
+        justify-content:space-between;
+        font-size:18px;
+        font-weight:bold;
+    ">
+
+        <span>Total</span>
+
+        <span id="cart-total">₹0</span>
+
+    </div>
+
+    <button id="place-order-btn"
+            type="button"
+            style="
+                width:100%;
+                margin-top:15px;
+                padding:15px;
+                border:none;
+                border-radius:12px;
+                background:#111;
+                color:white;
+                font-size:16px;
+                font-weight:bold;
+                cursor:pointer;
+            ">
+
+        🛍️ Place Order
+
+    </button>
+
+</section>
+
+<script>
+
+/* ==========================================
+   POPSWOLFS CONNECT
+   CART SYSTEM V1
+========================================== */
+
+let cart = [];
+
+
+/* ==========================================
+   QR TABLE SYSTEM
+   Table number comes automatically from QR
+========================================== */
+
+const orderParams =
+    new URLSearchParams(window.location.search);
+
+const tableNumber =
+    orderParams.get("table");
+
+const tableSelect =
+    document.getElementById("table-select");
+
+const tableDisplay =
+    document.getElementById("table-display");
+
+
+if(tableNumber){
+
+    /* Show detected table */
+    tableDisplay.innerText =
+        "🪑 Table " + tableNumber;
+
+    /* Automatically select the same table */
+    if(tableSelect){
+
+        tableSelect.value =
+            "Table " + tableNumber;
+
+        tableSelect.style.display =
+            "none";
+    }
+
+}else{
+
+    /* No QR table number */
+    tableDisplay.innerText =
+        "⚠️ Please scan your table QR code";
+
+    if(tableSelect){
+
+        tableSelect.style.display =
+            "none";
+    }
+
+}
+
+
+/* ==========================================
+   ADD TO CART BUTTONS
+========================================== */
+
+function addToCart(name, price){
+
+    const existing =
+        cart.find(function(item){
+
+            return item.name === name;
+
+        });
+
+
+    if(existing){
+
+        existing.quantity++;
+
+    }else{
+
+        cart.push({
+
+            name:name,
+            price:price,
+            quantity:1
+
+        });
+
+    }
+
+
+    updateCart();
+
+}
+
+
+/* ==========================================
+   REMOVE ITEM
+========================================== */
+
+function removeFromCart(index){
+
+    if(cart[index].quantity > 1){
+
+        cart[index].quantity--;
+
+    }else{
+
+        cart.splice(index,1);
+
+    }
+
+
+    updateCart();
+
+}
+
+
+/* ==========================================
+   UPDATE CART
+========================================== */
+
+function updateCart(){
+
+    const cartItems =
+        document.getElementById("cart-items");
+
+    const emptyCart =
+        document.getElementById("empty-cart");
+
+    const cartTotal =
+        document.getElementById("cart-total");
+
+
+    cartItems.innerHTML = "";
+
+
+    if(cart.length === 0){
+
+        cartItems.innerHTML = `
+            <p style="
+                color:#777;
+                text-align:center;
+                padding:15px 0;
+            ">
+                Your cart is empty
+            </p>
+        `;
+
+        cartTotal.innerText = "₹0";
+
+        return;
+
+    }
+
+
+    let total = 0;
+
+
+    cart.forEach(function(item,index){
+
+        const itemTotal =
+            item.price * item.quantity;
+
+        total += itemTotal;
+
+
+        const row =
+            document.createElement("div");
+
+        row.style.cssText = `
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:10px;
+            padding:12px 0;
+            border-bottom:1px solid #eee;
+        `;
+
+
+        row.innerHTML = `
+
+            <div style="flex:1;">
+
+                <strong>${item.name}</strong>
+
+                <div style="
+                    color:#777;
+                    font-size:13px;
+                    margin-top:4px;
+                ">
+                    ₹${item.price} × ${item.quantity}
+                </div>
+
+            </div>
+
+
+            <div style="
+                font-weight:bold;
+                white-space:nowrap;
+            ">
+                ₹${itemTotal}
+            </div>
+
+
+            <button
+                type="button"
+                onclick="removeFromCart(${index})"
+                style="
+                    border:none;
+                    background:#eee;
+                    border-radius:8px;
+                    padding:7px 10px;
+                    cursor:pointer;
+                "
+            >
+                −
+            </button>
+
+        `;
+
+
+        cartItems.appendChild(row);
+
+    });
+
+
+    cartTotal.innerText =
+        "₹" + total;
+
+}
+
+
+/* ==========================================
+   ADD BUTTONS TO MENU
+========================================== */
+
+function addMenuButtons(){
+
+    const menuItems =
+        document.querySelectorAll(".menu-item");
+
+
+    menuItems.forEach(function(menuItem){
+
+        if(menuItem.querySelector(".add-cart-btn")){
+
+            return;
+
+        }
+
+
+        const nameElement =
+            menuItem.querySelector(".menu-info h3");
+
+
+        const priceElement =
+            menuItem.querySelector(".menu-price");
+
+
+        if(!nameElement || !priceElement){
+
+            return;
+
+        }
+
+
+        const name =
+            nameElement.innerText.trim();
+
+
+        const priceText =
+            priceElement.innerText
+            .replace(/[₹,\s]/g,"");
+
+
+        const price =
+            parseInt(priceText) || 0;
+
+
+        const button =
+            document.createElement("button");
+
+
+        button.className =
+            "add-cart-btn";
+
+
+        button.type =
+            "button";
+
+
+        button.innerText =
+            "＋ Add";
+
+
+        button.style.cssText = `
+            border:none;
+            background:#111;
+            color:white;
+            border-radius:8px;
+            padding:8px 12px;
+            font-weight:bold;
+            cursor:pointer;
+            white-space:nowrap;
+        `;
+
+
+        button.onclick =
+            function(){
+
+                addToCart(name,price);
+
+            };
+
+
+        menuItem.appendChild(button);
+
+    });
+
+}
+
+
+/* ==========================================
+   WATCH MENU
+========================================== */
+
+const menuWatcher =
+    new MutationObserver(function(){
+
+        addMenuButtons();
+
+    });
+
+
+menuWatcher.observe(
+
+    document.getElementById("menu-container"),
+
+    {
+        childList:true,
+        subtree:true
+    }
+
+);
+
+
+/* ==========================================
+   PLACE ORDER
+========================================== */
+
+document
+.getElementById("place-order-btn")
+.addEventListener("click", async function(){
+
+    if(cart.length === 0){
+
+        alert("Please add items to your cart.");
+
+        return;
+
+    }
+
+
+    if(!tableNumber){
+
+        alert(
+            "Table number is missing. Please scan the table QR code."
+        );
+
+        return;
+
+    }
+
+
+    const total =
+        cart.reduce(function(sum, item){
+
+            return sum + (item.price * item.quantity);
+
+        }, 0);
+
+
+    const order = {
+
+        shopId: shopId,
+
+        tableNumber: tableNumber,
+
+        items: cart.map(function(item){
+
+            return {
+
+                name: item.name,
+
+                price: item.price,
+
+                quantity: item.quantity
+
+            };
+
+        }),
+        shopId: "SHOP001",
+        total: total,
+
+        status: "new",
+
+        createdAt:
+            firebase.firestore.FieldValue.serverTimestamp()
+
+    };
+
+
+    try {
+
+        const orderRef =
+            await db.collection("orders").add(order);
+
+
+        alert(
+            "✅ Order placed successfully!\n\n" +
+            "Table: " + tableNumber + "\n" +
+            "Items: " + cart.length + "\n" +
+            "Total: ₹" + total
+        );
+
+
+        cart = [];
+
+        updateCart();
+
+
+    } catch(error) {
+
+        console.error(
+            "Firebase order error:",
+            error
+        );
+
+        alert(
+            "❌ Order place nahi hua.\n\n" +
+            "Please try again."
+        );
+
+    }
+
+});
+</script>
+
+<!-- END CART / ORDER SYSTEM -->
+
+    <!-- TODAY SPECIAL -->
+
+    <section class="card special">
+
+        <h2>🔥 Today's Special</h2>
+
+        <h3 id="special-name">
+            Special Combo Meal
+        </h3>
+
+        <p id="special-description">
+            Burger + Fries + Drink
+        </p>
+
+        <p id="special-price">
+            ₹499
+        </p>
+
+    </section>
+
+
+    <!-- CONTACT -->
+
+    <section class="card">
+
+        <h2>📲 Connect With Us</h2>
+
+        <div class="links">
+
+            <a id="call-link"
+               href="#"
+               class="link">
+                📞 Call Restaurant
+            </a>
+
+            <a id="whatsapp-link"
+               href="#"
+               target="_blank"
+               class="link">
+                💬 WhatsApp
+            </a>
+
+            <a id="instagram-link"
+               href="#"
+               target="_blank"
+               class="link">
+                📸 Instagram
+            </a>
+
+            <a id="maps-link"
+               href="#"
+               target="_blank"
+               class="link">
+                📍 Open Google Maps
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- LOCATION -->
+
+    <section class="card">
+
+        <h2>📍 Location</h2>
+
+        <p id="shop-address">
+            Restaurant Address
+        </p>
+
+        <br>
+
+        <h2>🕒 Opening Hours</h2>
+
+        <p id="shop-hours">
+            Monday - Sunday<br>
+            10:00 AM - 11:00 PM
+        </p>
+
+    </section>
+
+
+    <!-- OFFER -->
+
+    <section class="card offer">
+
+        <h2>🎉 Visit Again!</h2>
+
+        <p id="shop-offer">
+            Get 10%–20% OFF on your next visit ❤️
+        </p>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <p>
+        Thank You For Visiting ❤️
+    </p>
+
+    <p style="margin-top:8px;">
+        Powered by <strong>POPSWOLFS CONNECT</strong>
+    </p>
+
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyA5GBPb4gmsiEIe0n6bLA-3r2qJTdcJm-A",
+  authDomain: "popswolfs-connect.firebaseapp.com",
+  projectId: "popswolfs-connect",
+  storageBucket: "popswolfs-connect.firebasestorage.app",
+  messagingSenderId: "76180350352",
+  appId: "1:76180350352:web:731ea5982a21d885075969",
+  measurementId: "G-R3H3C9TL7Q"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+/*
+==================================================
+POPSWOLFS CONNECT
+V1 CUSTOMER PAGE
+OWNER DASHBOARD CONNECTION
+==================================================
+*/
+
+
+/* -----------------------------------------------
+   1. GET SHOP ID FROM URL
+------------------------------------------------ */
+
+const urlParams =
+    new URLSearchParams(window.location.search);
+
+const shopId =
+    urlParams.get("shop") || "SHOP001";
+
+
+/* -----------------------------------------------
+   2. DEFAULT DATA
+   Agar owner ne abhi kuch save nahi kiya,
+   to ye data show hoga.
+------------------------------------------------ */
+
+const defaultShops = {
+
+SHOP001: {
+
+name: "Restaurant One",
+
+tagline: "Welcome to Restaurant One",
+
+logo: "popswolfs.jpeg",
+
+review: "https://www.google.com",
+
+phone: "+919876543210",
+
+whatsapp: "919876543210",
+
+instagram: "https://instagram.com",
+
+maps: "https://maps.google.com",
+
+address: "Restaurant One Address",
+
+hours: "Monday - Sunday<br>10:00 AM - 11:00 PM",
+
+offer: "Get 10% OFF on your next visit ❤️",
+
+special: {
+
+name: "Special Combo Meal",
+
+description: "Burger + Fries + Drink",
+
+price: "₹499"
+
+},
+
+menu: [
+
+{
+category: "Burgers",
+name: "Chicken Burger",
+description: "Cheese Loaded",
+price: "₹299"
+},
+
+{
+category: "Burgers",
+name: "Cheese Burger",
+description: "Fresh & Tasty",
+price: "₹249"
+},
+
+{
+category: "Pizza",
+name: "Chicken Pizza",
+description: "Extra Cheese",
+price: "₹399"
+},
+
+{
+category: "Drinks",
+name: "Cold Coffee",
+description: "Special Drink",
+price: "₹99"
+}
+
+]
+
+}
+
+};
+
+
+/* -----------------------------------------------
+   3. GET OWNER SAVED DATA
+------------------------------------------------ */
+
+async function loadShop(){
+
+    let shop = null;
+
+    try {
+
+        const doc = await db
+            .collection("shops")
+            .doc(shopId)
+            .get();
+
+        if(doc.exists){
+
+            shop = doc.data();
+
+        }else{
+
+            shop = defaultShops[shopId] || defaultShops["SHOP001"];
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "Firebase shop data error:",
+            error
+        );
+
+        shop =
+            defaultShops[shopId] ||
+            defaultShops["SHOP001"];
+
+    }
+
+
+    /* -----------------------------------------------
+       4. SELECT SHOP
+    ------------------------------------------------ */
+
+    if(!shop){
+
+        console.error("Shop not found");
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------------
+       5. SHOP BASIC INFORMATION
+    ------------------------------------------------ */
+
+    document.getElementById("shop-name").innerText =
+        shop.name || "Restaurant Name";
+
+
+    document.getElementById("shop-tagline").innerText =
+        shop.tagline ||
+        "Welcome to POPSWOLFS CONNECT";
+
+
+    document.getElementById("shop-logo").src =
+        shop.logo ||
+        "popswolfs.jpeg";
+
+
+    document.getElementById("shop-id-display").innerText =
+        "Shop ID: " + shopId;
+
+
+    /* -----------------------------------------------
+       6. GOOGLE REVIEW
+    ------------------------------------------------ */
+
+    document.getElementById("review-link").href =
+        shop.review || "#";
+
+
+    /* -----------------------------------------------
+       7. CONTACT LINKS
+    ------------------------------------------------ */
+
+    document.getElementById("call-link").href =
+        shop.phone
+        ? "tel:" + shop.phone
+        : "#";
+
+
+    document.getElementById("whatsapp-link").href =
+        shop.whatsapp
+        ? "https://wa.me/" + shop.whatsapp
+        : "#";
+
+
+    document.getElementById("instagram-link").href =
+        shop.instagram || "#";
+
+
+    document.getElementById("maps-link").href =
+        shop.maps || "#";
+
+
+    /* -----------------------------------------------
+       8. LOCATION
+    ------------------------------------------------ */
+
+    document.getElementById("shop-address").innerText =
+        shop.address ||
+        "Restaurant Address";
+
+
+    document.getElementById("shop-hours").innerHTML =
+        shop.hours ||
+        "Monday - Sunday<br>10:00 AM - 11:00 PM";
+
+
+    /* -----------------------------------------------
+       9. OFFER
+    ------------------------------------------------ */
+
+    document.getElementById("shop-offer").innerText =
+        shop.offer ||
+        "Get 10%–20% OFF on your next visit ❤️";
+
+
+    /* -----------------------------------------------
+       10. TODAY'S SPECIAL
+    ------------------------------------------------ */
+
+    if(shop.special){
+
+        document.getElementById("special-name").innerText =
+            shop.special.name ||
+            "Special Combo Meal";
+
+
+        document.getElementById("special-description").innerText =
+            shop.special.description ||
+            "";
+
+
+        document.getElementById("special-price").innerText =
+            shop.special.price ||
+            "";
+
+    }
+
+
+    /* -----------------------------------------------
+       11. MENU
+    ------------------------------------------------ */
+
+    const menuContainer =
+        document.getElementById("menu-container");
+
+
+    menuContainer.innerHTML = "";
+
+
+    const menu =
+        Array.isArray(shop.menu)
+        ? shop.menu
+        : [];
+
+
+    let currentCategory = "";
+
+
+    menu.forEach(function(item){
+
+        /* CATEGORY */
+
+        if(item.category !== currentCategory){
+
+            currentCategory =
+                item.category || "Menu";
+
+
+            const category =
+                document.createElement("div");
+
+
+            category.className =
+                "menu-category";
+
+
+            category.innerText =
+                currentCategory;
+
+
+            menuContainer.appendChild(category);
+
+        }
+
+
+        /* MENU ITEM */
+
+        const menuItem =
+            document.createElement("div");
+
+
+        menuItem.className =
+            "menu-item";
+
+
+        const menuInfo =
+            document.createElement("div");
+
+
+        menuInfo.className =
+            "menu-info";
+
+
+        const itemName =
+            document.createElement("h3");
+
+
+        itemName.innerText =
+            item.name || "Menu Item";
+
+
+        const itemDescription =
+            document.createElement("p");
+
+
+        itemDescription.innerText =
+            item.description || "";
+
+
+        const itemPrice =
+            document.createElement("div");
+
+
+        itemPrice.className =
+            "menu-price";
+
+
+        itemPrice.innerText =
+            item.price || "";
+
+
+        menuInfo.appendChild(itemName);
+
+        menuInfo.appendChild(itemDescription);
+
+        menuItem.appendChild(menuInfo);
+
+        menuItem.appendChild(itemPrice);
+
+        menuContainer.appendChild(menuItem);
+
+    });
+
+
+    /* -----------------------------------------------
+       DONE
+    ------------------------------------------------ */
+
+    console.log(
+        "POPSWOLFS CONNECT customer page loaded:",
+        shopId
+    );
+
+}
+
+
+/* -----------------------------------------------
+   START CUSTOMER PAGE
+------------------------------------------------ */
+
+loadShop();
+</script>
+
+</body>
+</html>
