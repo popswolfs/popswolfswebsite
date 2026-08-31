@@ -172,7 +172,12 @@ placeholder="Zeenu Restaurant">
 type="email"
 id="owner-email"
 placeholder="owner@gmail.com">
+<label>Owner Password</label>
 
+<input
+type="password"
+id="owner-password"
+placeholder="Owner password (minimum 6 characters)">
 
 <button
 class="create-btn"
@@ -259,6 +264,13 @@ firebase.auth();
 
 const db =
 firebase.firestore();
+
+/* OWNER ACCOUNT CREATOR */
+const ownerApp =
+firebase.initializeApp(firebaseConfig, "ownerCreator");
+
+const ownerAuth =
+ownerApp.auth();
 
 
 /* =========================================
@@ -418,7 +430,44 @@ async function createShop(){
            "popswolfsconnect@gmail.com"
 
         };
+        // CREATE OWNER ACCOUNT
+const ownerPassword =
+"POPS@" + Math.random().toString(36).slice(2,10);
 
+try {
+
+    await ownerAuth.createUserWithEmailAndPassword(
+        ownerEmail,
+        ownerPassword
+    );
+
+    await ownerAuth.signOut();
+
+    alert(
+        "Owner account create ho gaya!\n\n" +
+        "Email: " + ownerEmail +
+        "\nPassword: " + ownerPassword
+    );
+
+} catch(error) {
+
+    if(error.code === "auth/email-already-in-use") {
+
+        showStatus(
+        "⚠️ Ye Owner Email already registered hai."
+        );
+
+        return;
+
+    }
+
+    showStatus(
+    "❌ Owner account error: " +
+    error.message
+    );
+
+    return;
+}
 
         await db
         .collection("shops")
