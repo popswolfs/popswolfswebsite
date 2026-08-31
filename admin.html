@@ -235,12 +235,6 @@ onclick="logout()">
 
 <script>
 
-/* =========================================
-   ADMIN EMAIL
-========================================= */
-
-const ADMIN_EMAIL =
-"popswolfsconnect@gmail.com";
 
 
 /* =========================================
@@ -271,38 +265,11 @@ firebase.firestore();
    LOGIN CHECK
 ========================================= */
 
-auth.onAuthStateChanged(function(user){
-
-    if(!user){
-
-        window.location.href =
-        "login.html";
-
-        return;
-
-    }
-
-
-    if(
-        user.email.toLowerCase() !==
-        ADMIN_EMAIL.toLowerCase()
-    ){
-
-        alert(
-        "❌ Aap Admin nahi ho."
-        );
-
-        auth.signOut();
-
-        return;
-
-    }
-
+window.addEventListener("DOMContentLoaded", function(){
 
     loadShops();
 
 });
-
 
 /* =========================================
    GENERATE SHOP ID
@@ -447,8 +414,8 @@ async function createShop(){
             createdAt:
             firebase.firestore.FieldValue.serverTimestamp(),
 
-            createdBy:
-            auth.currentUser.email
+           createdBy:
+           "popswolfsconnect@gmail.com"
 
         };
 
