@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>POPSWOLFS CONNECT - Admin Login</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#111;
+    padding:20px;
+}
+
+.login-box{
+    width:100%;
+    max-width:400px;
+    background:#1d1d1d;
+    padding:30px 25px;
+    border-radius:18px;
+    box-shadow:0 8px 30px rgba(0,0,0,.4);
+    border:1px solid #333;
+}
+
+.logo{
+    text-align:center;
+    font-size:27px;
+    font-weight:bold;
+    color:white;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#00d95f;
+    margin-bottom:28px;
+    font-size:15px;
+    font-weight:bold;
+}
+
+label{
+    display:block;
+    margin-bottom:7px;
+    color:#ddd;
+    font-size:14px;
+    font-weight:bold;
+}
+
+input{
+    width:100%;
+    padding:13px;
+    margin-bottom:18px;
+    border:1px solid #444;
+    border-radius:10px;
+    background:#111;
+    color:white;
+    font-size:15px;
+    outline:none;
+}
+
+input:focus{
+    border-color:#00d95f;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#00d95f;
+    color:#000;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+.message{
+    text-align:center;
+    margin-top:15px;
+    font-size:14px;
+    min-height:20px;
+}
+
+.back{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#aaa;
+    text-decoration:none;
+    font-size:14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <div class="logo">
+        🐺 POPSWOLFS CONNECT
+    </div>
+
+    <div class="subtitle">
+        👑 ADMIN LOGIN
+    </div>
+
+    <form id="adminLoginForm">
+
+        <label for="email">
+            Admin Email
+        </label>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Enter admin email"
+            required
+        >
+
+        <label for="password">
+            Password
+        </label>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter admin password"
+            required
+        >
+
+        <button type="submit">
+            🔐 Admin Login
+        </button>
+
+    </form>
+
+    <div
+        class="message"
+        id="message">
+    </div>
+
+    <a
+        href="login.html"
+        class="back">
+
+        ← Owner Login
+
+    </a>
+
+</div>
+
+
+<!-- FIREBASE -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+
+<script>
+
+/* =========================================
+   ADMIN EMAIL
+========================================= */
+
+const ADMIN_EMAIL =
+"popswolfsconnect@gmail.com";
+
+
+/* =========================================
+   FIREBASE CONFIG
+========================================= */
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyA5GBPb4gmsiEI0n06bLA-3r2qJTdcJm-A",
+
+    authDomain:
+    "popswolfs-connect.firebaseapp.com",
+
+    projectId:
+    "popswolfs-connect",
+
+    storageBucket:
+    "popswolfs-connect.firebasestorage.app",
+
+    messagingSenderId:
+    "761803503052",
+
+    appId:
+    "1:761803503052:web:731ea5982a1d885075969",
+
+    measurementId:
+    "G-R3H3C9TL7Q"
+
+};
+
+
+firebase.initializeApp(firebaseConfig);
+
+const auth =
+firebase.auth();
+
+
+/* =========================================
+   ADMIN LOGIN
+========================================= */
+
+document
+.getElementById("adminLoginForm")
+.addEventListener("submit",function(event){
+
+    event.preventDefault();
+
+
+    const email =
+    document.getElementById("email")
+    .value
+    .trim()
+    .toLowerCase();
+
+
+    const password =
+    document.getElementById("password")
+    .value;
+
+
+    const message =
+    document.getElementById("message");
+
+
+    /* ADMIN EMAIL CHECK */
+
+    if(
+        email !==
+        ADMIN_EMAIL.toLowerCase()
+    ){
+
+        message.style.color =
+        "#ff4444";
+
+        message.textContent =
+        "❌ Ye Admin email nahi hai.";
+
+        return;
+
+    }
+
+
+    message.style.color =
+    "#aaa";
+
+    message.textContent =
+    "Logging in...";
+
+
+    auth.signInWithEmailAndPassword(
+        email,
+        password
+    )
+
+    .then(function(){
+
+        message.style.color =
+        "#00d95f";
+
+        message.textContent =
+        "✅ Admin login successful!";
+
+
+        setTimeout(function(){
+
+            window.location.href =
+            "admin.html";
+
+        },700);
+
+    })
+
+    .catch(function(error){
+
+        console.error(error);
+
+        message.style.color =
+        "#ff4444";
+
+
+        if(
+            error.code ===
+            "auth/invalid-credential"
+        ){
+
+            message.textContent =
+            "❌ Email ya password galat hai.";
+
+        }
+
+        else{
+
+            message.textContent =
+            "❌ Login failed: " +
+            error.message;
+
+        }
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
