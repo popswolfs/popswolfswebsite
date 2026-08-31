@@ -7,7 +7,6 @@
 <title>POPSWOLFS CONNECT - Owner Dashboard</title>
 
 <style>
-
 *{
     margin:0;
     padding:0;
@@ -36,6 +35,12 @@ header p{
     margin-top:8px;
 }
 
+.shop-id{
+    color:#aaa;
+    font-size:13px;
+    margin-top:10px;
+}
+
 .container{
     max-width:700px;
     margin:auto;
@@ -61,9 +66,7 @@ label{
     margin-bottom:6px;
 }
 
-input,
-textarea,
-select{
+input,textarea,select{
     width:100%;
     padding:12px;
     border:1px solid #ddd;
@@ -83,6 +86,13 @@ button{
     font-size:15px;
     font-weight:bold;
     cursor:pointer;
+}
+
+.add-shop-btn{
+    width:100%;
+    background:#198754;
+    color:white;
+    margin-top:15px;
 }
 
 .save-btn{
@@ -132,13 +142,6 @@ button{
     margin-top:10px;
     font-weight:bold;
 }
-
-.shop-id{
-    color:#777;
-    font-size:13px;
-    margin-top:8px;
-}
-
 </style>
 </head>
 
@@ -146,39 +149,43 @@ button{
 
 <header>
 
-<h1>POPSWOLFS CONNECT</h1>
+<h1>🐺 POPSWOLFS CONNECT</h1>
 
-<p>Owner Dashboard - V1</p>
+<p>Owner Dashboard</p>
 
 <div class="shop-id">
-Shop ID: <strong id="shop-id-display">SHOP001</strong>
+Shop ID:
+<strong id="shop-id-display">---</strong>
 </div>
 
 </header>
 
-
 <main class="container">
 
-
-<!-- SHOP SELECT -->
+<!-- SHOP MANAGEMENT -->
 
 <section class="card">
 
-<h2>🏪 Select Shop</h2>
+<h2>🏪 Shop Management</h2>
 
-<label>Shop ID</label>
+<label>Select Shop</label>
 
 <select id="shop-id">
-
-<option value="SHOP001">SHOP001</option>
-<option value="SHOP002">SHOP002</option>
-
+    <option value="">Loading shops...</option>
 </select>
+
+<button
+class="add-shop-btn"
+onclick="createNewShop()">
+
+➕ Add New Shop
+
+</button>
 
 </section>
 
 
-<!-- BASIC INFORMATION -->
+<!-- SHOP INFORMATION -->
 
 <section class="card">
 
@@ -283,7 +290,9 @@ placeholder="https://www.google.com">
 <button
 class="add-btn"
 onclick="addMenuItem()">
+
 ➕ Add Menu Item
+
 </button>
 
 </section>
@@ -356,7 +365,7 @@ id="status">
 <a
 id="preview-link"
 class="preview-btn"
-href="index.html?shop=SHOP001"
+href="#"
 target="_blank">
 
 👀 Preview Customer Page
@@ -365,348 +374,485 @@ target="_blank">
 
 </section>
 
-
 </main>
 
+
+<!-- FIREBASE -->
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+
 <script>
+
 const firebaseConfig = {
-  apiKey: "AIzaSyA5GBPb4gmsiEI0n06bLA-3r2qJTdcJm-A",
-  authDomain: "popswolfs-connect.firebaseapp.com",
-  projectId: "popswolfs-connect",
-  storageBucket: "popswolfs-connect.firebasestorage.app",
-  messagingSenderId: "761803503052",
-  appId: "1:761803503052:web:731ea5982a21d885075969",
-  measurementId: "G-R3H3C9TL7Q"
+
+apiKey:
+"AIzaSyA5GBPb4gmsiEI0n06bLA-3r2qJTdcJm-A",
+
+authDomain:
+"popswolfs-connect.firebaseapp.com",
+
+projectId:
+"popswolfs-connect",
+
+storageBucket:
+"popswolfs-connect.firebasestorage.app",
+
+messagingSenderId:
+"761803503052",
+
+appId:
+"1:761803503052:web:731ea5982a21d885075969",
+
+measurementId:
+"G-R3H3C9TL7Q"
+
 };
+
 
 firebase.initializeApp(firebaseConfig);
+
 const db = firebase.firestore();
-/*
-==================================================
-POPSWOLFS CONNECT
-OWNER DASHBOARD - V1
-==================================================
-*/
+
+const auth = firebase.auth();
 
 
-/* -----------------------------------------------
-   DEFAULT SHOP DATA
------------------------------------------------- */
+let shops = {};
 
-const defaultShops = {
-
-SHOP001: {
-
-name:"Restaurant One",
-
-tagline:"Welcome to Restaurant One",
-
-logo:"popswolfs.jpeg",
-
-review:"https://www.google.com",
-
-phone:"+919876543210",
-
-whatsapp:"919876543210",
-
-instagram:"https://instagram.com",
-
-maps:"https://maps.google.com",
-
-address:"Restaurant One Address",
-
-hours:"Monday - Sunday\n10:00 AM - 11:00 PM",
-
-offer:"Get 10% OFF on your next visit ❤️",
-
-special:{
-name:"Special Combo Meal",
-description:"Burger + Fries + Drink",
-price:"₹499"
-},
-
-menu:[
-
-{
-category:"Burgers",
-name:"Chicken Burger",
-description:"Cheese Loaded",
-price:"₹299"
-},
-
-{
-category:"Burgers",
-name:"Cheese Burger",
-description:"Fresh & Tasty",
-price:"₹249"
-},
-
-{
-category:"Pizza",
-name:"Chicken Pizza",
-description:"Extra Cheese",
-price:"₹399"
-},
-
-{
-category:"Pizza",
-name:"Special Pizza",
-description:"Loaded Pizza",
-price:"₹499"
-},
-
-{
-category:"Drinks",
-name:"Cold Coffee",
-description:"Special Drink",
-price:"₹99"
-}
-
-]
-
-},
+let currentShopId = "";
 
 
-SHOP002: {
+/* =========================================
+   CHECK LOGIN
+========================================= */
 
-name:"Restaurant Two",
+auth.onAuthStateChanged(function(user){
 
-tagline:"Welcome to Restaurant Two",
+    if(!user){
 
-logo:"popswolfs.jpeg",
+        window.location.href =
+        "login.html";
 
-review:"https://www.google.com",
+        return;
 
-phone:"+919999999999",
+    }
 
-whatsapp:"919999999999",
+    loadAllShops();
 
-instagram:"https://instagram.com",
-
-maps:"https://maps.google.com",
-
-address:"Restaurant Two Address",
-
-hours:"Monday - Sunday\n11:00 AM - 10:00 PM",
-
-offer:"Get 20% OFF on your next visit ❤️",
-
-special:{
-name:"Family Special",
-description:"Pizza + Fries + Drinks",
-price:"₹799"
-},
-
-menu:[
-
-{
-category:"Pizza",
-name:"Margherita Pizza",
-description:"Fresh Cheese",
-price:"₹299"
-},
-
-{
-category:"Pizza",
-name:"Chicken Pizza",
-description:"Loaded Chicken",
-price:"₹449"
-},
-
-{
-category:"Drinks",
-name:"Mojito",
-description:"Fresh Mint",
-price:"₹129"
-}
-
-]
-
-}
-
-};
+});
 
 
-/* -----------------------------------------------
-   LOAD SAVED DATA
------------------------------------------------- */
+/* =========================================
+   LOAD ALL SHOPS FROM FIREBASE
+========================================= */
 
-let savedData =
-localStorage.getItem("POPSWOLFS_SHOPS");
+async function loadAllShops(){
 
-let shops;
+    try{
 
-if(savedData){
+        const snapshot =
+        await db.collection("shops")
+        .get();
 
-    shops = JSON.parse(savedData);
+        shops = {};
 
-}else{
+        snapshot.forEach(function(doc){
 
-    shops = defaultShops;
+            shops[doc.id] = doc.data();
 
-    localStorage.setItem(
-        "POPSWOLFS_SHOPS",
-        JSON.stringify(shops)
-    );
+        });
+
+
+        populateShopSelector();
+
+
+        const shopIds =
+        Object.keys(shops);
+
+
+        if(shopIds.length > 0){
+
+            loadShop(shopIds[0]);
+
+        }else{
+
+            createNewShop();
+
+        }
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        showStatus(
+        "❌ Shops load nahi ho rahe: "
+        + error.message
+        );
+
+    }
 
 }
 
 
-/* -----------------------------------------------
-   SHOP SELECT
------------------------------------------------- */
+/* =========================================
+   SHOP DROPDOWN
+========================================= */
 
-const shopSelector =
-document.getElementById("shop-id");
+function populateShopSelector(){
+
+    const selector =
+    document.getElementById("shop-id");
+
+    selector.innerHTML = "";
+
+    const ids =
+    Object.keys(shops).sort();
 
 
-shopSelector.addEventListener(
-"change",
-function(){
+    if(ids.length === 0){
+
+        selector.innerHTML =
+        '<option value="">No shops</option>';
+
+        return;
+
+    }
+
+
+    ids.forEach(function(id){
+
+        const option =
+        document.createElement("option");
+
+        option.value = id;
+
+        option.textContent =
+        id +
+        " - " +
+        (shops[id].name || "New Shop");
+
+        selector.appendChild(option);
+
+    });
+
+
+    selector.value =
+    currentShopId || ids[0];
+
+}
+
+
+document.getElementById("shop-id")
+.addEventListener("change",function(){
 
     loadShop(this.value);
 
 });
 
 
-/* -----------------------------------------------
+/* =========================================
+   GENERATE UNLIMITED SHOP ID
+========================================= */
+
+function generateShopId(){
+
+    let highest = 0;
+
+
+    Object.keys(shops).forEach(function(id){
+
+        const match =
+        id.match(/^SHOP(\d+)$/);
+
+
+        if(match){
+
+            const number =
+            parseInt(match[1]);
+
+            if(number > highest){
+
+                highest = number;
+
+            }
+
+        }
+
+    });
+
+
+    let next =
+    highest + 1;
+
+
+    return "SHOP" +
+    String(next).padStart(3,"0");
+
+}
+
+
+/* =========================================
+   CREATE NEW SHOP
+========================================= */
+
+async function createNewShop(){
+
+    const shopId =
+    generateShopId();
+
+
+    const newShop = {
+
+        name:"New Restaurant",
+
+        tagline:"Welcome to our restaurant",
+
+        logo:"popswolfs.jpeg",
+
+        review:"https://www.google.com",
+
+        phone:"",
+
+        whatsapp:"",
+
+        instagram:"",
+
+        maps:"",
+
+        address:"",
+
+        hours:"Monday - Sunday\n10:00 AM - 11:00 PM",
+
+        offer:"",
+
+        special:{
+
+            name:"",
+
+            description:"",
+
+            price:""
+
+        },
+
+        menu:[]
+
+    };
+
+
+    try{
+
+        await db.collection("shops")
+        .doc(shopId)
+        .set(newShop);
+
+
+        shops[shopId] =
+        newShop;
+
+
+        currentShopId =
+        shopId;
+
+
+        populateShopSelector();
+
+        loadShop(shopId);
+
+
+        showStatus(
+        "✅ New Shop Created: " +
+        shopId
+        );
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        showStatus(
+        "❌ Shop create error: "
+        + error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================
    LOAD SHOP
------------------------------------------------- */
+========================================= */
 
 function loadShop(shopId){
 
-    const shop = shops[shopId];
+    const shop =
+    shops[shopId];
+
 
     if(!shop){
+
         return;
+
     }
 
 
-    document.getElementById(
-        "shop-id-display"
-    ).innerText = shopId;
+    currentShopId =
+    shopId;
 
 
     document.getElementById(
-        "shop-name"
-    ).value = shop.name || "";
+    "shop-id-display"
+    ).innerText =
+    shopId;
 
 
     document.getElementById(
-        "shop-tagline"
-    ).value = shop.tagline || "";
+    "shop-id"
+    ).value =
+    shopId;
 
 
     document.getElementById(
-        "shop-logo"
-    ).value = shop.logo || "";
+    "shop-name"
+    ).value =
+    shop.name || "";
 
 
     document.getElementById(
-        "shop-address"
-    ).value = shop.address || "";
+    "shop-tagline"
+    ).value =
+    shop.tagline || "";
 
 
     document.getElementById(
-        "shop-hours"
-    ).value = shop.hours || "";
+    "shop-logo"
+    ).value =
+    shop.logo || "";
 
 
     document.getElementById(
-        "shop-phone"
-    ).value = shop.phone || "";
+    "shop-address"
+    ).value =
+    shop.address || "";
 
 
     document.getElementById(
-        "shop-whatsapp"
-    ).value = shop.whatsapp || "";
+    "shop-hours"
+    ).value =
+    shop.hours || "";
 
 
     document.getElementById(
-        "shop-instagram"
-    ).value = shop.instagram || "";
+    "shop-phone"
+    ).value =
+    shop.phone || "";
 
 
     document.getElementById(
-        "shop-maps"
-    ).value = shop.maps || "";
+    "shop-whatsapp"
+    ).value =
+    shop.whatsapp || "";
 
 
     document.getElementById(
-        "shop-review"
-    ).value = shop.review || "";
+    "shop-instagram"
+    ).value =
+    shop.instagram || "";
 
 
     document.getElementById(
-        "special-name"
+    "shop-maps"
+    ).value =
+    shop.maps || "";
+
+
+    document.getElementById(
+    "shop-review"
+    ).value =
+    shop.review || "";
+
+
+    document.getElementById(
+    "special-name"
     ).value =
     shop.special?.name || "";
 
 
     document.getElementById(
-        "special-description"
+    "special-description"
     ).value =
     shop.special?.description || "";
 
 
     document.getElementById(
-        "special-price"
+    "special-price"
     ).value =
     shop.special?.price || "";
 
 
     document.getElementById(
-        "shop-offer"
+    "shop-offer"
     ).value =
     shop.offer || "";
 
 
-    renderMenu(shop.menu || []);
+    renderMenu(
+    shop.menu || []
+    );
 
 
     document.getElementById(
-        "preview-link"
+    "preview-link"
     ).href =
-    "index.html?shop=" + shopId;
+    "index.html?shop=" +
+    encodeURIComponent(shopId);
 
 }
 
 
-/* -----------------------------------------------
-   RENDER MENU
------------------------------------------------- */
+/* =========================================
+   MENU
+========================================= */
 
 function renderMenu(menu){
 
     const container =
-    document.getElementById("menu-container");
+    document.getElementById(
+    "menu-container"
+    );
+
 
     container.innerHTML = "";
 
 
-    menu.forEach(function(item,index){
+    menu.forEach(function(item){
 
-        createMenuBox(item,index);
+        createMenuBox(item);
 
     });
 
 }
 
 
-/* -----------------------------------------------
-   CREATE MENU ITEM
------------------------------------------------- */
-
-function createMenuBox(item,index){
+function createMenuBox(item){
 
     const container =
-    document.getElementById("menu-container");
+    document.getElementById(
+    "menu-container"
+    );
 
 
     const box =
     document.createElement("div");
+
 
     box.className =
     "menu-box";
@@ -714,51 +860,51 @@ function createMenuBox(item,index){
 
     box.innerHTML = `
 
-        <label>Category</label>
+<label>Category</label>
 
-        <input
-        type="text"
-        class="menu-category"
-        value="${item.category || ""}"
-        placeholder="Burgers">
-
-
-        <label>Item Name</label>
-
-        <input
-        type="text"
-        class="menu-name"
-        value="${item.name || ""}"
-        placeholder="Chicken Burger">
+<input
+type="text"
+class="menu-category"
+value="${escapeHtml(item.category || "")}"
+placeholder="Burgers">
 
 
-        <label>Description</label>
+<label>Item Name</label>
 
-        <input
-        type="text"
-        class="menu-description"
-        value="${item.description || ""}"
-        placeholder="Cheese Loaded">
-
-
-        <label>Price</label>
-
-        <input
-        type="text"
-        class="menu-price"
-        value="${item.price || ""}"
-        placeholder="₹299">
+<input
+type="text"
+class="menu-name"
+value="${escapeHtml(item.name || "")}"
+placeholder="Chicken Burger">
 
 
-        <button
-        class="delete-btn"
-        onclick="this.parentElement.remove()">
+<label>Description</label>
 
-        🗑️ Delete Item
+<input
+type="text"
+class="menu-description"
+value="${escapeHtml(item.description || "")}"
+placeholder="Cheese Loaded">
 
-        </button>
 
-    `;
+<label>Price</label>
+
+<input
+type="text"
+class="menu-price"
+value="${escapeHtml(item.price || "")}"
+placeholder="₹299">
+
+
+<button
+class="delete-btn"
+onclick="this.parentElement.remove()">
+
+🗑️ Delete Item
+
+</button>
+
+`;
 
 
     container.appendChild(box);
@@ -766,9 +912,16 @@ function createMenuBox(item,index){
 }
 
 
-/* -----------------------------------------------
-   ADD MENU ITEM
------------------------------------------------- */
+function escapeHtml(value){
+
+    return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/"/g,"&quot;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;");
+
+}
+
 
 function addMenuItem(){
 
@@ -782,50 +935,61 @@ function addMenuItem(){
 
         price:"₹0"
 
-    },0);
+    });
 
 }
 
 
-/* -----------------------------------------------
+/* =========================================
    SAVE SHOP
------------------------------------------------- */
+========================================= */
 
-function saveShop(){
+async function saveShop(){
 
     const shopId =
-    document.getElementById("shop-id").value;
+    document.getElementById(
+    "shop-id"
+    ).value;
 
 
-    const menuBoxes =
-    document.querySelectorAll(".menu-box");
+    if(!shopId){
+
+        showStatus(
+        "❌ Pehle shop select karo."
+        );
+
+        return;
+
+    }
 
 
     const menu = [];
 
 
-    menuBoxes.forEach(function(box){
+    document
+    .querySelectorAll(".menu-box")
+    .forEach(function(box){
 
         menu.push({
 
             category:
             box.querySelector(
-                ".menu-category"
+            ".menu-category"
             ).value,
 
             name:
             box.querySelector(
-                ".menu-name"
+            ".menu-name"
             ).value,
 
             description:
             box.querySelector(
-                ".menu-description"
+            ".menu-description"
             ).value,
 
             price:
             box.querySelector(
-                ".menu-price"
+            ".menu-price"
             ).value
 
         });
@@ -833,125 +997,157 @@ function saveShop(){
     });
 
 
-    shops[shopId] = {
+    const shopData = {
 
         name:
         document.getElementById(
-            "shop-name"
+        "shop-name"
         ).value,
 
         tagline:
         document.getElementById(
-            "shop-tagline"
+        "shop-tagline"
         ).value,
 
         logo:
         document.getElementById(
-            "shop-logo"
+        "shop-logo"
         ).value,
 
         review:
         document.getElementById(
-            "shop-review"
+        "shop-review"
         ).value,
 
         phone:
         document.getElementById(
-            "shop-phone"
+        "shop-phone"
         ).value,
 
         whatsapp:
         document.getElementById(
-            "shop-whatsapp"
+        "shop-whatsapp"
         ).value,
 
         instagram:
         document.getElementById(
-            "shop-instagram"
+        "shop-instagram"
         ).value,
 
         maps:
         document.getElementById(
-            "shop-maps"
+        "shop-maps"
         ).value,
 
         address:
         document.getElementById(
-            "shop-address"
+        "shop-address"
         ).value,
 
         hours:
         document.getElementById(
-            "shop-hours"
+        "shop-hours"
         ).value,
 
         offer:
         document.getElementById(
-            "shop-offer"
+        "shop-offer"
         ).value,
 
         special:{
 
             name:
             document.getElementById(
-                "special-name"
+            "special-name"
             ).value,
 
             description:
             document.getElementById(
-                "special-description"
+            "special-description"
             ).value,
 
             price:
             document.getElementById(
-                "special-price"
+            "special-price"
             ).value
 
         },
 
-        menu:menu
+        menu:menu,
+
+        updatedAt:
+        firebase.firestore.FieldValue.serverTimestamp()
 
     };
 
 
-   localStorage.setItem(
-    "POPSWOLFS_SHOPS",
-    JSON.stringify(shops)
-);
+    try{
 
-db.collection("shops").doc(shopId).set(
-    shops[shopId]
-)
-.then(function() {
-    console.log("Shop saved to Firebase");
-})
-.catch(function(error) {
-    console.error("Firebase save error:", error);
-});
+        await db.collection("shops")
+        .doc(shopId)
+        .set(shopData,{merge:true});
 
 
-    document.getElementById(
-        "status"
-    ).innerText =
-    "✅ Shop changes saved successfully!";
+        shops[shopId] =
+        {
+            ...shops[shopId],
+            ...shopData
+        };
 
 
-    setTimeout(function(){
+        populateShopSelector();
 
         document.getElementById(
-            "status"
-        ).innerText = "";
+        "shop-id"
+        ).value =
+        shopId;
 
-    },3000);
+
+        showStatus(
+        "✅ " +
+        shopId +
+        " saved successfully!"
+        );
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        showStatus(
+        "❌ Save failed: " +
+        error.message
+        );
+
+    }
 
 }
 
 
-/* -----------------------------------------------
-   START
------------------------------------------------- */
+/* =========================================
+   STATUS
+========================================= */
 
-loadShop("SHOP001");
+function showStatus(message){
+
+    const status =
+    document.getElementById(
+    "status"
+    );
+
+
+    status.innerText =
+    message;
+
+
+    setTimeout(function(){
+
+        status.innerText = "";
+
+    },4000);
+
+}
 
 </script>
 
