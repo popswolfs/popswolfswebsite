@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>POPSWOLFS CONNECT - Admin Panel</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#101010;
+    color:white;
+}
+
+header{
+    background:#000;
+    padding:25px 20px;
+    text-align:center;
+    border-bottom:2px solid #00d95f;
+}
+
+header h1{
+    font-size:27px;
+}
+
+header p{
+    color:#aaa;
+    margin-top:8px;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:#1d1d1d;
+    padding:20px;
+    border-radius:16px;
+    margin-bottom:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,.3);
+}
+
+.card h2{
+    margin-bottom:18px;
+}
+
+label{
+    display:block;
+    margin-top:14px;
+    margin-bottom:6px;
+    font-weight:bold;
+}
+
+input,select{
+    width:100%;
+    padding:13px;
+    border-radius:10px;
+    border:1px solid #444;
+    background:#111;
+    color:white;
+    font-size:15px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:0;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:18px;
+}
+
+.create-btn{
+    background:#00d95f;
+    color:#000;
+}
+
+.logout-btn{
+    background:#dc3545;
+    color:white;
+}
+
+.shop-card{
+    background:#111;
+    border:1px solid #333;
+    padding:16px;
+    border-radius:12px;
+    margin-top:12px;
+}
+
+.shop-id{
+    color:#00d95f;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.owner{
+    color:#aaa;
+    margin-top:7px;
+    word-break:break-all;
+}
+
+.status{
+    text-align:center;
+    margin-top:15px;
+    font-weight:bold;
+    color:#00d95f;
+}
+
+.warning{
+    background:#332500;
+    border:1px solid #806000;
+    padding:12px;
+    border-radius:10px;
+    color:#ffd966;
+    margin-bottom:18px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h1>🐺 POPSWOLFS CONNECT</h1>
+
+<p>👑 Admin Panel</p>
+
+</header>
+
+
+<main class="container">
+
+<div class="warning">
+
+⚠️ Ye Admin Panel sirf POPSWOLFS ke main admin ke liye hai.
+
+</div>
+
+
+<!-- CREATE SHOP -->
+
+<section class="card">
+
+<h2>➕ Create New Shop</h2>
+
+
+<label>Shop Name</label>
+
+<input
+type="text"
+id="shop-name"
+placeholder="Zeenu Restaurant">
+
+
+<label>Owner Email</label>
+
+<input
+type="email"
+id="owner-email"
+placeholder="owner@gmail.com">
+
+
+<button
+class="create-btn"
+onclick="createShop()">
+
+🚀 Create Shop
+
+</button>
+
+
+<div
+class="status"
+id="status">
+</div>
+
+</section>
+
+
+<!-- SHOP LIST -->
+
+<section class="card">
+
+<h2>🏪 Your Shops</h2>
+
+<div id="shop-list">
+
+Loading shops...
+
+</div>
+
+</section>
+
+
+<!-- LOGOUT -->
+
+<section class="card">
+
+<button
+class="logout-btn"
+onclick="logout()">
+
+🚪 Logout Admin
+
+</button>
+
+</section>
+
+
+</main>
+
+
+<!-- FIREBASE -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+
+<script>
+
+/* =========================================
+   ADMIN EMAIL
+========================================= */
+
+const ADMIN_EMAIL =
+popswolfsconnect@gmail.com
+
+
+/* =========================================
+   FIREBASE CONFIG
+========================================= */
+
+const firebaseConfig = {
+
+apiKey:
+"AIzaSyA5GBPb4gmsiEI0n06bLA-3r2qJTdcJm-A",
+
+authDomain:
+"popswolfs-connect.firebaseapp.com",
+
+projectId:
+"popswolfs-connect",
+
+storageBucket:
+"popswolfs-connect.firebasestorage.app",
+
+messagingSenderId:
+"761803503052",
+
+appId:
+"1:761803503052:web:731ea5982a21d885075969",
+
+measurementId:
+"G-R3H3C9TL7Q"
+
+};
+
+
+firebase.initializeApp(firebaseConfig);
+
+const auth =
+firebase.auth();
+
+const db =
+firebase.firestore();
+
+
+/* =========================================
+   LOGIN CHECK
+========================================= */
+
+auth.onAuthStateChanged(function(user){
+
+    if(!user){
+
+        window.location.href =
+        "login.html";
+
+        return;
+
+    }
+
+
+    if(
+        user.email.toLowerCase() !==
+        ADMIN_EMAIL.toLowerCase()
+    ){
+
+        alert(
+        "❌ Aap Admin nahi ho."
+        );
+
+        auth.signOut();
+
+        return;
+
+    }
+
+
+    loadShops();
+
+});
+
+
+/* =========================================
+   GENERATE SHOP ID
+========================================= */
+
+async function generateShopId(){
+
+    const snapshot =
+    await db.collection("shops").get();
+
+
+    let highest = 0;
+
+
+    snapshot.forEach(function(doc){
+
+        const id =
+        doc.id;
+
+
+        const match =
+        id.match(/^SHOP(\d+)$/);
+
+
+        if(match){
+
+            const number =
+            parseInt(match[1]);
+
+
+            if(number > highest){
+
+                highest =
+                number;
+
+            }
+
+        }
+
+    });
+
+
+    const next =
+    highest + 1;
+
+
+    return "SHOP" +
+    String(next).padStart(4,"0");
+
+}
+
+
+/* =========================================
+   CREATE SHOP
+========================================= */
+
+async function createShop(){
+
+    const shopName =
+    document.getElementById(
+    "shop-name"
+    ).value.trim();
+
+
+    const ownerEmail =
+    document.getElementById(
+    "owner-email"
+    ).value.trim()
+    .toLowerCase();
+
+
+    if(!shopName){
+
+        showStatus(
+        "❌ Shop Name daalo."
+        );
+
+        return;
+
+    }
+
+
+    if(!ownerEmail){
+
+        showStatus(
+        "❌ Owner Email daalo."
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        const shopId =
+        await generateShopId();
+
+
+        const shopData = {
+
+            shopId:shopId,
+
+            name:shopName,
+
+            ownerEmail:ownerEmail,
+
+            tagline:
+            "Welcome to " + shopName,
+
+            logo:"popswolfs.jpeg",
+
+            review:"",
+
+            phone:"",
+
+            whatsapp:"",
+
+            instagram:"",
+
+            maps:"",
+
+            address:"",
+
+            hours:
+            "Monday - Sunday\n10:00 AM - 11:00 PM",
+
+            offer:"",
+
+            special:{
+
+                name:"",
+
+                description:"",
+
+                price:""
+
+            },
+
+            menu:[],
+
+            createdAt:
+            firebase.firestore.FieldValue.serverTimestamp(),
+
+            createdBy:
+            auth.currentUser.email
+
+        };
+
+
+        await db
+        .collection("shops")
+        .doc(shopId)
+        .set(shopData);
+
+
+        document.getElementById(
+        "shop-name"
+        ).value = "";
+
+
+        document.getElementById(
+        "owner-email"
+        ).value = "";
+
+
+        showStatus(
+        "✅ " +
+        shopId +
+        " successfully create ho gaya!"
+        );
+
+
+        loadShops();
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        showStatus(
+        "❌ Error: " +
+        error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   LOAD SHOPS
+========================================= */
+
+async function loadShops(){
+
+    const container =
+    document.getElementById(
+    "shop-list"
+    );
+
+
+    container.innerHTML =
+    "Loading...";
+
+
+    try{
+
+        const snapshot =
+        await db
+        .collection("shops")
+        .get();
+
+
+        container.innerHTML = "";
+
+
+        if(snapshot.empty){
+
+            container.innerHTML =
+            "<p>No shops created yet.</p>";
+
+            return;
+
+        }
+
+
+        const shops = [];
+
+
+        snapshot.forEach(function(doc){
+
+            shops.push({
+                id:doc.id,
+                data:doc.data()
+            });
+
+        });
+
+
+        shops.sort(function(a,b){
+
+            return a.id.localeCompare(b.id);
+
+        });
+
+
+        shops.forEach(function(shop){
+
+            const data =
+            shop.data;
+
+
+            const div =
+            document.createElement("div");
+
+
+            div.className =
+            "shop-card";
+
+
+            div.innerHTML = `
+
+<div class="shop-id">
+
+${escapeHtml(shop.id)}
+
+</div>
+
+<div style="margin-top:8px;font-size:18px;font-weight:bold;">
+
+${escapeHtml(data.name || "Unnamed Shop")}
+
+</div>
+
+<div class="owner">
+
+👤 Owner:
+${escapeHtml(data.ownerEmail || "Not assigned")}
+
+</div>
+
+`;
+
+            container.appendChild(div);
+
+        });
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        container.innerHTML =
+        "❌ Shops load nahi ho rahe.";
+
+    }
+
+}
+
+
+/* =========================================
+   STATUS
+========================================= */
+
+function showStatus(message){
+
+    const status =
+    document.getElementById(
+    "status"
+    );
+
+
+    status.innerText =
+    message;
+
+
+    setTimeout(function(){
+
+        status.innerText = "";
+
+    },5000);
+
+}
+
+
+/* =========================================
+   SECURITY DISPLAY HELPER
+========================================= */
+
+function escapeHtml(value){
+
+    return String(value)
+
+    .replace(/&/g,"&amp;")
+
+    .replace(/</g,"&lt;")
+
+    .replace(/>/g,"&gt;")
+
+    .replace(/"/g,"&quot;")
+
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+function logout(){
+
+    auth.signOut()
+    .then(function(){
+
+        window.location.href =
+        "login.html";
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
