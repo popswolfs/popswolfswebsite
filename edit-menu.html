@@ -7,6 +7,10 @@
 <title>POPSWOLFS - Edit Menu</title>
 
 <style>
+*{
+  box-sizing:border-box;
+}
+
 body{
   margin:0;
   padding:20px;
@@ -16,7 +20,7 @@ body{
 }
 
 .box{
-  max-width:550px;
+  max-width:600px;
   margin:auto;
   background:#222;
   padding:25px;
@@ -25,11 +29,11 @@ body{
 
 h1{
   text-align:center;
+  margin-bottom:25px;
 }
 
 input,textarea{
   width:100%;
-  box-sizing:border-box;
   padding:14px;
   margin:10px 0;
   border:0;
@@ -38,8 +42,8 @@ input,textarea{
 }
 
 textarea{
-  height:220px;
-  resize:none;
+  height:180px;
+  resize:vertical;
 }
 
 button{
@@ -52,10 +56,63 @@ button{
   color:white;
   font-size:17px;
   font-weight:bold;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#00a844;
 }
 
 .back{
   background:#555;
+}
+
+.menu-title{
+  margin-top:25px;
+  margin-bottom:10px;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.item{
+  background:#333;
+  padding:15px;
+  border-radius:14px;
+  margin-top:12px;
+}
+
+.item-name{
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+.photo-input{
+  background:white;
+  color:#111;
+  padding:10px;
+  width:100%;
+  border-radius:8px;
+  margin-top:8px;
+}
+
+.preview{
+  width:100%;
+  max-height:180px;
+  object-fit:cover;
+  border-radius:10px;
+  margin-top:10px;
+  display:none;
+}
+
+.small{
+  color:#aaa;
+  font-size:13px;
+  margin-top:5px;
+}
+
+#menuItems{
+  display:none;
 }
 </style>
 </head>
@@ -75,14 +132,24 @@ button{
   id="menu"
   placeholder="Write menu here...
 
-Chicken Burger - ₹200
-Pizza - ₹399
-Cold Coffee - ₹89"></textarea>
+Chicken Burger - 200
+Pizza - 399
+Cold Coffee - 89"></textarea>
 
 <input
   id="special"
   type="text"
   placeholder="Today's Special">
+
+<div class="menu-title">
+📷 Menu Item Photos
+</div>
+
+<div class="small">
+Pehle menu ko save/load hone do. Phir har item ke liye photo select kar sakte ho.
+</div>
+
+<div id="menuItems"></div>
 
 <button onclick="saveMenu()">
 💾 Save Menu
@@ -93,11 +160,13 @@ Cold Coffee - ₹89"></textarea>
 </button>
 
 </div>
-  
+
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script>
+
 const firebaseConfig = {
     apiKey: "AIzaSyA5GBPb4gmsiEIe0n6bLA-3r2qJTdcJm-A",
     authDomain: "popswolfs-connect.firebaseapp.com",
@@ -111,28 +180,25 @@ firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
 
-
-/* ==============================
-   SHOP ID
-   ============================== */
-
 const shopId = "SHOP001";
+
+let menuPhotos = {};
 
 
 /* ==============================
    LOAD MENU
    ============================== */
 
-async function loadMenu() {
+async function loadMenu(){
 
-    try {
+    try{
 
         const doc = await db
             .collection("shops")
             .doc(shopId)
             .get();
 
-        if (doc.exists) {
+        if(doc.exists){
 
             const shop = doc.data();
 
@@ -145,15 +211,252 @@ async function loadMenu() {
             document.getElementById("special").value =
                 shop.specialText || "";
 
+            menuPhotos =
+                shop.menuPhotos || {};
+
+            createMenuPhotoOptions(
+                shop.menuText || ""
+            );
+
         }
 
-    } catch (error) {
+    }catch(error){
 
-        console.error("Load menu error:", error);
+        console.error("Load menu error:",error);
 
-        alert("❌ Menu load nahi hua.");
+        alert(
+            "❌ Menu load nahi hua.\n\n" +
+            error.message
+        );
 
     }
+
+}
+
+
+/* ==============================
+   CREATE PHOTO OPTIONS
+   ============================== */
+
+function createMenuPhotoOptions(menuText){
+
+    const container =
+        document.getElementById("menuItems");
+
+    container.innerHTML = "";
+
+    if(!menuText.trim()){
+
+        container.style.display = "none";
+
+        return;
+
+    }
+
+    const lines =
+        menuText
+        .split("\n")
+        .map(line => line.trim())
+        .filter(line => line !== "");
+
+    if(lines.length === 0){
+
+        container.style.display = "none";
+
+        return;
+
+    }
+
+    container.style.display = "block";
+
+
+    lines.forEach(function(line,index){
+
+        const parts =
+            line.split(/\s*[-—_]+\s*/);
+
+        const name =
+            (parts[0] || "Menu Item").trim();
+
+        const item =
+            document.createElement("div");
+
+        item.className = "item";
+
+        const existingPhoto =
+            menuPhotos[index] || "";
+
+        item.innerHTML = `
+
+            <div class="item-name">
+                🍽️ ${escapeHtml(name)}
+            </div>
+
+            <input
+                class="photo-input"
+                type="file"
+                accept="image/*"
+                onchange="selectPhoto(${index}, this)">
+
+            <img
+                id="preview-${index}"
+                class="preview"
+                ${existingPhoto
+                    ? `src="${existingPhoto}" style="display:block;"`
+                    : ""}>
+
+        `;
+
+        container.appendChild(item);
+
+    });
+
+}
+
+
+/* ==============================
+   SELECT PHOTO
+   ============================== */
+
+function selectPhoto(index,input){
+
+    const file =
+        input.files[0];
+
+    if(!file){
+
+        return;
+
+    }
+
+    if(!file.type.startsWith("image/")){
+
+        alert("❌ Sirf image select karo.");
+
+        input.value = "";
+
+        return;
+
+    }
+
+    compressImage(
+        file,
+        function(imageData){
+
+            menuPhotos[index] =
+                imageData;
+
+            const preview =
+                document.getElementById(
+                    "preview-" + index
+                );
+
+            preview.src =
+                imageData;
+
+            preview.style.display =
+                "block";
+
+        }
+    );
+
+}
+
+
+/* ==============================
+   COMPRESS IMAGE
+   ============================== */
+
+function compressImage(file,callback){
+
+    const reader =
+        new FileReader();
+
+    reader.onload = function(e){
+
+        const img =
+            new Image();
+
+        img.onload = function(){
+
+            const maxSize = 600;
+
+            let width =
+                img.width;
+
+            let height =
+                img.height;
+
+            if(width > height){
+
+                if(width > maxSize){
+
+                    height =
+                        Math.round(
+                            height *
+                            maxSize /
+                            width
+                        );
+
+                    width =
+                        maxSize;
+
+                }
+
+            }else{
+
+                if(height > maxSize){
+
+                    width =
+                        Math.round(
+                            width *
+                            maxSize /
+                            height
+                        );
+
+                    height =
+                        maxSize;
+
+                }
+
+            }
+
+            const canvas =
+                document.createElement("canvas");
+
+            canvas.width =
+                width;
+
+            canvas.height =
+                height;
+
+            const ctx =
+                canvas.getContext("2d");
+
+            ctx.drawImage(
+                img,
+                0,
+                0,
+                width,
+                height
+            );
+
+            const compressed =
+                canvas.toDataURL(
+                    "image/jpeg",
+                    0.65
+                );
+
+            callback(compressed);
+
+        };
+
+        img.src =
+            e.target.result;
+
+    };
+
+    reader.readAsDataURL(file);
 
 }
 
@@ -162,25 +465,37 @@ async function loadMenu() {
    SAVE MENU
    ============================== */
 
-async function saveMenu() {
+async function saveMenu(){
 
     const restaurant =
-        document.getElementById("restaurant")
+        document
+        .getElementById("restaurant")
         .value
         .trim();
 
     const menu =
-        document.getElementById("menu")
+        document
+        .getElementById("menu")
         .value
         .trim();
 
     const special =
-        document.getElementById("special")
+        document
+        .getElementById("special")
         .value
         .trim();
 
 
-    try {
+    if(!restaurant){
+
+        alert("❌ Restaurant Name likho.");
+
+        return;
+
+    }
+
+
+    try{
 
         await db
             .collection("shops")
@@ -191,22 +506,24 @@ async function saveMenu() {
 
                 menuText: menu,
 
-                specialText: special
+                specialText: special,
 
-            }, {
+                menuPhotos: menuPhotos
 
-                merge: true
-
+            },{
+                merge:true
             });
 
 
-        alert("✅ Menu Firebase mein save ho gaya!");
+        alert(
+            "✅ Menu + Photos Firebase mein save ho gaye!"
+        );
 
-        window.location.href =
-            "dashboard.html";
+
+        createMenuPhotoOptions(menu);
 
 
-    } catch (error) {
+    }catch(error){
 
         console.error(
             "Save menu error:",
@@ -214,7 +531,7 @@ async function saveMenu() {
         );
 
         alert(
-            "❌ Menu save nahi hua.\n\n" +
+            "❌ Save nahi hua.\n\n" +
             error.message
         );
 
@@ -224,10 +541,26 @@ async function saveMenu() {
 
 
 /* ==============================
+   ESCAPE HTML
+   ============================== */
+
+function escapeHtml(text){
+
+    return text
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* ==============================
    BACK
    ============================== */
 
-function goBack() {
+function goBack(){
 
     window.location.href =
         "dashboard.html";
