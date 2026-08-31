@@ -1,185 +1,410 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Owner Login - POPSWOLFS CONNECT</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<title>Owner Login - POPSWOLFS CONNECT</title>
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #f5f5f5;
-      padding: 20px;
-    }
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
 
-    .login-box {
-      width: 100%;
-      max-width: 400px;
-      background: #fff;
-      padding: 30px 25px;
-      border-radius: 18px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-    }
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#111;
+    padding:20px;
+}
 
-    .logo {
-      text-align: center;
-      font-size: 28px;
-      font-weight: bold;
-      margin-bottom: 8px;
-      color: #111;
-    }
+.login-box{
+    width:100%;
+    max-width:400px;
+    background:#222;
+    padding:30px 25px;
+    border-radius:18px;
+    box-shadow:0 8px 30px rgba(0,0,0,.4);
+}
 
-    .subtitle {
-      text-align: center;
-      color: #777;
-      margin-bottom: 28px;
-      font-size: 14px;
-    }
+.logo{
+    text-align:center;
+    font-size:26px;
+    font-weight:bold;
+    margin-bottom:8px;
+    color:white;
+}
 
-    label {
-      display: block;
-      margin-bottom: 7px;
-      font-size: 14px;
-      font-weight: bold;
-      color: #333;
-    }
+.subtitle{
+    text-align:center;
+    color:#aaa;
+    margin-bottom:28px;
+    font-size:14px;
+}
 
-    input {
-      width: 100%;
-      padding: 13px;
-      margin-bottom: 18px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      font-size: 15px;
-      outline: none;
-    }
+label{
+    display:block;
+    margin-bottom:7px;
+    font-size:14px;
+    font-weight:bold;
+    color:#ddd;
+}
 
-    input:focus {
-      border-color: #111;
-    }
+input{
+    width:100%;
+    padding:14px;
+    margin-bottom:18px;
+    border:1px solid #444;
+    background:#111;
+    color:white;
+    border-radius:10px;
+    font-size:15px;
+    outline:none;
+}
 
-    button {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      background: #111;
-      color: #fff;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+input:focus{
+    border-color:#00c853;
+}
 
-    button:active {
-      transform: scale(0.98);
-    }
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#00c853;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
 
-    .message {
-      text-align: center;
-      margin-top: 15px;
-      font-size: 14px;
-      min-height: 20px;
-    }
+button:disabled{
+    background:#555;
+}
 
-    .back {
-      display: block;
-      text-align: center;
-      margin-top: 20px;
-      color: #555;
-      text-decoration: none;
-      font-size: 14px;
-    }
-  </style>
+.message{
+    text-align:center;
+    margin-top:15px;
+    font-size:14px;
+    min-height:20px;
+}
+
+.back{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#aaa;
+    text-decoration:none;
+    font-size:14px;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="login-box">
+<div class="login-box">
 
-    <div class="logo">POPSWOLFS CONNECT</div>
+    <div class="logo">
+        🐺 POPSWOLFS CONNECT
+    </div>
 
     <div class="subtitle">
-      Owner Login
+        Owner Login
     </div>
 
     <form id="loginForm">
 
-      <label for="username">Username</label>
-      <input
-        type="text"
-        id="username"
-        placeholder="Enter username"
-        required
-      >
+        <label for="email">
+            Email
+        </label>
 
-      <label for="password">Password</label>
-      <input
-        type="password"
-        id="password"
-        placeholder="Enter password"
-        required
-      >
+        <input
+            type="email"
+            id="email"
+            placeholder="Enter owner email"
+            required
+        >
 
-      <button type="submit">
-        Login
-      </button>
+        <label for="password">
+            Password
+        </label>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter password"
+            required
+        >
+
+        <button
+            type="submit"
+            id="loginButton">
+            🔐 Login
+        </button>
 
     </form>
 
-    <div class="message" id="message"></div>
+    <div
+        class="message"
+        id="message">
+    </div>
 
-    <a href="index.html" class="back">
-      ← Back to Website
+    <a
+        href="index.html"
+        class="back">
+        ← Back to Website
     </a>
 
-  </div>
+</div>
 
-  <script>
-    document.getElementById("loginForm").addEventListener("submit", function(event) {
-      event.preventDefault();
 
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-      const message = document.getElementById("message");
+<!-- FIREBASE -->
 
-      /*
-        TEMPORARY DEMO LOGIN
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
-        Abhi testing ke liye:
-        Username: admin
-        Password: 1234
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
-        Baad mein isko proper secure owner
-        authentication system se replace karenge.
-      */
 
-      if (username === "admin" && password === "1234") {
+<script>
 
-        message.style.color = "green";
-        message.textContent = "Login successful!";
+const firebaseConfig = {
 
-        setTimeout(function() {
-          window.location.href = "dashboard.html";
-        }, 700);
+    apiKey:
+    "AIzaSyA5GBPb4gmsiEIe0n6bLA-3r2qJTdcJm-A",
 
-      } else {
+    authDomain:
+    "popswolfs-connect.firebaseapp.com",
 
-        message.style.color = "red";
-        message.textContent = "Wrong username or password.";
+    projectId:
+    "popswolfs-connect",
 
-      }
+    storageBucket:
+    "popswolfs-connect.firebasestorage.app",
+
+    messagingSenderId:
+    "76180350352",
+
+    appId:
+    "1:76180350352:web:731ea5982a1d885075969"
+
+};
+
+
+firebase.initializeApp(firebaseConfig);
+
+
+const auth =
+firebase.auth();
+
+
+/* ==========================
+   LOGIN
+========================== */
+
+document
+.getElementById("loginForm")
+.addEventListener("submit", function(event){
+
+    event.preventDefault();
+
+
+    const email =
+    document
+    .getElementById("email")
+    .value
+    .trim();
+
+
+    const password =
+    document
+    .getElementById("password")
+    .value;
+
+
+    const message =
+    document
+    .getElementById("message");
+
+
+    const button =
+    document
+    .getElementById("loginButton");
+
+
+    message.style.color = "#aaa";
+
+    message.textContent =
+    "⏳ Login checking...";
+
+
+    button.disabled = true;
+
+
+    /* ==========================
+       FIREBASE LOGIN
+    ========================== */
+
+    auth
+    .signInWithEmailAndPassword(
+        email,
+        password
+    )
+
+    .then(function(result){
+
+        const user =
+        result.user;
+
+
+        /*
+        Firebase UID save karenge.
+
+        Baad mein isi UID ke saath
+        Shop ID connect karenge.
+        */
+
+        localStorage.setItem(
+            "ownerLoggedIn",
+            "true"
+        );
+
+
+        localStorage.setItem(
+            "ownerUID",
+            user.uid
+        );
+
+
+        localStorage.setItem(
+            "ownerEmail",
+            user.email
+        );
+
+
+        message.style.color =
+        "#00c853";
+
+
+        message.textContent =
+        "✅ Login successful!";
+
+
+        setTimeout(function(){
+
+            window.location.href =
+            "dashboard.html";
+
+        },700);
+
+    })
+
+    .catch(function(error){
+
+        console.error(
+            "Firebase Login Error:",
+            error
+        );
+
+
+        button.disabled = false;
+
+
+        message.style.color =
+        "#ff5252";
+
+
+        if(
+            error.code ===
+            "auth/invalid-credential"
+        ){
+
+            message.textContent =
+            "❌ Email ya password galat hai.";
+
+        }
+
+        else if(
+            error.code ===
+            "auth/user-not-found"
+        ){
+
+            message.textContent =
+            "❌ Ye owner account nahi mila.";
+
+        }
+
+        else if(
+            error.code ===
+            "auth/wrong-password"
+        ){
+
+            message.textContent =
+            "❌ Password galat hai.";
+
+        }
+
+        else if(
+            error.code ===
+            "auth/invalid-email"
+        ){
+
+            message.textContent =
+            "❌ Email address galat hai.";
+
+        }
+
+        else{
+
+            message.textContent =
+            "❌ Login failed: " +
+            error.message;
+
+        }
+
     });
-  </script>
+
+});
+
+
+/* ==========================
+   AUTO LOGIN CHECK
+========================== */
+
+auth.onAuthStateChanged(
+function(user){
+
+    if(user){
+
+        /*
+        Agar owner already logged in hai,
+        to dashboard open hoga.
+        */
+
+        localStorage.setItem(
+            "ownerLoggedIn",
+            "true"
+        );
+
+        localStorage.setItem(
+            "ownerUID",
+            user.uid
+        );
+
+        localStorage.setItem(
+            "ownerEmail",
+            user.email
+        );
+
+    }
+
+});
+
+</script>
 
 </body>
 </html>
