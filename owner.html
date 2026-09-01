@@ -447,15 +447,23 @@ auth.onAuthStateChanged(function(user){
 
 
 /* =========================================
-   LOAD ALL SHOPS FROM FIREBASE
+   LOAD OWNER'S SHOP ONLY
 ========================================= */
 
 async function loadAllShops(){
 
+    const user = auth.currentUser;
+
+    if(!user){
+        window.location.href = "login.html";
+        return;
+    }
+
     try{
 
-        const snapshot =
-        await db.collection("shops")
+        const snapshot = await db
+        .collection("shops")
+        .where("ownerEmail","==",user.email.toLowerCase())
         .get();
 
         shops = {};
@@ -466,13 +474,9 @@ async function loadAllShops(){
 
         });
 
-
         populateShopSelector();
 
-
-        const shopIds =
-        Object.keys(shops);
-
+        const shopIds = Object.keys(shops);
 
         if(shopIds.length > 0){
 
@@ -480,7 +484,12 @@ async function loadAllShops(){
 
         }else{
 
-            createNewShop();
+            document.getElementById("shop-id").innerHTML =
+            '<option value="">No shop assigned</option>';
+
+            showStatus(
+                "❌ Is email par koi shop assigned nahi hai."
+            );
 
         }
 
@@ -491,14 +500,12 @@ async function loadAllShops(){
         console.error(error);
 
         showStatus(
-        "❌ Shops load nahi ho rahe: "
-        + error.message
+            "❌ Shop load error: " + error.message
         );
 
     }
 
 }
-
 
 /* =========================================
    SHOP DROPDOWN
