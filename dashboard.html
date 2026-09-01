@@ -277,7 +277,7 @@ function loadOrders() {
     const ordersList = document.getElementById("ordersList");
 
     orderDB.collection("orders")
-        .where("shopId", "==", "SHOP001")
+        .where("shopId", "==", shopId)
         .onSnapshot(function(snapshot) {
 
             let todayOrdersCount = 0;
@@ -412,7 +412,7 @@ function loadOrderHistory() {
     const historyList = document.getElementById("orderHistory");
 
     orderDB.collection("orders")
-        .where("shopId", "==", "SHOP001")
+        .where("shopId", "==", shopId)
         .onSnapshot(function(snapshot) {
 
             historyList.innerHTML = "";
