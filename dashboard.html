@@ -77,6 +77,26 @@
         .status p {
             margin: 8px 0;
         }
+
+        .order-box {
+            border: 1px solid #00c853;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+        }
+
+        .history-box {
+            border: 1px solid #555;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+        }
+
+        .shop-loading {
+            text-align: center;
+            color: #aaa;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -88,9 +108,14 @@
         <h1>🐺 POPSWOLFS Dashboard</h1>
 
         <div class="restaurant" id="restaurantName">
-            Restaurant Name
+            Loading...
+        </div>
+
+        <div class="shop-loading" id="shopStatus">
+            Connecting to your shop...
         </div>
     </div>
+
 
     <div class="card">
 
@@ -116,18 +141,19 @@
 
     </div>
 
+
     <div class="status">
 
         <h3>📊 Restaurant Status</h3>
 
         <p>
             Restaurant:
-            <strong id="statusRestaurant">Not Set</strong>
+            <strong id="statusRestaurant">Loading...</strong>
         </p>
 
         <p>
             Menu:
-            <strong id="menuStatus">Not Updated</strong>
+            <strong id="menuStatus">Checking...</strong>
         </p>
 
         <p>
@@ -136,35 +162,43 @@
         </p>
 
     </div>
+
+
     <div class="status">
-    <h3>📊 Today's Summary</h3>
 
-    <p>
-        📦 Today's Orders:
-        <strong id="todayOrders">0</strong>
-    </p>
+        <h3>📊 Today's Summary</h3>
 
-    <p>
-        💰 Today's Sales:
-        <strong id="todaySales">₹0</strong>
-    </p>
+        <p>
+            📦 Today's Orders:
+            <strong id="todayOrders">0</strong>
+        </p>
 
-    <p>
-        ✅ Completed:
-        <strong id="todayCompleted">0</strong>
-    </p>
+        <p>
+            💰 Today's Sales:
+            <strong id="todaySales">₹0</strong>
+        </p>
 
-    <p>
-        🆕 Pending:
-        <strong id="todayPending">0</strong>
-    </p>
-</div>
+        <p>
+            ✅ Completed:
+            <strong id="todayCompleted">0</strong>
+        </p>
+
+        <p>
+            🆕 Pending:
+            <strong id="todayPending">0</strong>
+        </p>
+
+    </div>
+
+
     <div class="card">
-<h2>🔔 New Orders</h2>
 
-<div id="ordersList">
-    <p>Orders loading...</p>
-</div>
+        <h2>🔔 New Orders</h2>
+
+        <div id="ordersList">
+            <p>Orders loading...</p>
+        </div>
+
         <button onclick="openWebsite()">
             🌐 View My Website
         </button>
@@ -174,179 +208,432 @@
         </button>
 
     </div>
-<!-- ORDER HISTORY -->
 
-<div class="card">
 
-    <h2>📋 Order History</h2>
+    <div class="card">
 
-    <div id="orderHistory">
-        <p>Order history loading...</p>
+        <h2>📋 Order History</h2>
+
+        <div id="orderHistory">
+            <p>Order history loading...</p>
+        </div>
+
     </div>
 
 </div>
-</div>
+
+
+<!-- FIREBASE -->
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+
 <script>
 
-function openPage(page) {
-    window.location.href = page;
-}
 
-
-function loadDashboard() {
-
-    let restaurant =
-        localStorage.getItem("restaurantName");
-
-    let menu =
-        localStorage.getItem("restaurantMenu");
-
-
-    if (restaurant && restaurant.trim() !== "") {
-
-        document.getElementById("restaurantName")
-            .textContent = restaurant;
-
-        document.getElementById("statusRestaurant")
-            .textContent = restaurant;
-
-    } else {
-
-        document.getElementById("restaurantName")
-            .textContent = "Restaurant Name";
-
-    }
-
-
-    if (menu && menu.trim() !== "") {
-
-        document.getElementById("menuStatus")
-            .textContent = "Updated ✅";
-
-    } else {
-
-        document.getElementById("menuStatus")
-            .textContent = "Not Updated";
-
-    }
-
-}
-
-
-function openWebsite() {
-
-    window.location.href = "index.html";
-
-}
-
-
-function logout() {
-
-    localStorage.removeItem("ownerLoggedIn");
-
-    window.location.href = "login.html";
-
-}
-
-
-loadDashboard();
 /* ==============================
-   FIREBASE ORDERS - DASHBOARD
-   ============================== */
+   FIREBASE CONFIG
+============================== */
 
 const firebaseConfig = {
-    apiKey: "AIzaSyA5GBPb4gmsiEIe0n6bLA-3r2qJTdcJm-A",
-    authDomain: "popswolfs-connect.firebaseapp.com",
-    projectId: "popswolfs-connect",
-    storageBucket: "popswolfs-connect.firebasestorage.app",
-    messagingSenderId: "76180350352",
-    appId: "1:76180350352:web:731ea5982a1d885075969"
+
+    apiKey:
+    "AIzaSyA5GBPb4gmsiEI0nO6bLA-3r2qJTdcJm-A",
+
+    authDomain:
+    "popswolfs-connect.firebaseapp.com",
+
+    projectId:
+    "popswolfs-connect",
+
+    storageBucket:
+    "popswolfs-connect.firebasestorage.app",
+
+    messagingSenderId:
+    "761803503052",
+
+    appId:
+    "1:761803503052:web:731ea5982a21d885075969",
+
+    measurementId:
+    "G-R3H3C9TL7Q"
 };
 
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
+
+firebase.initializeApp(firebaseConfig);
+
+
+const auth =
+firebase.auth();
+
+
+const orderDB =
+firebase.firestore();
+
+
+let shopId = "";
+
+let currentShop = null;
+
+
+/* ==============================
+   PAGE NAVIGATION
+============================== */
+
+function openPage(page) {
+
+    window.location.href = page;
+
 }
 
-const orderDB = firebase.firestore();
 
-function loadOrders() {
+/* ==============================
+   FIND OWNER SHOP
+============================== */
 
-    const ordersList = document.getElementById("ordersList");
+auth.onAuthStateChanged(async function(user){
 
-    orderDB.collection("orders")
-        .where("shopId", "==", shopId)
-        .onSnapshot(function(snapshot) {
+    if(!user){
+
+        window.location.href =
+        "login.html";
+
+        return;
+
+    }
+
+
+    try{
+
+        const ownerEmail =
+        (user.email || "").trim().toLowerCase();
+
+
+        if(!ownerEmail){
+
+            document.getElementById("shopStatus")
+                .textContent =
+                "❌ Owner email nahi mila.";
+
+            return;
+
+        }
+
+
+        console.log(
+            "Logged in owner:",
+            ownerEmail
+        );
+
+
+        const snapshot =
+        await orderDB
+        .collection("shops")
+        .where(
+            "ownerEmail",
+            "==",
+            ownerEmail
+        )
+        .limit(1)
+        .get();
+
+
+        if(snapshot.empty){
+
+            document.getElementById("shopStatus")
+                .textContent =
+                "❌ Is email par koi shop assigned nahi hai.";
+
+            document.getElementById("restaurantName")
+                .textContent =
+                "Shop Not Found";
+
+            document.getElementById("statusRestaurant")
+                .textContent =
+                "Not Assigned";
+
+            document.getElementById("ordersList")
+                .innerHTML =
+                "<p>❌ Shop assign nahi hai.</p>";
+
+            document.getElementById("orderHistory")
+                .innerHTML =
+                "<p>❌ Shop assign nahi hai.</p>";
+
+            return;
+
+        }
+
+
+        const shopDoc =
+        snapshot.docs[0];
+
+
+        shopId =
+        shopDoc.id;
+
+
+        currentShop =
+        shopDoc.data();
+
+
+        console.log(
+            "Owner Shop ID:",
+            shopId
+        );
+
+
+        document.getElementById("shopStatus")
+            .textContent =
+            "Shop ID: " + shopId;
+
+
+        const restaurant =
+        currentShop.name || "Restaurant Name";
+
+
+        document.getElementById("restaurantName")
+            .textContent =
+            restaurant;
+
+
+        document.getElementById("statusRestaurant")
+            .textContent =
+            restaurant;
+
+
+        if(
+            currentShop.menu &&
+            currentShop.menu.length > 0
+        ){
+
+            document.getElementById("menuStatus")
+                .textContent =
+                "Updated ✅";
+
+        }
+
+        else if(
+            currentShop.menuText &&
+            currentShop.menuText.trim() !== ""
+        ){
+
+            document.getElementById("menuStatus")
+                .textContent =
+                "Updated ✅";
+
+        }
+
+        else{
+
+            document.getElementById("menuStatus")
+                .textContent =
+                "Not Updated";
+
+        }
+
+
+        /* ==============================
+           NOW LOAD ORDERS
+        ============================== */
+
+        loadOrders();
+
+        loadOrderHistory();
+
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Owner shop load error:",
+            error
+        );
+
+
+        document.getElementById("shopStatus")
+            .textContent =
+            "❌ Shop load error";
+
+
+        document.getElementById("ordersList")
+            .innerHTML =
+            "<p>❌ Orders load nahi ho rahe.</p>";
+
+
+        document.getElementById("orderHistory")
+            .innerHTML =
+            "<p>❌ Order history load nahi ho rahi.</p>";
+
+    }
+
+});
+
+
+/* ==============================
+   NEW ORDERS
+============================== */
+
+function loadOrders(){
+
+    if(!shopId){
+
+        console.error(
+            "Orders: shopId empty"
+        );
+
+        return;
+
+    }
+
+
+    const ordersList =
+    document.getElementById(
+        "ordersList"
+    );
+
+
+    ordersList.innerHTML =
+    "<p>Orders loading...</p>";
+
+
+    orderDB
+    .collection("orders")
+    .where(
+        "shopId",
+        "==",
+        shopId
+    )
+    .onSnapshot(
+
+        function(snapshot){
 
             let todayOrdersCount = 0;
+
             let todaySalesTotal = 0;
+
             let todayCompletedCount = 0;
+
             let todayPendingCount = 0;
 
-            const now = new Date();
 
-            const startOfToday = new Date(
+            const now =
+            new Date();
+
+
+            const startOfToday =
+            new Date(
                 now.getFullYear(),
                 now.getMonth(),
                 now.getDate()
             );
 
-            const endOfToday = new Date(
+
+            const endOfToday =
+            new Date(
                 now.getFullYear(),
                 now.getMonth(),
                 now.getDate() + 1
             );
 
+
             ordersList.innerHTML = "";
 
-            snapshot.forEach(function(doc) {
 
-                const order = doc.data();
+            snapshot.forEach(
+            function(doc){
 
-                let orderDate = null;
+                const order =
+                doc.data();
 
-                if (order.createdAt) {
 
-                    if (order.createdAt.toDate) {
-                        orderDate = order.createdAt.toDate();
-                    } else {
-                        orderDate = new Date(order.createdAt);
+                let orderDate =
+                null;
+
+
+                if(order.createdAt){
+
+                    if(
+                        order.createdAt.toDate
+                    ){
+
+                        orderDate =
+                        order.createdAt.toDate();
+
+                    }
+
+                    else{
+
+                        orderDate =
+                        new Date(
+                            order.createdAt
+                        );
+
                     }
 
                 }
 
-                if (
+
+                if(
                     orderDate &&
                     orderDate >= startOfToday &&
                     orderDate < endOfToday
-                ) {
+                ){
 
                     todayOrdersCount++;
 
-                    todaySalesTotal += Number(order.total || 0);
 
-                    if (order.status === "completed") {
+                    todaySalesTotal +=
+                    Number(
+                        order.total || 0
+                    );
+
+
+                    if(
+                        order.status ===
+                        "completed"
+                    ){
+
                         todayCompletedCount++;
-                    } else {
+
+                    }
+
+                    else{
+
                         todayPendingCount++;
+
                     }
 
                 }
 
-                if (order.status !== "new") {
+
+                if(
+                    order.status !==
+                    "new"
+                ){
+
                     return;
+
                 }
 
-                const orderBox = document.createElement("div");
 
-                orderBox.style.border = "1px solid #00c853";
-                orderBox.style.padding = "15px";
-                orderBox.style.marginBottom = "12px";
-                orderBox.style.borderRadius = "10px";
+                const orderBox =
+                document.createElement(
+                    "div"
+                );
+
+
+                orderBox.className =
+                "order-box";
+
 
                 orderBox.innerHTML =
+
                     "<h3>🔔 New Order</h3>" +
 
                     "<p><strong>Table:</strong> " +
@@ -354,11 +641,21 @@ function loadOrders() {
                     "</p>" +
 
                     "<p><strong>Items:</strong><br>" +
+
                     (order.items || [])
-                        .map(function(item) {
-                            return item.name + " x " + item.quantity;
-                        })
-                        .join("<br>") +
+                    .map(
+                        function(item){
+
+                            return (
+                                item.name +
+                                " x " +
+                                item.quantity
+                            );
+
+                        }
+                    )
+                    .join("<br>") +
+
                     "</p>" +
 
                     "<p><strong>Total:</strong> ₹" +
@@ -367,73 +664,147 @@ function loadOrders() {
 
                     "<p><strong>Status:</strong> New</p>" +
 
-                    "<button onclick=\"acceptOrder('" + doc.id + "')\">" +
+                    "<button onclick=\"acceptOrder('" +
+                    doc.id +
+                    "')\">" +
+
                     "✅ Accept Order" +
+
                     "</button>";
 
-                ordersList.appendChild(orderBox);
+
+                ordersList.appendChild(
+                    orderBox
+                );
 
             });
 
-            document.getElementById("todayOrders")
-                .textContent = todayOrdersCount;
 
-            document.getElementById("todaySales")
-                .textContent = "₹" + todaySalesTotal;
+            document.getElementById(
+                "todayOrders"
+            ).textContent =
+            todayOrdersCount;
 
-            document.getElementById("todayCompleted")
-                .textContent = todayCompletedCount;
 
-            document.getElementById("todayPending")
-                .textContent = todayPendingCount;
+            document.getElementById(
+                "todaySales"
+            ).textContent =
+            "₹" +
+            todaySalesTotal;
 
-            if (ordersList.innerHTML === "") {
+
+            document.getElementById(
+                "todayCompleted"
+            ).textContent =
+            todayCompletedCount;
+
+
+            document.getElementById(
+                "todayPending"
+            ).textContent =
+            todayPendingCount;
+
+
+            if(
+                ordersList.innerHTML === ""
+            ){
 
                 ordersList.innerHTML =
-                    "<p>No new orders.</p>";
+                "<p>No new orders.</p>";
 
             }
 
-        }, function(error) {
+        },
 
-            console.error("Orders error:", error);
+
+        function(error){
+
+            console.error(
+                "Orders error:",
+                error
+            );
+
 
             ordersList.innerHTML =
-                "<p>❌ Orders load nahi ho rahe.</p>";
+            "<p>❌ Orders load nahi ho rahe.</p>";
 
-        });
+        }
+
+    );
+
 }
+
+
 /* ==============================
    ORDER HISTORY
-   ============================== */
+============================== */
 
-function loadOrderHistory() {
+function loadOrderHistory(){
 
-    const historyList = document.getElementById("orderHistory");
+    if(!shopId){
 
-    orderDB.collection("orders")
-        .where("shopId", "==", shopId)
-        .onSnapshot(function(snapshot) {
+        console.error(
+            "History: shopId empty"
+        );
+
+        return;
+
+    }
+
+
+    const historyList =
+    document.getElementById(
+        "orderHistory"
+    );
+
+
+    historyList.innerHTML =
+    "<p>Order history loading...</p>";
+
+
+    orderDB
+    .collection("orders")
+    .where(
+        "shopId",
+        "==",
+        shopId
+    )
+    .onSnapshot(
+
+        function(snapshot){
 
             historyList.innerHTML = "";
 
-            if (snapshot.empty) {
-                historyList.innerHTML = "<p>No order history.</p>";
+
+            if(snapshot.empty){
+
+                historyList.innerHTML =
+                "<p>No order history.</p>";
+
                 return;
+
             }
 
-            snapshot.forEach(function(doc) {
 
-                const order = doc.data();
+            snapshot.forEach(
+            function(doc){
 
-                const historyBox = document.createElement("div");
+                const order =
+                doc.data();
 
-                historyBox.style.border = "1px solid #555";
-                historyBox.style.padding = "15px";
-                historyBox.style.marginBottom = "12px";
-                historyBox.style.borderRadius = "10px";
+
+                const historyBox =
+                document.createElement(
+                    "div"
+                );
+
+
+                historyBox.className =
+                "history-box";
+
 
                 historyBox.innerHTML =
+
                     "<h3>📦 Order</h3>" +
 
                     "<p><strong>Table:</strong> " +
@@ -441,11 +812,21 @@ function loadOrderHistory() {
                     "</p>" +
 
                     "<p><strong>Items:</strong><br>" +
+
                     (order.items || [])
-                        .map(function(item) {
-                            return item.name + " x " + item.quantity;
-                        })
-                        .join("<br>") +
+                    .map(
+                        function(item){
+
+                            return (
+                                item.name +
+                                " x " +
+                                item.quantity
+                            );
+
+                        }
+                    )
+                    .join("<br>") +
+
                     "</p>" +
 
                     "<p><strong>Total:</strong> ₹" +
@@ -456,66 +837,199 @@ function loadOrderHistory() {
                     (order.status || "unknown") +
                     "</p>";
 
-                historyList.appendChild(historyBox);
+
+                historyList.appendChild(
+                    historyBox
+                );
 
             });
 
-        }, function(error) {
+        },
 
-            console.error("Order history error:", error);
+
+        function(error){
+
+            console.error(
+                "Order history error:",
+                error
+            );
+
 
             historyList.innerHTML =
-                "<p>❌ Order history load nahi ho rahi.</p>";
+            "<p>❌ Order history load nahi ho rahi.</p>";
 
-        });
-}
-function markOrderDone(orderId) {
+        }
 
-    orderDB.collection("orders")
-        .doc(orderId)
-        .update({
-            status: "completed"
-        })
-        .then(function() {
+    );
 
-            alert("✅ Order completed!");
-
-        })
-        .catch(function(error) {
-
-            console.error(error);
-
-            alert("❌ Order update nahi hua.");
-        });
 }
 
-function acceptOrder(orderId) {
 
-    orderDB.collection("orders")
-        .doc(orderId)
-        .update({
-            status: "accepted"
-        })
-        .then(function () {
+/* ==============================
+   ACCEPT ORDER
+============================== */
 
-            alert("✅ Order accepted!");
+function acceptOrder(orderId){
 
-            // Accepted order ko New Orders se hata do
-            loadOrders();
+    orderDB
+    .collection("orders")
+    .doc(orderId)
+    .update({
 
-        })
-        .catch(function (error) {
+        status:
+        "accepted"
 
-            console.error("Accept order error:", error);
+    })
+    .then(
 
-            alert("❌ Order accept nahi hua.");
+        function(){
 
-        });
+            alert(
+                "✅ Order accepted!"
+            );
+
+        }
+
+    )
+    .catch(
+
+        function(error){
+
+            console.error(
+                "Accept order error:",
+                error
+            );
+
+            alert(
+                "❌ Order accept nahi hua."
+            );
+
+        }
+
+    );
+
 }
-/* Start orders */
 
-loadOrders();
-loadOrderHistory();
+
+/* ==============================
+   COMPLETE ORDER
+============================== */
+
+function markOrderDone(orderId){
+
+    orderDB
+    .collection("orders")
+    .doc(orderId)
+    .update({
+
+        status:
+        "completed"
+
+    })
+    .then(
+
+        function(){
+
+            alert(
+                "✅ Order completed!"
+            );
+
+        }
+
+    )
+    .catch(
+
+        function(error){
+
+            console.error(
+                "Complete order error:",
+                error
+            );
+
+            alert(
+                "❌ Order update nahi hua."
+            );
+
+        }
+
+    );
+
+}
+
+
+/* ==============================
+   WEBSITE
+============================== */
+
+function openWebsite(){
+
+    if(shopId){
+
+        window.location.href =
+        "index.html?shop=" +
+        encodeURIComponent(
+            shopId
+        );
+
+    }
+
+    else{
+
+        window.location.href =
+        "index.html";
+
+    }
+
+}
+
+
+/* ==============================
+   LOGOUT
+============================== */
+
+function logout(){
+
+    auth.signOut()
+    .then(
+
+        function(){
+
+            localStorage.removeItem(
+                "ownerLoggedIn"
+            );
+
+            localStorage.removeItem(
+                "ownerUID"
+            );
+
+            localStorage.removeItem(
+                "ownerEmail"
+            );
+
+            window.location.href =
+            "login.html";
+
+        }
+
+    )
+    .catch(
+
+        function(error){
+
+            console.error(
+                "Logout error:",
+                error
+            );
+
+            window.location.href =
+            "login.html";
+
+        }
+
+    );
+
+}
+
 </script>
 
 </body>
