@@ -174,13 +174,7 @@ Shop ID:
     <option value="">Loading shops...</option>
 </select>
 
-<button
-class="add-shop-btn"
-onclick="createNewShop()">
 
-➕ Add New Shop
-
-</button>
 
 </section>
 
@@ -604,94 +598,6 @@ function generateShopId(){
 }
 
 
-/* =========================================
-   CREATE NEW SHOP
-========================================= */
-
-async function createNewShop(){
-
-    const shopId =
-    generateShopId();
-
-
-    const newShop = {
-
-        name:"New Restaurant",
-
-        tagline:"Welcome to our restaurant",
-
-        logo:"popswolfs.jpeg",
-
-        review:"https://www.google.com",
-
-        phone:"",
-
-        whatsapp:"",
-
-        instagram:"",
-
-        maps:"",
-
-        address:"",
-
-        hours:"Monday - Sunday\n10:00 AM - 11:00 PM",
-
-        offer:"",
-
-        special:{
-
-            name:"",
-
-            description:"",
-
-            price:""
-
-        },
-
-        menu:[]
-
-    };
-
-
-    try{
-
-        await db.collection("shops")
-        .doc(shopId)
-        .set(newShop);
-
-
-        shops[shopId] =
-        newShop;
-
-
-        currentShopId =
-        shopId;
-
-
-        populateShopSelector();
-
-        loadShop(shopId);
-
-
-        showStatus(
-        "✅ New Shop Created: " +
-        shopId
-        );
-
-    }
-
-    catch(error){
-
-        console.error(error);
-
-        showStatus(
-        "❌ Shop create error: "
-        + error.message
-        );
-
-    }
-
-}
 
 
 /* =========================================
