@@ -334,7 +334,7 @@ auth.onAuthStateChanged(async function(user){
         await orderDB
         .collection("shops")
         .where(
-            "ownerEmail",
+            "menu.ownerEmail",
             "==",
             ownerEmail
         )
@@ -392,9 +392,9 @@ auth.onAuthStateChanged(async function(user){
             "Shop ID: " + shopId;
 
 
-        const restaurant =
-        currentShop.name || "Restaurant Name";
-
+      const restaurant =
+    (currentShop.menu && currentShop.menu.name) ||
+    "Restaurant Name"; 
 
         document.getElementById("restaurantName")
             .textContent =
@@ -406,36 +406,38 @@ auth.onAuthStateChanged(async function(user){
             restaurant;
 
 
-        if(
-            currentShop.menu &&
-            currentShop.menu.length > 0
-        ){
+       if(
+    currentShop.menu &&
+    typeof currentShop.menu === "object" &&
+    currentShop.menu.name &&
+    currentShop.menu.name.trim() !== ""
+){
 
-            document.getElementById("menuStatus")
-                .textContent =
-                "Updated ✅";
+    document.getElementById("menuStatus")
+        .textContent =
+        "Updated ✅";
 
-        }
+}
 
-        else if(
-            currentShop.menuText &&
-            currentShop.menuText.trim() !== ""
-        ){
+else if(
+    currentShop.menuText &&
+    typeof currentShop.menuText === "string" &&
+    currentShop.menuText.trim() !== ""
+){
 
-            document.getElementById("menuStatus")
-                .textContent =
-                "Updated ✅";
+    document.getElementById("menuStatus")
+        .textContent =
+        "Updated ✅";
 
-        }
+}
 
-        else{
+else{
 
-            document.getElementById("menuStatus")
-                .textContent =
-                "Not Updated";
+    document.getElementById("menuStatus")
+        .textContent =
+        "Not Updated";
 
-        }
-
+}
 
         /* ==============================
            NOW LOAD ORDERS
