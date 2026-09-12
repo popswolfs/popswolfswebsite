@@ -279,7 +279,25 @@ ownerApp.auth();
 
 window.addEventListener("DOMContentLoaded", function(){
 
-    loadShops();
+    auth.onAuthStateChanged(function(user){
+
+        if(
+            !user ||
+            user.email.toLowerCase() !==
+            "popswolfsconnect@gmail.com"
+        ){
+
+            window.location.href =
+"admin-login.html";
+
+            return;
+        }
+
+        loadShops();
+
+    });
+
+});
 
 });
 
@@ -339,7 +357,19 @@ async function generateShopId(){
 ========================================= */
 
 async function createShop(){
+const currentUser = auth.currentUser;
 
+    if(
+        !currentUser ||
+        currentUser.email.toLowerCase() !==
+        "popswolfsconnect@gmail.com"
+    ){
+
+        window.location.href =
+        "admin-login.html";
+
+        return;
+    }
     const shopName =
     document.getElementById(
     "shop-name"
