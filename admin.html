@@ -274,33 +274,14 @@ ownerApp.auth();
 
 
 /* =========================================
-   LOGIN CHECK
+   LOAD SHOPS
 ========================================= */
 
 window.addEventListener("DOMContentLoaded", function(){
 
-    auth.onAuthStateChanged(function(user){
-
-        if(
-            !user ||
-            user.email.toLowerCase() !==
-            "popswolfsconnect@gmail.com"
-        ){
-
-            window.location.href =
-"admin-login.html";
-
-            return;
-        }
-
-        loadShops();
-
-    });
+    loadShops();
 
 });
-
-});
-
 /* =========================================
    GENERATE SHOP ID
 ========================================= */
@@ -462,8 +443,16 @@ const currentUser = auth.currentUser;
         };
         // CREATE OWNER ACCOUNT
 const ownerPassword =
-"POPS@" + Math.random().toString(36).slice(2,10);
+document.getElementById("owner-password").value.trim();
 
+if(ownerPassword.length < 6){
+
+    showStatus(
+        "❌ Owner Password minimum 6 characters hona chahiye."
+    );
+
+    return;
+}
 try {
 
     await ownerAuth.createUserWithEmailAndPassword(
