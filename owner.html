@@ -998,7 +998,7 @@ async function saveShop(){
 
         await db.collection("shops")
         .doc(shopId)
-        .set(shopData,{merge:true});
+        .update(shopData);
 
 
         shops[shopId] =
