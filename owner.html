@@ -615,7 +615,39 @@ function generateShopId(){
     String(next).padStart(3,"0");
 
 }
+document.getElementById("shop-logo-file")
+.addEventListener("change", function(){
 
+    const file = this.files[0];
+
+    if(!file){
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+
+        selectedLogoData =
+            e.target.result;
+
+        const preview =
+            document.getElementById("logo-preview");
+
+        if(preview){
+
+            preview.src =
+                selectedLogoData;
+
+            preview.style.display =
+                "block";
+        }
+
+    };
+
+    reader.readAsDataURL(file);
+
+});
 
 
 
@@ -634,7 +666,17 @@ function loadShop(shopId){
         return;
 
     }
+    const logoPreview =
+    document.getElementById("logo-preview");
 
+if(logoPreview){
+
+    logoPreview.src =
+        shop.logo || "";
+
+    logoPreview.style.display =
+        shop.logo ? "block" : "none";
+}
 
     currentShopId =
     shopId;
@@ -941,10 +983,13 @@ async function saveShop(){
         "shop-tagline"
         ).value,
 
-        logo:
-        document.getElementById(
-        "shop-logo"
-        ).value,
+       logo:
+selectedLogoData ||
+document.getElementById(
+"shop-logo"
+).value ||
+shops[shopId].logo ||
+"",
 
         review:
         document.getElementById(
