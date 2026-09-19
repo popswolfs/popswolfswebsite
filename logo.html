@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Change Logo</title>
+
+<style>
+
+body{
+    margin:0;
+    padding:20px;
+    background:#111;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+
+.box{
+    max-width:500px;
+    margin:40px auto;
+    background:#222;
+    padding:25px;
+    border-radius:18px;
+}
+
+h1{
+    text-align:center;
+}
+
+input{
+    width:100%;
+    box-sizing:border-box;
+    padding:12px;
+    margin-top:20px;
+}
+
+#logo-preview{
+    display:none;
+    width:150px;
+    height:150px;
+    object-fit:cover;
+    border-radius:50%;
+    margin:25px auto;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    margin-top:15px;
+    border:0;
+    border-radius:10px;
+    background:#00c853;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+}
+
+.back{
+    background:#555;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h1>🖼️ Change Logo</h1>
+
+<input
+type="file"
+id="logo-file"
+accept="image/*">
+
+<img
+id="logo-preview"
+src=""
+alt="Logo Preview">
+
+<button onclick="saveLogo()">
+💾 Save Logo
+</button>
+
+<button
+class="back"
+onclick="history.back()">
+⬅️ Back
+</button>
+
+</div>
+
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+
+<script>
+
+const firebaseConfig = {
+
+   apiKey:
+"AIzaSyC_WShC9r9hOwLHcZMPht_rgexXdiWfZXs",
+
+    authDomain: "popswolfs-connect.firebaseapp.com",
+
+    projectId: "popswolfs-connect",
+
+    storageBucket: "popswolfs-connect.firebasestorage.app",
+
+    messagingSenderId: "761803503052",
+
+    appId: "1:761803503052:web:731ea5982a21d885075969"
+
+};
+
+
+firebase.initializeApp(firebaseConfig);
+
+
+const auth = firebase.auth();
+
+const db = firebase.firestore();
+
+
+let selectedLogoData = "";
+
+
+document
+.getElementById("logo-file")
+.addEventListener("change",function(){
+
+    const file = this.files[0];
+
+    if(!file){
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+
+        selectedLogoData =
+            e.target.result;
+
+        const preview =
+            document.getElementById("logo-preview");
+
+        preview.src =
+            selectedLogoData;
+
+        preview.style.display =
+            "block";
+
+    };
+
+    reader.readAsDataURL(file);
+
+});
+
+
+async function saveLogo(){
+
+    if(!selectedLogoData){
+
+        alert("❌ Pehle logo select karo.");
+
+        return;
+
+    }
+
+
+    const user =
+        auth.currentUser;
+
+
+    if(!user){
+
+        alert("❌ Owner login nahi hai.");
+
+        return;
+
+    }
+
+
+    try{
+
+        const snapshot =
+            await db
+            .collection("shops")
+            .where(
+                "ownerEmail",
+                "==",
+                user.email.toLowerCase()
+            )
+            .limit(1)
+            .get();
+
+
+        if(snapshot.empty){
+
+            alert("❌ Is Owner ke liye shop nahi mili.");
+
+            return;
+
+        }
+
+
+        const shopDoc =
+            snapshot.docs[0];
+
+
+        await db
+        .collection("shops")
+        .doc(shopDoc.id)
+        .update({
+
+            logo: selectedLogoData
+
+        });
+
+
+        alert(
+            "✅ Logo successfully save ho gaya!"
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "❌ Logo save nahi hua.\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>
