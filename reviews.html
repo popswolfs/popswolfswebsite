@@ -26,7 +26,6 @@ body{
   background:#222;
   padding:30px 20px;
   border-radius:15px;
-  text-align:center;
 }
 
 .logo{
@@ -34,16 +33,52 @@ body{
   height:100px;
   object-fit:cover;
   border-radius:50%;
-  margin-bottom:15px;
+  display:block;
+  margin:0 auto 15px;
 }
 
 h1{
+  text-align:center;
   margin-bottom:10px;
 }
 
 p{
   color:#ccc;
   line-height:1.5;
+}
+
+.stars{
+  text-align:center;
+  font-size:35px;
+  margin:15px 0;
+}
+
+label{
+  display:block;
+  margin-top:25px;
+  margin-bottom:8px;
+  font-weight:bold;
+}
+
+input{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:10px;
+  font-size:15px;
+}
+
+.save-btn{
+  width:100%;
+  border:none;
+  background:#00c853;
+  color:white;
+  padding:15px;
+  border-radius:10px;
+  font-size:17px;
+  font-weight:bold;
+  margin-top:15px;
+  cursor:pointer;
 }
 
 .review-btn{
@@ -56,10 +91,7 @@ p{
   font-size:18px;
   font-weight:bold;
   margin-top:25px;
-}
-
-.review-btn:hover{
-  background:#ffc933;
+  text-align:center;
 }
 
 .back-btn{
@@ -70,11 +102,13 @@ p{
   padding:14px;
   border-radius:10px;
   margin-top:15px;
+  text-align:center;
 }
 
-.stars{
-  font-size:35px;
-  margin:15px 0;
+.status{
+  text-align:center;
+  margin-top:15px;
+  font-weight:bold;
 }
 </style>
 </head>
@@ -83,30 +117,267 @@ p{
 
 <div class="box">
 
-<img src="popswolfs.jpeg" class="logo">
+<img
+id="shop-logo"
+src="popswolfs.jpeg"
+class="logo"
+alt="Shop Logo">
 
 <h1>⭐ Customer Reviews</h1>
 
 <div class="stars">★★★★★</div>
 
-<p>
-Aapka experience kaisa raha?
-<br>
-Humein apna honest review dene ke liye Google par review karein.
+<p style="text-align:center;">
+Google Review Link yahan add/change karo.
 </p>
 
+<label>🔗 Google Review Link</label>
+
+<input
+id="review-link-input"
+type="url"
+placeholder="https://g.page/r/....">
+
+<button
+class="save-btn"
+onclick="saveReview()">
+
+💾 Save Review Link
+
+</button>
+
+<div
+class="status"
+id="status">
+</div>
+
 <a
-href="https://www.google.com/"
+id="test-review"
+href="#"
 target="_blank"
 class="review-btn">
-⭐ Give us a Google Review
+
+⭐ Test Google Review
+
 </a>
 
-<a href="dashboard.html" class="back-btn">
+<a
+href="dashboard.html"
+class="back-btn">
+
 ← Back to Dashboard
+
 </a>
 
 </div>
+
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyC_WShC9r9hOwLHcZMPht_rgexXdiWfZXs",
+
+    authDomain:
+    "popswolfs-connect.firebaseapp.com",
+
+    projectId:
+    "popswolfs-connect",
+
+    storageBucket:
+    "popswolfs-connect.firebasestorage.app",
+
+    messagingSenderId:
+    "761803503052",
+
+    appId:
+    "1:761803503052:web:731ea5982a21d885075969",
+
+    measurementId:
+    "G-R3H3C9TL7Q"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db =
+firebase.firestore();
+
+const auth =
+firebase.auth();
+
+let shopId = "";
+
+
+/* =========================
+   LOAD OWNER SHOP
+========================= */
+
+auth.onAuthStateChanged(async function(user){
+
+    if(!user){
+
+        window.location.href =
+        "login.html";
+
+        return;
+
+    }
+
+    try{
+
+        const ownerEmail =
+        (user.email || "")
+        .trim()
+        .toLowerCase();
+
+        const snapshot =
+        await db
+        .collection("shops")
+        .where(
+            "ownerEmail",
+            "==",
+            ownerEmail
+        )
+        .limit(1)
+        .get();
+
+        if(snapshot.empty){
+
+            showStatus(
+                "❌ Is email par koi shop assigned nahi hai."
+            );
+
+            return;
+
+        }
+
+        const doc =
+        snapshot.docs[0];
+
+        shopId =
+        doc.id;
+
+        const shop =
+        doc.data();
+
+        document.getElementById(
+            "review-link-input"
+        ).value =
+        shop.review || "";
+
+        document.getElementById(
+            "test-review"
+        ).href =
+        shop.review || "#";
+
+        document.getElementById(
+            "shop-logo"
+        ).src =
+        shop.logo || "popswolfs.jpeg";
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        showStatus(
+            "❌ Shop load error: " +
+            error.message
+        );
+
+    }
+
+});
+
+
+/* =========================
+   SAVE REVIEW LINK
+========================= */
+
+async function saveReview(){
+
+    if(!shopId){
+
+        showStatus(
+            "❌ Shop load nahi hua."
+        );
+
+        return;
+
+    }
+
+    const reviewLink =
+    document.getElementById(
+        "review-link-input"
+    ).value.trim();
+
+    if(!reviewLink){
+
+        showStatus(
+            "❌ Google Review Link daalo."
+        );
+
+        return;
+
+    }
+
+    try{
+
+        await db
+        .collection("shops")
+        .doc(shopId)
+        .update({
+
+            review:
+            reviewLink
+
+        });
+
+        document.getElementById(
+            "test-review"
+        ).href =
+        reviewLink;
+
+        showStatus(
+            "✅ Google Review Link save ho gaya!"
+        );
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        showStatus(
+            "❌ Save failed: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+function showStatus(message){
+
+    document.getElementById(
+        "status"
+    ).innerText =
+    message;
+
+}
+
+</script>
 
 </body>
 </html>
